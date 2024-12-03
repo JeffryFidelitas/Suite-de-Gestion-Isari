@@ -2,3 +2,4 @@
 
 - Andy Madrigal Abarca
 - Jeffry Samuel Eduarte Rojas
+- Alejandra Laura Herrera
