@@ -15,7 +15,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-        public ActionResult RegistroDevoluciones()
+        public ActionResult RegistroDevolucion()
         {
             return View();
         }

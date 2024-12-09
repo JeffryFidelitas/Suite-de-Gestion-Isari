@@ -94,8 +94,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHVudG9WZW50YS9IaXN0b3JpYWxWZW50YXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroDevoluciones.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHVudG9WZW50YS9SZWdpc3Ryb0Rldm9sdWNpb25lcy5jc2h0bWw=
+[/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroDevolucion.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHVudG9WZW50YS9SZWdpc3Ryb0Rldm9sdWNpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroVenta.cshtml]
