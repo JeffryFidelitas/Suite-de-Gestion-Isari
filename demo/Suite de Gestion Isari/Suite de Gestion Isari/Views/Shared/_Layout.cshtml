@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="utf-8" />
@@ -29,14 +29,33 @@
                             <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Index">Inventario</a>
                         </li>
                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownPuntoVenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Punto de Venta
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownPuntoVenta">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroVenta">Registrar Venta</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="HistorialVentas">Historial de Ventas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroDevoluciones">Registro de Devoluciones</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Administracion
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="AgregarPuesto">Agregar Puesto laboral</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="ConsultaPuesto">Consulta Puesto laboral</a></li>
-                                
-
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownContabilidad" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Contabilidad
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownContabilidad">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="ReportesFinancieros">Reportes Financieros</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="RegistroCuentas">Registro de Cuentas</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="ResumenDiario">Resumen Diario</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="Caja">Caja</a></li>
                             </ul>
                         </li>
 
@@ -47,11 +66,8 @@
                             <ul class="dropdown-menu" aria-labelledby="dropdownCat">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="AgregarCategoria">Agregar Categoria</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="ConsultaCategoria">Consulta Categorias</a></li>
-                                
-
                             </ul>
                         </li>
-                        
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Usuarios
@@ -60,13 +76,11 @@
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Registro">Agregar Usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ConsultaUsuario">Consulta Usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
-                                
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">ActualizarPerfil</a>
+                            <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a>
                         </li>
-
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
                                 <a class="nav-link btn btn-danger text-white" href="@Url.Action("Login", "Login")">Cerrar Sesión</a>
