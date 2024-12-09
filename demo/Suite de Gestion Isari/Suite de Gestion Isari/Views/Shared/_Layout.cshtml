@@ -28,6 +28,50 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Index">Inventario</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Administracion
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="AgregarPuesto">Agregar Puesto laboral</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="ConsultaPuesto">Consulta Puesto laboral</a></li>
+                                
+
+                            </ul>
+                        </li>
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownCat" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Categoria Productos
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownCat">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="AgregarCategoria">Agregar Categoria</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="ConsultaCategoria">Consulta Categorias</a></li>
+                                
+
+                            </ul>
+                        </li>
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Usuarios
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Registro">Agregar Usuario</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ConsultaUsuario">Consulta Usuario</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">ActualizarPerfil</a>
+                        </li>
+
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-danger text-white" href="@Url.Action("Login", "Login")">Cerrar Sesión</a>
+                            </li>
+                        </ul>
                     </ul>
                 </div>
             </div>
