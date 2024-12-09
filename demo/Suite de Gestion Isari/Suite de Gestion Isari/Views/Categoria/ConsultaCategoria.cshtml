@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Categorías";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Categorías</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre de la Categoría</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Alimentos</td>
+                <td>Productos comestibles como arroz, azúcar, etc.</td>
+                <td>
+                    <a href="@Url.Action("EditarCategoria", "Categoria", new { id = 1 })" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Limpieza</td>
+                <td>Productos de limpieza como detergentes y desinfectantes.</td>
+                <td>
+                    <a href="@Url.Action("EditarCategoria", "Categoria", new { id = 2 })" class="btn btn-warning btn-sm">Editar</a>
+                </td>
+            </tr>
+            
+        </tbody>
+    </table>
+
+    <div class="text-center mt-3">
+        <a href="@Url.Action("AgregarCategoria", "Categoria")" class="btn btn-primary">Agregar Nueva Categoría</a>
+    </div>
+</div>
