@@ -58,3 +58,4 @@
 /home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.pdb
 /home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.genruntimeconfig.cache
 /home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/ref/Suite de Gestion Isari.dll
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/scopedcss/Views/Shared/Layout_Externo.cshtml.rz.scp.css
