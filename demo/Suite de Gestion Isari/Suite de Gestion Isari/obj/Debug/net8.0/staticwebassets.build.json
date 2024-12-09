@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "l8cG7cIRzWL9ucESRwZyyIsrBjC3lQa6PE/sMoDfrmk=",
+  "Hash": "3eUNJIlHBBxM6G/UfcCYMfNTRqX5PDp7ERXtJf5uN04=",
   "Source": "Suite de Gestion Isari",
   "BasePath": "_content/Suite de Gestion Isari",
   "Mode": "Default",
@@ -91,6 +91,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/favicon.ico"
+    },
+    {
+      "Identity": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/wwwroot/images/logo.png",
+      "SourceId": "Suite de Gestion Isari",
+      "SourceType": "Discovered",
+      "ContentRoot": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/wwwroot/",
+      "BasePath": "_content/Suite de Gestion Isari",
+      "RelativePath": "images/logo.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/images/logo.png"
     },
     {
       "Identity": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/wwwroot/js/site.js",

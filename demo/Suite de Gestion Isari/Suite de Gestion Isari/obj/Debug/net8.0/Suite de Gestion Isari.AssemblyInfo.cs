@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Suite de Gestion Isari")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1516ab8afb63893b716d070b5ffb42dc54051d6b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4efc5f13a9f57efc1a8f6a275870062ea7d0097e")]
 [assembly: System.Reflection.AssemblyProductAttribute("Suite de Gestion Isari")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Suite de Gestion Isari")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

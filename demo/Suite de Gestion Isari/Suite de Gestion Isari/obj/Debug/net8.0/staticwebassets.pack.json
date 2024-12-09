@@ -13,6 +13,10 @@
       "PackagePath": "staticwebassets/favicon.ico"
     },
     {
+      "Id": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/wwwroot/images/logo.png",
+      "PackagePath": "staticwebassets/images/logo.png"
+    },
+    {
       "Id": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/wwwroot/js/site.js",
       "PackagePath": "staticwebassets/js/site.js"
     },
