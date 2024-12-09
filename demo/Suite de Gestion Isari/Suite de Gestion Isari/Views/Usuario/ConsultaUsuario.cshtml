@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Listado de Usuarios";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Listado de Usuarios</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Cédula</th>
+                <th scope="col">Correo Electrónico</th>
+                <th scope="col">Teléfono</th>
+                <th scope="col">Fecha de Nacimiento</th>
+                <th scope="col">Rol</th>
+                <th scope="col">Puesto</th>
+                <th scope="col">Salario</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            <tr>
+                <td>1</td>
+                <td>Juan</td>
+                <td>Pérez</td>
+                <td>123456789</td>
+                <td>juan.perez@email.com</td>
+                <td>+1234567890</td>
+                <td>15/03/1990</td>
+                <td>Empleado</td>
+                <td>Asistente</td>
+                <td>$500</td>
+                <td>
+                    <a href="@Url.Action("EditarUsuario","Usuario")" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este usuario?');">Cambiar estado</a>
+                </td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Ana</td>
+                <td>Gómez</td>
+                <td>987654321</td>
+                <td>ana.gomez@email.com</td>
+                <td>+0987654321</td>
+                <td>25/07/1985</td>
+                <td>Cajero</td>
+                <td>Supervisor</td>
+                <td>$800</td>
+                <td>
+                    <a href="#" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este usuario?');">Cambiar estado</a>
+                </td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Pedro</td>
+                <td>López</td>
+                <td>564738291</td>
+                <td>pedro.lopez@email.com</td>
+                <td>+1122334455</td>
+                <td>01/12/1995</td>
+                <td>Administrador</td>
+                <td>Gerente</td>
+                <td>$1200</td>
+                <td>
+                    <a href="@Url.Action("EditarUsuario","Usuario")" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="#" class="btn btn-danger btn-sm" onclick="return confirm('¿Está seguro de eliminar este usuario?');">Cambiar estado</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center mt-3">
+        <a href="@Url.Action("Registro", "Usuario")">Crear Nuevo Usuario</a>
+        
+    </div>
+</div>
