@@ -6,16 +6,16 @@ namespace Suite_de_Gestion_Isari.Controllers
     public class CategoriaController : Controller
     {
       
-        public ActionResult AgregarCategoria()
+        public ActionResult Agregar()
         {
             return View();
         }
 
-        public ActionResult ConsultaCategoria()
+        public ActionResult Index()
         {
             return View();
         }
-        public ActionResult EditarCategoria()
+        public ActionResult Editar()
         {
             return View();
         }

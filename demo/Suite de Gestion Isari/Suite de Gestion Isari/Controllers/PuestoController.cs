@@ -4,18 +4,18 @@ namespace Suite_de_Gestion_Isari.Controllers
 {
     public class PuestoController : Controller
     {
-        public IActionResult AgregarPuesto()
+        public IActionResult Agregar()
         {
             return View();
         }
         
 
-        public IActionResult ConsultaPuesto()
+        public IActionResult Index()
         {
             return View();
         }
 
-        public IActionResult EditarPuesto()
+        public IActionResult Editar()
         {
             return View();
         }

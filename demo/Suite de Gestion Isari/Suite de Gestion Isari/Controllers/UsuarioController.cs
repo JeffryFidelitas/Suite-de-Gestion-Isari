@@ -10,13 +10,13 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
         
 
-        public IActionResult ConsultaUsuario()
+        public IActionResult Index()
         {
             return View();
         }
 
 
-        public IActionResult EditarUsuario()
+        public IActionResult Editar()
         {
             return View();
         }
