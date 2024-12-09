@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="../buildMultiTargeting/Suite de Gestion Isari.props" />
+</Project>

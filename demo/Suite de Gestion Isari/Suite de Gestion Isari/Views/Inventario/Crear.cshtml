@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Crear Inventario";
+}
+
+<div>
+    <h1 class="display-4">Crear Inventario</h1>
+    <form>
+        <div class="mb-3">
+            <label for="id" class="form-label">ID</label>
+            <input type="text" class="form-control" id="id">
+        </div>
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre">
+        </div>
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoria</label>
+            <input class="form-control" list="datalistCategoria" id="categoria" placeholder="Escribe para buscar...">
+            <datalist id="datalistCategoria">
+                <option value="Alimento"/>
+                <option value="Limpieza"/>
+                <option value="Mascotas"/>
+            </datalist>
+        </div>
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio</label>
+            <input type="number" class="form-control" id="precio">
+        </div>
+        <div class="mb-3">
+            <label for="unidades" class="form-label">Unidades</label>
+            <input type="number" class="form-control" id="unidades">
+        </div>
+    </form>
+    <a class="btn btn-primary" role="button" asp-controller="Inventario" >Guardar</a>
+</div>

@@ -1,0 +1,35 @@
+@{
+    ViewData["Title"] = "Inventario";
+}
+
+<div>
+    <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
+        <h1 class="display-4 flex-grow-1">Inventario</h1>
+        <a class="btn btn-primary" role="button" asp-controller="Inventario" asp-action="Crear">Crear</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Categoria</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Unidades</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Arroz 91% 1.8kg</td>
+                <td>Alimento</td>
+                <td>7000</td>
+                <td>4312</td>
+                <td>
+                    <a class="btn btn-warning" role="button" asp-controller="Inventario" asp-action="Editar">Editar</a>
+                    <a class="btn btn-danger" role="button" asp-controller="Inventario" asp-action="Eliminar">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

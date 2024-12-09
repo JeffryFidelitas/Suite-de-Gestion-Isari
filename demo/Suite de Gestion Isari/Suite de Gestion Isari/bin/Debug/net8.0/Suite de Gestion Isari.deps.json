@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "Suite de Gestion Isari/1.0.0": {
+        "runtime": {
+          "Suite de Gestion Isari.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Suite de Gestion Isari/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
