@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Registro de Venta";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Registro de Venta</h1>
+
+    <form>
+        <div class="mb-3">
+            <label for="productos" class="form-label">Productos</label>
+            <div class="d-flex justify-content-between">
+                <input type="text" class="form-control w-75" id="productoBusqueda" placeholder="Escanee o ingrese el código del producto">
+                <button type="button" class="btn btn-primary w-20" id="agregarProducto">Agregar al Carrito</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Cantidad</th>
+                        <th scope="col">Precio Unitario</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="carritoProductos">
+                    <tr>
+                        <td>Producto A</td>
+                        <td>1</td>
+                        <td>₡1,500.00</td>
+                        <td>₡1,500.00</td>
+                        <td><button type="button" class="btn btn-danger btn-sm">Eliminar</button></td>
+                    </tr>
+                    <tr>
+                        <td>Producto B</td>
+                        <td>2</td>
+                        <td>₡2,000.00</td>
+                        <td>₡4,000.00</td>
+                        <td><button type="button" class="btn btn-danger btn-sm">Eliminar</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Subtotal y Total -->
+        <div class="d-flex justify-content-between">
+            <div>
+                <strong>Subtotal:</strong> ₡5,500.00
+            </div>
+            <div>
+                <strong>Impuestos:</strong> ₡990.00
+            </div>
+            <div>
+                <strong>Total:</strong> ₡6,490.00
+            </div>
+        </div>
+
+        <!-- Selección del Método de Pago -->
+        <div class="mt-4 mb-3">
+            <label for="metodoPago" class="form-label">Método de Pago</label>
+            <select class="form-select" id="metodoPago" required>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+            </select>
+        </div>
+
+        <!-- Pago en Efectivo -->
+        <div id="pagoEfectivo" class="d-none">
+            <div class="mb-3">
+                <label for="montoPago" class="form-label">Monto Recibido</label>
+                <input type="number" class="form-control" id="montoPago" placeholder="Ingrese monto recibido en efectivo" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="cambio" class="form-label">Cambio a Devolver</label>
+                <input type="number" class="form-control" id="cambio" readonly>
+            </div>
+        </div>
+
+        <!-- Pago con Tarjeta -->
+        <div id="pagoTarjeta" class="d-none">
+            <div class="mb-3">
+                <label for="numeroTarjeta" class="form-label">Número de Tarjeta</label>
+                <input type="text" class="form-control" id="numeroTarjeta" placeholder="Ingrese número de tarjeta" required>
+            </div>
+            <div class="mb-3">
+                <label for="codigoSeguridad" class="form-label">Código de Seguridad</label>
+                <input type="text" class="form-control" id="codigoSeguridad" placeholder="Ingrese código de seguridad" required>
+            </div>
+        </div>
+
+        <!-- Botones de Acción -->
+        <div class="d-flex justify-content-between mt-4">
+            <a class="btn btn-secondary" role="button" href="@Url.Action("ConsultaVentas", "Venta")">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Finalizar Venta</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Mostrar u ocultar campos según el método de pago seleccionado
+    document.getElementById("metodoPago").addEventListener("change", function () {
+        if (this.value === "efectivo") {
+            document.getElementById("pagoEfectivo").classList.remove("d-none");
+            document.getElementById("pagoTarjeta").classList.add("d-none");
+        } else if (this.value === "tarjeta") {
+            document.getElementById("pagoEfectivo").classList.add("d-none");
+            document.getElementById("pagoTarjeta").classList.remove("d-none");
+        }
+    });
+</script>

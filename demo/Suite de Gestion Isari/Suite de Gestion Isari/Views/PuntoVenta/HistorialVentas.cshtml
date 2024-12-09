@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Historial de Ventas";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Historial de Ventas</h1>
+
+    <!-- Filtros de Búsqueda -->
+    <form method="get" action="@Url.Action("HistorialVentas", "Ventas")">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="numeroTicket" class="form-label">Número de Ticket</label>
+                <input type="text" class="form-control" id="numeroTicket" name="numeroTicket" placeholder="Ingrese número de ticket">
+            </div>
+            <div class="col-md-3">
+                <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="col-md-3">
+                <label for="fechaFin" class="form-label">Fecha Fin</label>
+                <input type="date" class="form-control" id="fechaFin" name="fechaFin" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Buscar</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Tabla de Ventas -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th># Ticket</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Método de Pago</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* Ejemplo de filas *@
+            <tr>
+                <td>00123</td>
+                <td>2024-05-01</td>
+                <td>₡15,000.00</td>
+                <td>Efectivo</td>
+                <td>
+                    <a href="@Url.Action("DetallesVenta", "Ventas", new { ticket = 123 })" class="btn btn-info btn-sm">Ver Detalles</a>
+                </td>
+            </tr>
+            <tr>
+                <td>00124</td>
+                <td>2024-05-02</td>
+                <td>₡25,500.00</td>
+                <td>Tarjeta</td>
+                <td>
+                    <a href="@Url.Action("DetallesVenta", "Ventas", new { ticket = 124 })" class="btn btn-info btn-sm">Ver Detalles</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

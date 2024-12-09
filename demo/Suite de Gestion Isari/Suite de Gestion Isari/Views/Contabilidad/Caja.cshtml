@@ -1,0 +1,85 @@
+﻿@{
+    ViewData["Title"] = "Gestión de Diferencias en Caja";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Gestión de Diferencias en Caja</h1>
+
+    <div class="d-flex justify-content-between mb-4">
+        <button class="btn btn-primary" data-bs-toggle="collapse" href="#registroDiferencia" role="button" aria-expanded="false" aria-controls="registroDiferencia">
+            Registrar Diferencia en Caja
+        </button>
+        <button class="btn btn-secondary" data-bs-toggle="collapse" href="#consultaHistorial" role="button" aria-expanded="false" aria-controls="consultaHistorial">
+            Consultar Historial de Diferencias
+        </button>
+        <button class="btn btn-success" data-bs-toggle="collapse" href="#reporteDiferencias" role="button" aria-expanded="false" aria-controls="reporteDiferencias">
+            Generar Reporte de Diferencias
+        </button>
+    </div>
+
+    <div class="collapse" id="registroDiferencia">
+        <h4 class="mb-3">Registrar Diferencia en Caja</h4>
+        <form>
+            <div class="mb-3">
+                <label for="montoDiferencia" class="form-label">Monto de la Diferencia</label>
+                <input type="number" class="form-control" id="montoDiferencia" placeholder="Ingrese el monto de la diferencia" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="comentarios" class="form-label">Comentarios sobre la Causa</label>
+                <textarea class="form-control" id="comentarios" rows="4" placeholder="Ingrese una posible causa de la diferencia" required></textarea>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a class="btn btn-secondary" role="button" href="#">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Registrar Diferencia</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="collapse" id="consultaHistorial">
+        <h4 class="mb-3">Historial de Diferencias en Caja</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Monto de Diferencia</th>
+                    <th>Comentario</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>2024-12-09</td>
+                    <td>₡500.00</td>
+                    <td>Falta de efectivo en la caja, probable error de conteo.</td>
+                    <td><span class="badge bg-warning">Pendiente</span></td>
+                </tr>
+                <tr>
+                    <td>2024-12-08</td>
+                    <td>₡200.00</td>
+                    <td>Exceso de efectivo, error en la entrega de cambio.</td>
+                    <td><span class="badge bg-success">Resuelto</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="collapse" id="reporteDiferencias">
+        <h4 class="mb-3">Generar Reporte de Diferencias</h4>
+        <form>
+            <div class="mb-3">
+                <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+                <input type="date" class="form-control" id="fechaInicio" required>
+            </div>
+            <div class="mb-3">
+                <label for="fechaFin" class="form-label">Fecha de Fin</label>
+                <input type="date" class="form-control" id="fechaFin" required>
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-info" type="submit">Generar Reporte</button>
+            </div>
+        </form>
+    </div>
+</div>
