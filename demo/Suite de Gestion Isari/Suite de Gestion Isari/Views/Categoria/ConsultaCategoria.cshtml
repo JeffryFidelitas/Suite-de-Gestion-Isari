@@ -20,7 +20,7 @@
                 <td>Alimentos</td>
                 <td>Productos comestibles como arroz, azúcar, etc.</td>
                 <td>
-                    <a href="@Url.Action("EditarCategoria", "Categoria", new { id = 1 })" class="btn btn-warning btn-sm">Editar</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="EditarCategoria" asp-route-id="1">Editar</a>
                 </td>
             </tr>
             <tr>
@@ -28,7 +28,7 @@
                 <td>Limpieza</td>
                 <td>Productos de limpieza como detergentes y desinfectantes.</td>
                 <td>
-                    <a href="@Url.Action("EditarCategoria", "Categoria", new { id = 2 })" class="btn btn-warning btn-sm">Editar</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="EditarCategoria" asp-route-id="2">Editar</a>
                 </td>
             </tr>
             
@@ -36,6 +36,6 @@
     </table>
 
     <div class="text-center mt-3">
-        <a href="@Url.Action("AgregarCategoria", "Categoria")" class="btn btn-primary">Agregar Nueva Categoría</a>
+        <a class="btn btn-primary" asp-controller="Categoria" asp-action="AgregarCategoria">Agregar Nueva Categoría</a>
     </div>
 </div>

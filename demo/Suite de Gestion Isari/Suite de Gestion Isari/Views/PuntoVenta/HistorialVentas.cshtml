@@ -6,7 +6,7 @@
     <h1 class="display-4 text-center mb-4">Historial de Ventas</h1>
 
     <!-- Filtros de Búsqueda -->
-    <form method="get" action="@Url.Action("HistorialVentas", "Ventas")">
+    <form method="get" asp-controller="Ventas" asp-action="HistorialVentas">
         <div class="row mb-4">
             <div class="col-md-4">
                 <label for="numeroTicket" class="form-label">Número de Ticket</label>
@@ -45,7 +45,7 @@
                 <td>₡15,000.00</td>
                 <td>Efectivo</td>
                 <td>
-                    <a href="@Url.Action("DetallesVenta", "Ventas", new { ticket = 123 })" class="btn btn-info btn-sm">Ver Detalles</a>
+                    <a class="btn btn-info btn-sm" asp-controller="Puesto" asp-action="DetallesVenta" asp-route-ticket="123">Ver Detalles</a>
                 </td>
             </tr>
             <tr>
@@ -54,7 +54,7 @@
                 <td>₡25,500.00</td>
                 <td>Tarjeta</td>
                 <td>
-                    <a href="@Url.Action("DetallesVenta", "Ventas", new { ticket = 124 })" class="btn btn-info btn-sm">Ver Detalles</a>
+                    <a class="btn btn-info btn-sm" asp-controller="Puesto" asp-action="DetallesVenta" asp-route-ticket="124">Ver Detalles</a>
                 </td>
             </tr>
         </tbody>

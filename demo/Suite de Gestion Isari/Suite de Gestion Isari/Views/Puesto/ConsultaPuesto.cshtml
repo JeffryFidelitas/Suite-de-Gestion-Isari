@@ -22,7 +22,7 @@
                 <td>Encargado de supervisar todo el equipo.</td>
                 <td>$5000</td>
                 <td>
-                    <a href="@Url.Action("EditarPuesto", "Puesto", new { id = 1 })" class="btn btn-warning btn-sm">Editar</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Puesto" asp-action="EditarPuesto" asp-route-id="1">Editar</a>
                 </td>
             </tr>
             <tr>
@@ -31,7 +31,7 @@
                 <td>Responsable de atender los clientes en el punto de venta.</td>
                 <td>$1500</td>
                 <td>
-                    <a href="@Url.Action("EditarPuesto", "Puesto", new { id = 2 })" class="btn btn-warning btn-sm">Editar</a>
+                    <a class="btn btn-warning btn-sm" asp-controller="Puesto" asp-action="EditarPuesto" asp-route-id="2">Editar</a>
                 </td>
             </tr>
             
@@ -39,7 +39,7 @@
     </table>
 
     <div class="text-center mt-3">
-        <a href="@Url.Action("Agregar", "Puesto")" class="btn btn-primary">Agregar Nuevo Puesto</a>
+        <a class="btn btn-primary" asp-controller="Puesto" asp-action="Agregar">Agregar Nuevo Puesto</a>
     </div>
 </div>
 

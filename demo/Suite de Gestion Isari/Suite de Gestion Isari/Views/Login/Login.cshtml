@@ -18,8 +18,7 @@
             <a class="btn btn-primary w-100" role="button" asp-controller="Home" asp-action="Index">Iniciar Sesión</a>
         </form>
         <div class="text-center mt-3">
-            <a href="@Url.Action("OlvideContraseña", "Login")" class="text-decoration-none">Olvidé mi contraseña</a>
-            
+            <a class="text-decoration-none" asp-controller="Login" asp-action="OlvideContraseña">Olvidé mi contraseña</a>
         </div>
     </div>
 </div>
