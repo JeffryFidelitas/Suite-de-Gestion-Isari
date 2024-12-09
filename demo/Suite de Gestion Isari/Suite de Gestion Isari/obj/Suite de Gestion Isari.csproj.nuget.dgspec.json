@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj": {}
+    "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj": {}
   },
   "projects": {
-    "/home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj": {
+    "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj",
+        "projectUniqueName": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj",
         "projectName": "Suite de Gestion Isari",
-        "projectPath": "/home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj",
+        "projectPath": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj",
         "packagesPath": "/home/tentri/.nuget/packages/",
-        "outputPath": "/home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/obj/",
+        "outputPath": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/tentri/.nuget/NuGet/NuGet.Config"

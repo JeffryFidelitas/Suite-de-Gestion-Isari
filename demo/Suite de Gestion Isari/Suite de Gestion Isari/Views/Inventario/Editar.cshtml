@@ -5,7 +5,7 @@
 <div>
     <h1 class="display-4">Editar Inventario</h1>
     <div class="alert alert-warning" role="alert">
-        Editando item #1
+        Editando item @ViewBag.id
     </div>
     <form>
         <div class="mb-3">
@@ -30,5 +30,6 @@
             <input type="number" class="form-control" id="unidades" value="4312">
         </div>
     </form>
-    <a class="btn btn-primary" role="button" asp-controller="Inventario" >Guardar</a>
+    <a class="btn btn-secondary" role="button" asp-controller="Inventario" asp-action="Index">Volver</a>
+    <a class="btn btn-primary" role="button" asp-controller="Inventario" asp-action="Index">Guardar</a>
 </div>

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zeNOYIpA3Rqz+b1a/pAJVb061ADZDKlhyvHGz2GFJ+6P1ZYAcJxC1LCW0IPjktjiMbb0x9CktazB0rYW6hmJ8w==",
+  "dgSpecHash": "35Sf1rIZnR0HBCenJB3/ho9GNvzlvfN7s6AHwMJOBcRTgE3cZYOcFSzMJcuzZFzlcQyMHh2KtorbgRve1nBO8g==",
   "success": true,
-  "projectFilePath": "/home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj",
+  "projectFilePath": "/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Suite de Gestion Isari.csproj",
   "expectedPackageFiles": [
     "/home/tentri/.nuget/packages/microsoft.aspnetcore.app.ref/8.0.10/microsoft.aspnetcore.app.ref.8.0.10.nupkg.sha512"
   ],

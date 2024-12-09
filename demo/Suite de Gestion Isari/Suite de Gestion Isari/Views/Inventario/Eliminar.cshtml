@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <tr>
-                <th scope="row">1</th>
+                <th scope="row">@ViewBag.id</th>
                 <td>Arroz 91% 1.8kg</td>
                 <td>Alimento</td>
                 <td>7000</td>
@@ -27,5 +27,6 @@
             </tr>
         </tbody>
     </table>
-    <a class="btn btn-danger" role="button" asp-controller="Inventario" >Eliminar</a>
+    <a class="btn btn-secondary" role="button" asp-controller="Inventario" asp-action="Index">Volver</a>
+    <a class="btn btn-danger" role="button" asp-controller="Inventario" asp-action="Index">Eliminar</a>
 </div>

@@ -28,3 +28,33 @@
 /home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.pdb
 /home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.genruntimeconfig.cache
 /home/tentri/Documents/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/ref/Suite de Gestion Isari.dll
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/appsettings.Development.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/appsettings.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/Suite de Gestion Isari.staticwebassets.runtime.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/Suite de Gestion Isari
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/Suite de Gestion Isari.deps.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/Suite de Gestion Isari.runtimeconfig.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/Suite de Gestion Isari.dll
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/bin/Debug/net8.0/Suite de Gestion Isari.pdb
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.GeneratedMSBuildEditorConfig.editorconfig
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.AssemblyInfoInputs.cache
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.AssemblyInfo.cs
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.csproj.CoreCompileInputs.cache
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.MvcApplicationPartsAssemblyInfo.cache
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.RazorAssemblyInfo.cache
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.RazorAssemblyInfo.cs
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets.build.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets.development.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets/msbuild.Suite de Gestion Isari.Microsoft.AspNetCore.StaticWebAssets.props
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets/msbuild.build.Suite de Gestion Isari.props
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.Suite de Gestion Isari.props
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.Suite de Gestion Isari.props
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/staticwebassets.pack.json
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/scopedcss/Views/Shared/_Layout.cshtml.rz.scp.css
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/scopedcss/bundle/Suite de Gestion Isari.styles.css
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/scopedcss/projectbundle/Suite de Gestion Isari.bundle.scp.css
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.dll
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/refint/Suite de Gestion Isari.dll
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.pdb
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/Suite de Gestion Isari.genruntimeconfig.cache
+/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/obj/Debug/net8.0/ref/Suite de Gestion Isari.dll

@@ -11,13 +11,15 @@ public class InventarioController : Controller
         return View();
     }
 
-    public IActionResult Eliminar()
+    public IActionResult Eliminar(int id)
     {
+        ViewBag.id = id;
         return View();
     }
 
-    public IActionResult Editar()
+    public IActionResult Editar(int id)
     {
+        ViewBag.id = id;
         return View();
     }
 
