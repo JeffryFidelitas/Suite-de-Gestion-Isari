@@ -30,7 +30,15 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
         
+        public IActionResult SolicitarVacaciones()
+        {
+            return View();
+        }
 
+        public IActionResult RegistrarTardia()
+        {
+            return View();
+        }
 
     }
 }

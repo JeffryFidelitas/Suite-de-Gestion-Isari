@@ -74,17 +74,14 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Index">Lista Usuarios</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="SolicitarVacaciones">Solicitar Vacaciones</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="RegistrarTardia">Registrar Tardia</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Registro">Agregar Usuario</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownReporteria" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Reporteria
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownReporteria">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Reporteria" asp-action="ProductosMasVendidos">Productos más Vendidos</a></li>
-                            </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Reporteria" asp-action="Index">Reporteria</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a>
@@ -107,7 +104,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Suite de Gestión Isari - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <!--&copy; 2024 - Suite de Gestión Isari - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>-->
+            &copy; 2024 - Suite de Gestión Isari
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.js"></script>
