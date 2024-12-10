@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Reporte de Ventas Diarias";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Este reporte muestra las ventas diarias del supermercado.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Total de Ventas</th>
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var venta in Model)
+        {
+            <tr>
+                <td>@venta.Fecha</td>
+                <td>@venta.TotalVentas</td>
+                <td>
+                    <a href="@Url.Action("DescargarReporte", "Reporteria", new { tipo = "ventas_diarias" })" class="btn btn-primary">Descargar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
