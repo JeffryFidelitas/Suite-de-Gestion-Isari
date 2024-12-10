@@ -102,6 +102,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHVudG9WZW50YS9SZWdpc3Ryb1ZlbnRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Reporteria/ProductosMasVendidos.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0ZXJpYS9Qcm9kdWN0b3NNYXNWZW5kaWRvcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Reporteria/ReporteVentasDiarias.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUmVwb3J0ZXJpYS9SZXBvcnRlVmVudGFzRGlhcmlhcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/tentri/Documents/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
