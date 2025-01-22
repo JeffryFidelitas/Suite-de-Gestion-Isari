@@ -1,6 +1,10 @@
 USE [master]
 GO
 
+ CREATE DATABASE SuiteGestionIsari;
+
+ USE SuiteGestionIsari;
+
 /****** Object:  Database [WORKMANAGE]    Script Date: 15/12/2024 15:48:10 ******/
 CREATE DATABASE [WORKMANAGE]
  CONTAINMENT = NONE
