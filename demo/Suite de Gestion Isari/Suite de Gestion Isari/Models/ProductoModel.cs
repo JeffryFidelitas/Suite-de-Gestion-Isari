@@ -20,7 +20,7 @@ namespace Suite_de_Gestion_Isari.Models
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Execute("AgregarProducto", new { model.NOMBRE, model.DESCRIPCION, model.PRECIO, model.CANTIDAD_DISPONIBLE, model.ID_CATEGORIA, model.ID_PROVEEDOR});
+                var result = context.Execute("AgregarProducto", new { model.NOMBRE, model.DESCRIPCION, model.PROVEEDOR, model.PRECIO, model.CANTIDAD_DISPONIBLE, model.ID_CATEGORIA});
 
                 if (result > 0)
                 {
@@ -62,7 +62,7 @@ namespace Suite_de_Gestion_Isari.Models
             {
                 var filasAfectadas = context.Execute(
                     "ActualizarProducto",
-                    new { model.NOMBRE, model.DESCRIPCION, model.PRECIO, model.CANTIDAD_DISPONIBLE, model.ID_CATEGORIA, model.ID_PROVEEDOR}
+                    new { model.ID_PRODUCTO, model.NOMBRE, model.DESCRIPCION, model.PROVEEDOR, model.PRECIO, model.CANTIDAD_DISPONIBLE, model.ID_CATEGORIA}
                 );
 
                 return filasAfectadas > 0;
