@@ -379,3 +379,6 @@ obj/
 *.dll
 *.pdb
 *.cache
+
+demo/Suite\ de\ Gestion\ Isari/Suite\ de\ Gestion\ Isari/bin
+demo/Suite\ de\ Gestion\ Isari/Suite\ de\ Gestion\ Isari/obj
