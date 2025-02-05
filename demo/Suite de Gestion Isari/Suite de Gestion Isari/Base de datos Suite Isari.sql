@@ -282,3 +282,49 @@ BEGIN
 			WHERE ID_PRODUCTO=@ID_PRODUCTO;
     END
 END;
+
+-- --------------------------Agregar Categoría-------------------------
+CREATE PROCEDURE AgregarCategoria
+    @DESCRIPCION NVARCHAR(255)
+AS
+BEGIN   
+    IF NOT EXISTS (SELECT 1 FROM CATEGORIAS WHERE DESCRIPCION = @DESCRIPCION)
+    BEGIN        
+        INSERT INTO CATEGORIAS (DESCRIPCION)
+        VALUES (@DESCRIPCION);      
+    END 
+END;
+
+-- --------------------------Consultar Categorías-------------------------
+CREATE PROCEDURE ObtenerCategorias
+AS
+BEGIN
+    SELECT ID_CATEGORIA, DESCRIPCION
+    FROM CATEGORIAS;
+END;
+
+-- --------------------------Consultar Categoría Individual-------------------------
+CREATE PROCEDURE ConsultaCategoria
+    @ID_CATEGORIA INT
+AS
+BEGIN
+    SELECT ID_CATEGORIA, DESCRIPCION
+    FROM CATEGORIAS
+    WHERE ID_CATEGORIA = @ID_CATEGORIA;
+END;
+
+-- --------------------------Actualizar Categoría-------------------------
+CREATE PROCEDURE ActualizarCategoria
+    @ID_CATEGORIA INT,
+    @DESCRIPCION NVARCHAR(255)
+AS
+BEGIN    
+    IF NOT EXISTS (SELECT 1 FROM CATEGORIAS 
+                   WHERE DESCRIPCION = @DESCRIPCION 
+                   AND ID_CATEGORIA != @ID_CATEGORIA)
+    BEGIN       
+        UPDATE CATEGORIAS
+        SET DESCRIPCION = @DESCRIPCION
+        WHERE ID_CATEGORIA = @ID_CATEGORIA;
+    END
+END;
