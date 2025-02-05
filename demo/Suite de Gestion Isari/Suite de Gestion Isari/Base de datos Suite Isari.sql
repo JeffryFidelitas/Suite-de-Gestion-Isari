@@ -1,16 +1,7 @@
-USE [master]
-GO
-
- CREATE DATABASE SuiteGestionIsari;
-
- USE SuiteGestionIsari;
-
-
-CREATE SCHEMA dbo;
 
 
 CREATE TABLE SuiteGestionIsari.dbo.CATEGORIA_PRODUCTOS (
-	ID_CATEGORIA int NOT NULL,
+	ID_CATEGORIA int IDENTITY(1,1) NOT NULL,
 	DESCRIPCION nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	CONSTRAINT PK__CATEGORI__4BD51FA56F205036 PRIMARY KEY (ID_CATEGORIA)
 );
@@ -18,7 +9,7 @@ CREATE TABLE SuiteGestionIsari.dbo.CATEGORIA_PRODUCTOS (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.CLIENTES (
-	ID_CLIENTE int NOT NULL,
+	ID_CLIENTE int IDENTITY(1,1) NOT NULL,
 	NOMBRE nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	P_APELLIDO nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	S_APELLIDO nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -29,7 +20,7 @@ CREATE TABLE SuiteGestionIsari.dbo.CLIENTES (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.T_HORARIOS (
-	ID_HORARIO int NOT NULL,
+	ID_HORARIO int IDENTITY(1,1) NOT NULL,
 	DIA_SEMANA nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	HORA_ENTRADA time NOT NULL,
 	HORA_SALIDA time NOT NULL,
@@ -40,7 +31,7 @@ CREATE TABLE SuiteGestionIsari.dbo.T_HORARIOS (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.T_ROLES (
-	ID_ROL int NOT NULL,
+	ID_ROL int IDENTITY(1,1) NOT NULL,
 	DESCRIPCION nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	CONSTRAINT PK__T_ROLES__203B0F685B2887EE PRIMARY KEY (ID_ROL)
 );
@@ -49,7 +40,7 @@ CREATE TABLE SuiteGestionIsari.dbo.T_ROLES (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.T_PRODUCTOS (
-	ID_PRODUCTO int NOT NULL,
+	ID_PRODUCTO int IDENTITY(1,1) NOT NULL,
 	NOMBRE nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	DESCRIPCION nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	PROVEEDOR nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -63,7 +54,7 @@ CREATE TABLE SuiteGestionIsari.dbo.T_PRODUCTOS (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.FACTURA (
-	ID_FACTURA int NOT NULL,
+	ID_FACTURA int IDENTITY(1,1) NOT NULL,
 	FECHA_VENTA date NOT NULL,
 	ID_CLIENTE int NOT NULL,
 	ID_PRODUCTO int NOT NULL,
@@ -72,14 +63,14 @@ CREATE TABLE SuiteGestionIsari.dbo.FACTURA (
 	TOTAL decimal(10,2) NOT NULL,
 	CONSTRAINT PK__FACTURA__4A921BED092F219C PRIMARY KEY (ID_FACTURA),
 	CONSTRAINT FK__FACTURA__ID_CLIE__628FA481 FOREIGN KEY (ID_CLIENTE) REFERENCES SuiteGestionIsari.dbo.CLIENTES(ID_CLIENTE),
-	CONSTRAINT FK__FACTURA__ID_PROD__6383C8BA FOREIGN KEY (ID_PRODUCTO) REFERENCES SuiteGestionIsari.dbo.PRODUCTOS(ID_PRODUCTO)
+	CONSTRAINT FK__FACTURA__ID_PROD__6383C8BA FOREIGN KEY (ID_PRODUCTO) REFERENCES SuiteGestionIsari.dbo.T_PRODUCTOS(ID_PRODUCTO)
 );
 
 
 
 CREATE TABLE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES (
-	ID_SOLICITUD int NOT NULL,
-	ID_EMPLEADO bigint NOT NULL,
+	ID_SOLICITUD int IDENTITY(1,1) NOT NULL,
+	ID_EMPLEADO int NOT NULL,
 	FECHA_SOLICITUD date NOT NULL,
 	FECHA_FINAL date NOT NULL,
 	CANTIDAD_DIAS int NOT NULL,
@@ -90,7 +81,7 @@ CREATE TABLE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.T_EMPLEADOS (
-	ID_EMPLEADO bigint NOT NULL,
+	ID_EMPLEADO int IDENTITY(1,1) NOT NULL,
 	CEDULA nvarchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	NOMBRE nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	EMAIL nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
@@ -109,8 +100,8 @@ CREATE TABLE SuiteGestionIsari.dbo.T_EMPLEADOS (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.T_ERRORES (
-	ID_ERROR bigint NOT NULL,
-	ID_EMPLEADO bigint NOT NULL,
+	ID_ERROR bigint IDENTITY(1,1) NOT NULL,
+	ID_EMPLEADO int NOT NULL,
 	DESCRIPCION nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 	FECHA datetime NOT NULL,
 	CONSTRAINT PK__T_ERRORE__9046136AC6A55B3F PRIMARY KEY (ID_ERROR)
@@ -129,8 +120,8 @@ CREATE TABLE SuiteGestionIsari.dbo.T_POSICIONES (
 
 
 CREATE TABLE SuiteGestionIsari.dbo.T_VACACIONES (
-	ID_VACACION bigint NOT NULL,
-	ID_EMPLEADO bigint NOT NULL,
+	ID_VACACION int IDENTITY(1,1) NOT NULL,
+	ID_EMPLEADO int NOT NULL,
 	FECHA_INICIO date NOT NULL,
 	FECHA_FIN date NOT NULL,
 	DIAS_TOTALES int NOT NULL,
@@ -155,176 +146,199 @@ ALTER TABLE SuiteGestionIsari.dbo.T_VACACIONES ADD CONSTRAINT FK__T_VACACIO__ID_
 ------------------------------------------------------------------------------------------Inicio SP---------------------------------------------------------------------------------------------
 
 
---------------------------Agregar Puestos laborales-------------------------
-Create PROCEDURE AgregarPuesto
+-- -------------------------- Agregar Puesto -------------------------
+CREATE PROCEDURE AgregarPuesto
     @NOMBRE_POSICION NVARCHAR(255),
-    @Descripcion NVARCHAR(500) = NULL,
-    @Salario DECIMAL(18,2)
+    @DESCRIPCION NVARCHAR(500) = NULL,
+    @SALARIO DECIMAL(18,2) = 0
 AS
 BEGIN   
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM T_POSICIONES WHERE NOMBRE_POSICION = @NOMBRE_POSICION)
     BEGIN
-        
-        INSERT INTO T_Posiciones (NOMBRE_POSICION, DESCRIPCION, SALARIO)
-        VALUES (@NOMBRE_POSICION, @Descripcion, @Salario );      
+        BEGIN TRANSACTION;
+        INSERT INTO T_POSICIONES (NOMBRE_POSICION, DESCRIPCION, SALARIO)
+        VALUES (@NOMBRE_POSICION, @DESCRIPCION, @SALARIO);
+        COMMIT;
+        RETURN 1;
     END 
 END;
 
-
-
---------------------------Consulta Puestos laborales-------------------------
+-- -------------------------- Obtener Puestos -------------------------
 CREATE PROCEDURE ObtenerPuestos
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT ID_PUESTO, NOMBRE_POSICION, DESCRIPCION, SALARIO
-    FROM T_POSICIONES
-    
+    FROM T_POSICIONES;
 END;
 
-
-
--------------------------CONSULTA PUESTO INDIVIDUAL----------------------------
-
-Create PROCEDURE ConsultaPuesto
-
-@ID_PUESTO INT
+-- -------------------------- Consulta Puesto Individual -------------------------
+CREATE PROCEDURE ConsultaPuesto
+    @ID_PUESTO INT
 AS
 BEGIN
-
-  
-    SELECT ID_PUESTO,NOMBRE_POSICION, DESCRIPCION,SALARIO
-    FROM T_POSICIONES where ID_PUESTO=@ID_PUESTO;
+    SET NOCOUNT ON;
+    SELECT ID_PUESTO, NOMBRE_POSICION, DESCRIPCION, SALARIO
+    FROM T_POSICIONES
+    WHERE ID_PUESTO = @ID_PUESTO;
 END;
 
----------------------------Actualizar Puesto-----------------------------------
+-- -------------------------- Actualizar Puesto -------------------------
 CREATE PROCEDURE ActualizarPuesto
     @ID_PUESTO INT,
     @NOMBRE_POSICION NVARCHAR(255),
     @DESCRIPCION NVARCHAR(500),
     @SALARIO DECIMAL(18,2)
-    
 AS
 BEGIN
-	
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM T_POSICIONES 
-					WHERE (NOMBRE_POSICION = @NOMBRE_POSICION)
-					 AND ID_PUESTO != @ID_PUESTO)
-    BEGIN       
+                   WHERE NOMBRE_POSICION = @NOMBRE_POSICION
+                   AND ID_PUESTO != @ID_PUESTO)
+    BEGIN
+        BEGIN TRANSACTION;
         UPDATE T_POSICIONES
         SET 
             NOMBRE_POSICION = @NOMBRE_POSICION,
             DESCRIPCION = @DESCRIPCION,
-            SALARIO = @SALARIO 
-			WHERE ID_PUESTO=@ID_PUESTO;
+            SALARIO = @SALARIO
+        WHERE ID_PUESTO = @ID_PUESTO;
+        COMMIT;
+        RETURN 1;
     END
 END;
 
---------------------------Agregar Productos-------------------------
-Create PROCEDURE AgregarProducto
+-- -------------------------- Agregar Producto -------------------------
+CREATE PROCEDURE AgregarProducto
     @NOMBRE NVARCHAR(255),
     @DESCRIPCION NVARCHAR(500) = NULL,
-	@PROVEEDOR NVARCHAR(255),
+    @PROVEEDOR NVARCHAR(255),
     @PRECIO DECIMAL(18,2),
-	@CANTIDAD_DISPONIBLE INT,
-	@ID_CATEGORIA INT	
+    @CANTIDAD_DISPONIBLE INT,
+    @ID_CATEGORIA INT
 AS
 BEGIN   
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM T_PRODUCTOS WHERE NOMBRE = @NOMBRE)
     BEGIN
-        
-        INSERT INTO T_PRODUCTOS (NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORI)
-        VALUES (@NOMBRE, @DESCRIPCION, @PROVEEDOR, @PRECIO, @CANTIDAD_DISPONIBLE, @ID_CATEGORIA);      
+        BEGIN TRANSACTION;
+        INSERT INTO T_PRODUCTOS (NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA)
+        VALUES (@NOMBRE, @DESCRIPCION, @PROVEEDOR, @PRECIO, @CANTIDAD_DISPONIBLE, @ID_CATEGORIA);
+        COMMIT;
+        RETURN 1;
     END 
 END;
 
---------------------------Consultar Productos-------------------------
+-- -------------------------- Obtener Productos -------------------------
 CREATE PROCEDURE ObtenerProductos
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA
-    FROM T_PRODUCTOS
+    FROM T_PRODUCTOS;
 END;
 
---------------------------Consultar Producto Individual-------------------------
-Create PROCEDURE ConsultaProducto
-
-@ID_PRODUCTO INT
+-- -------------------------- Consulta Producto Individual -------------------------
+CREATE PROCEDURE ConsultaProducto
+    @ID_PRODUCTO INT
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA
-    FROM T_PRODUCTOS where ID_PRODUCTO=@ID_PRODUCTO;
+    FROM T_PRODUCTOS
+    WHERE ID_PRODUCTO = @ID_PRODUCTO;
 END;
 
---------------------------Actualizar Producto-------------------------
+-- -------------------------- Actualizar Producto -------------------------
 CREATE PROCEDURE ActualizarProducto
     @ID_PRODUCTO INT,
     @NOMBRE NVARCHAR(255),
     @DESCRIPCION NVARCHAR(500),
     @PROVEEDOR NVARCHAR(500),
-	@PRECIO DECIMAL(18,2),
-	@CANTIDAD_DISPONIBLE INT,
-	@ID_CATEGORIA INT
+    @PRECIO DECIMAL(18,2),
+    @CANTIDAD_DISPONIBLE INT,
+    @ID_CATEGORIA INT
 AS
 BEGIN
-	
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM T_PRODUCTOS 
-					WHERE (NOMBRE = @NOMBRE)
-					 AND ID_PRODUCTO != @ID_PRODUCTO)
-    BEGIN       
+                   WHERE NOMBRE = @NOMBRE
+                   AND ID_PRODUCTO != @ID_PRODUCTO)
+    BEGIN
+        BEGIN TRANSACTION;
         UPDATE T_PRODUCTOS
         SET 
-            NOMBRE = @NOMBRE_POSICION,
+            NOMBRE = @NOMBRE,
             DESCRIPCION = @DESCRIPCION,
-			PROVEEDOR = @PROVEEDOR,
+            PROVEEDOR = @PROVEEDOR,
             PRECIO = @PRECIO,
-			CANTIDAD_DISPONIBLE = @CANTIDAD_DISPONIBLE,
-			ID_CATEGORIA = @ID_CATEGORIA
-			WHERE ID_PRODUCTO=@ID_PRODUCTO;
+            CANTIDAD_DISPONIBLE = @CANTIDAD_DISPONIBLE,
+            ID_CATEGORIA = @ID_CATEGORIA
+        WHERE ID_PRODUCTO = @ID_PRODUCTO;
+        COMMIT;
+        RETURN 1;
     END
 END;
 
--- --------------------------Agregar Categoría-------------------------
+-- -------------------------- Agregar Categoría -------------------------
 CREATE PROCEDURE AgregarCategoria
     @DESCRIPCION NVARCHAR(255)
 AS
 BEGIN   
-    IF NOT EXISTS (SELECT 1 FROM CATEGORIAS WHERE DESCRIPCION = @DESCRIPCION)
-    BEGIN        
-        INSERT INTO CATEGORIAS (DESCRIPCION)
-        VALUES (@DESCRIPCION);      
+    SET NOCOUNT ON;
+
+    IF NOT EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS WHERE DESCRIPCION = @DESCRIPCION)
+    BEGIN
+        BEGIN TRANSACTION;
+        INSERT INTO CATEGORIA_PRODUCTOS (DESCRIPCION)
+        VALUES (@DESCRIPCION);
+        COMMIT;
+        RETURN 1;
     END 
 END;
 
--- --------------------------Consultar Categorías-------------------------
+-- -------------------------- Obtener Categorías -------------------------
 CREATE PROCEDURE ObtenerCategorias
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT ID_CATEGORIA, DESCRIPCION
-    FROM CATEGORIAS;
+    FROM CATEGORIA_PRODUCTOS;
 END;
 
--- --------------------------Consultar Categoría Individual-------------------------
+-- -------------------------- Consulta Categoría Individual -------------------------
 CREATE PROCEDURE ConsultaCategoria
     @ID_CATEGORIA INT
 AS
 BEGIN
+    SET NOCOUNT ON;
     SELECT ID_CATEGORIA, DESCRIPCION
-    FROM CATEGORIAS
+    FROM CATEGORIA_PRODUCTOS
     WHERE ID_CATEGORIA = @ID_CATEGORIA;
 END;
 
--- --------------------------Actualizar Categoría-------------------------
+-- -------------------------- Actualizar Categoría -------------------------
 CREATE PROCEDURE ActualizarCategoria
     @ID_CATEGORIA INT,
     @DESCRIPCION NVARCHAR(255)
 AS
-BEGIN    
+BEGIN
+    SET NOCOUNT ON;
+
     IF NOT EXISTS (SELECT 1 FROM CATEGORIAS 
                    WHERE DESCRIPCION = @DESCRIPCION 
                    AND ID_CATEGORIA != @ID_CATEGORIA)
-    BEGIN       
-        UPDATE CATEGORIAS
+    BEGIN
+        BEGIN TRANSACTION;
+        UPDATE CATEGORIA_PRODUCTOS
         SET DESCRIPCION = @DESCRIPCION
         WHERE ID_CATEGORIA = @ID_CATEGORIA;
+        COMMIT;
+        RETURN 1;
     END
 END;

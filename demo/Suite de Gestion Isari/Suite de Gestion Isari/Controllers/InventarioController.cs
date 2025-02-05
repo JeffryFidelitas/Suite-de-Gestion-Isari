@@ -8,10 +8,12 @@ namespace Suite_de_Gestion_Isari.Controllers;
 public class InventarioController : Controller
 {
     private readonly ProductoModel _productoModel;
+    private readonly CategoriaModel _categoriaModel;
 
     public InventarioController(IConfiguration configuration)
     {
         _productoModel = new ProductoModel(configuration);
+        _categoriaModel = new CategoriaModel(configuration);
     }
 
     public IActionResult Index()
@@ -34,6 +36,7 @@ public class InventarioController : Controller
     [HttpGet]
     public IActionResult Agregar()
     {
+        ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
         return View();
     }
 
@@ -42,6 +45,7 @@ public class InventarioController : Controller
     {
         if (!ModelState.IsValid)
         {
+            ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
             return View(model);
         }
 
@@ -53,6 +57,7 @@ public class InventarioController : Controller
         }
         else
         {
+            ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
             ViewBag.ErrorMessage = respuesta.Mensaje;
             return View(model);
         }
