@@ -361,3 +361,24 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Ignorar carpetas de compilación
+bin/
+obj/
+
+# Ignorar archivos de usuario
+*.user
+*.rsuser
+*.suo
+
+# Ignorar archivos de configuración local
+*.vs/
+.vscode/
+
+# Ignorar resultados de la depuración
+*.dll
+*.pdb
+*.cache
+
+demo/Suite\ de\ Gestion\ Isari/Suite\ de\ Gestion\ Isari/bin
+demo/Suite\ de\ Gestion\ Isari/Suite\ de\ Gestion\ Isari/obj
