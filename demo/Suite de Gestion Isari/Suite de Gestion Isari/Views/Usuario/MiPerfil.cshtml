@@ -1,0 +1,32 @@
+@model Suite_de_Gestion_Isari.Entidades.Empleado
+@{
+    ViewData["Title"] = "Mi Perfil";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Mi Perfil</h1>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger text-center">@ViewBag.ErrorMessage</div>
+    }
+    else
+    {
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h5 class="card-title text-primary">@Model.NOMBRE</h5>
+                <hr>
+                <p><strong>Cédula:</strong> @Model.CEDULA</p>
+                <p><strong>Correo Electrónico:</strong> @Model.EMAIL</p>
+                <p><strong>Teléfono:</strong> @Model.TELEFONO</p>
+                <p><strong>Puesto:</strong> @Model.NOMBRE_POSICION</p>
+                <p><strong>Fecha de Nacimiento:</strong> @Model.FECHA_CONTRATACION</p>
+            </div>
+        </div>
+    }
+
+    <div class="mt-4 text-center">
+        <a class="btn btn-primary" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Información</a>
+        <a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Volver al Inicio</a>
+    </div>
+</div>
