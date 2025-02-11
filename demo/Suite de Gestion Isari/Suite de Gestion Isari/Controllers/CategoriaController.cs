@@ -42,7 +42,11 @@ namespace Suite_de_Gestion_Isari.Controllers
                 return RedirectToAction("Index");
             }
             else
+            {
+                ViewBag.ErrorMessage = respuesta.Mensaje;
                 return View(model);
+            }
+                
         }
 
     }

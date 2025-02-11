@@ -40,7 +40,7 @@
         <div class="form-group mb-3">
             <label asp-for="ID_CATEGORIA"></label>
             <select asp-for="ID_CATEGORIA" class="form-control">
-                @if (categorias.Count() > 0)
+                @if (categorias != null && categorias.Count() > 0)
                 {
                     @foreach(var categoria in categorias)
                     {
