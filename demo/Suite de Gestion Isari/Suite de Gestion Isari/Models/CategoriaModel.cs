@@ -20,9 +20,9 @@ namespace Suite_de_Gestion_Isari.Models
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Execute("AgregarCategoria", new { model.DESCRIPCION });
+                var result = context.Query<int>("AgregarCategoria", new { model.DESCRIPCION }).FirstOrDefault();
 
-                if (result > 0)
+                if (result == 0)
                 {
                     respuesta.Codigo = 0;
                     respuesta.Mensaje = "Categoria agregada exitosamente.";
