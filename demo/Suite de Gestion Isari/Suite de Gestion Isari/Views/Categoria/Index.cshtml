@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Categorias>
+
+@{
     ViewData["Title"] = "Categorías";
 }
 
@@ -11,30 +13,32 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre de la Categoría</th>
-                <th scope="col">Descripción</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
                 <th scope="col">Acciones</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Alimentos</td>
-                <td>Productos comestibles como arroz, azúcar, etc.</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="Editar" asp-route-id="1">Editar</a>
-                </td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Limpieza</td>
-                <td>Productos de limpieza como detergentes y desinfectantes.</td>
-                <td>
-                    <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="Editar" asp-route-id="2">Editar</a>
-                </td>
-            </tr>
-            
+            @if (Model != null && Model.Any())
+            {
+                foreach (var categoria in Model)
+                {
+                    <tr>
+                        <td>@categoria.ID_CATEGORIA</td>
+                        <td>@categoria.DESCRIPCION</td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="Editar" asp-route-id="1">Editar</a>
+                            <a class="btn btn-danger" role="button" asp-controller="Inventario" asp-action="Eliminar" asp-route-id="1">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">No hay categorias registradas</td>
+                </tr>
+            }
         </tbody>
     </table>
 </div>
