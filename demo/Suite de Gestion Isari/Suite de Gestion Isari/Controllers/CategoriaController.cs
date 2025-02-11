@@ -16,7 +16,7 @@ namespace Suite_de_Gestion_Isari.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_categoriaModel.ObtenerCategorias());
         }
         public IActionResult Editar()
         {

@@ -18,7 +18,7 @@ public class InventarioController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        return View(_productoModel.ObtenerProductos());
     }
 
     public IActionResult Eliminar(int id)
