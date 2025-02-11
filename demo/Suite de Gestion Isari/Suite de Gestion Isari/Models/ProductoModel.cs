@@ -1,3 +1,4 @@
+using System.Data;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -20,7 +21,19 @@ namespace Suite_de_Gestion_Isari.Models
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Query<int>("AgregarProducto", new { model.NOMBRE, model.DESCRIPCION, model.PROVEEDOR, model.PRECIO, model.CANTIDAD_DISPONIBLE, model.ID_CATEGORIA }).FirstOrDefault();
+
+                var parametros = new DynamicParameters();
+                parametros.Add("@NOMBRE", model.NOMBRE);
+                parametros.Add("@DESCRIPCION", model.DESCRIPCION);
+                parametros.Add("@PROVEEDOR", model.PROVEEDOR);
+                parametros.Add("@PRECIO", model.PRECIO);
+                parametros.Add("@CANTIDAD_DISPONIBLE", model.CANTIDAD_DISPONIBLE);
+                parametros.Add("@ID_CATEGORIA", model.ID_CATEGORIA);
+                parametros.Add("@Resultado", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
+                context.Execute("AgregarProducto", parametros, commandType: CommandType.StoredProcedure);
+                int result = parametros.Get<int>("@Resultado");
+
                 if (result == 0)
                 {
                     respuesta.Codigo = 0;

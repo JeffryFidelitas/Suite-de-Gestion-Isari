@@ -1,3 +1,4 @@
+using System.Data;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -20,9 +21,13 @@ namespace Suite_de_Gestion_Isari.Models
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 var respuesta = new Respuesta();
-                var result = context.Query<int>("AgregarCategoria", new { model.DESCRIPCION }).FirstOrDefault();
+                var parametros = new DynamicParameters();
+                parametros.Add("@DESCRIPCION", model.DESCRIPCION);
+                parametros.Add("@Resultado", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+                context.Execute("AgregarCategoria", parametros, commandType: CommandType.StoredProcedure);
+                int result = parametros.Get<int>("@Resultado");
 
-                if (result == 0)
+                if (result > 0)
                 {
                     respuesta.Codigo = 0;
                     respuesta.Mensaje = "Categoria agregada exitosamente.";
