@@ -20,28 +20,28 @@ namespace Suite_de_Gestion_Isari.Models
 
 
         [HttpPost]
-        public Respuesta AgregarEmpleado(Empleado model)
+       public Respuesta AgregarEmpleado(Empleado model)
+{
+    using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+    {
+        var respuesta = new Respuesta();
+
+        var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.ID_ROL, model.ID_PUESTO, model.TELEFONO});
+
+        if (result > 0)
         {
-            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
-            {
-                var respuesta = new Respuesta();
-
-                var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.DESCRIPCION, model.NOMBRE_POSICION, model.TELEFONO });
-
-                if (result > 0)
-                {
-                    respuesta.Codigo = 0;
-                    respuesta.Mensaje = "Empleado agregado exitosamente.";
-                }
-                else
-                {
-                    respuesta.Codigo = -1;
-                    respuesta.Mensaje = "Ya existe el empleado, " + model.NOMBRE + ". Vuelva a intentarlo";
-                }
-
-                return respuesta;
-            }
+            respuesta.Codigo = 0;
+            respuesta.Mensaje = "Empleado agregado exitosamente.";
         }
+        else
+        {
+            respuesta.Codigo = -1;
+            respuesta.Mensaje = "Ya existe el empleado, " + model.NOMBRE + ". Vuelva a intentarlo";
+        }
+
+        return respuesta;
+    }
+}
 
         public List<Empleado> ConsultarEmpleados()
         {
