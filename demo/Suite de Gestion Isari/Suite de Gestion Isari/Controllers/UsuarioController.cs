@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Entidades;
 using Suite_de_Gestion_Isari.Models;
 
@@ -63,11 +63,53 @@ namespace Suite_de_Gestion_Isari.Controllers
         {
             return View();
         }
+        [HttpGet]
         public IActionResult ActualizarPerfil()
         {
             return View();
         }
-        
+
+        [HttpPost]
+        public IActionResult ActualizarPerfil(Empleado model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string mensaje;
+            var resultado = _usuario.ActualizarPerfil(model, out mensaje);
+
+            if (resultado)
+            {
+                TempData["SuccessMessage"] = mensaje;
+                return RedirectToAction("ConsultarEmpleados");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = mensaje;
+                return View(model);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult MiPerfil()
+        {
+            // Simulando obtención del ID del empleado (usando un valor fijo)
+            var idEmpleado = "1"; // Simulamos un ID de empleado (reemplazar por uno real si se desea)
+
+            string mensaje;
+            var empleado = _usuario.ObtenerPerfil(idEmpleado, out mensaje);
+
+            if (empleado == null)
+            {
+                ViewBag.ErrorMessage = mensaje;
+                return View();
+            }
+
+            return View(empleado);
+        }
+
         public IActionResult SolicitarVacaciones()
         {
             return View();
