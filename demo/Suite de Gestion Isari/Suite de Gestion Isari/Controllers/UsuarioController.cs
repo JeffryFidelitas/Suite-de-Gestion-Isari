@@ -6,7 +6,6 @@ namespace Suite_de_Gestion_Isari.Controllers
 {
     public class UsuarioController : Controller
     {
-
         private readonly UsuarioModel _usuario;
 
         public UsuarioController(IConfiguration configuration)
@@ -20,13 +19,11 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-
         [HttpPost]
         public IActionResult Agregar_Empleado(Empleado model)
         {
             if (!ModelState.IsValid)
             {
-
                 return View(model);
             }
 
@@ -34,13 +31,11 @@ namespace Suite_de_Gestion_Isari.Controllers
 
             if (respuesta.Codigo == 0)
             {
-
                 TempData["SuccessMessage"] = respuesta.Mensaje;
                 return RedirectToAction("ConsultarEmpleados");
             }
             else
             {
-
                 ViewBag.ErrorMessage = respuesta.Mensaje;
                 return View(model);
             }
@@ -53,7 +48,6 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View(empleados);
         }
 
-
         public IActionResult Editar()
         {
             return View();
@@ -63,6 +57,7 @@ namespace Suite_de_Gestion_Isari.Controllers
         {
             return View();
         }
+
         [HttpGet]
         public IActionResult ActualizarPerfil()
         {
@@ -120,5 +115,36 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
+        // NUEVO: Vista para solicitar recuperación de contraseña
+        [HttpGet]
+        public IActionResult RecuperarClave()
+        {
+            return View();
+        }
+
+        // NUEVO: Procesar solicitud de recuperación
+        [HttpPost]
+        public IActionResult RecuperarClave(string correo)
+        {
+            if (string.IsNullOrEmpty(correo))
+            {
+                ViewBag.ErrorMessage = "Ingrese un correo válido.";
+                return View();
+            }
+
+            string mensaje;
+            var resultado = _usuario.EnviarRecuperacion(correo, out mensaje);
+
+            if (resultado)
+            {
+                TempData["SuccessMessage"] = mensaje;
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = mensaje;
+                return View();
+            }
+        }
     }
 }

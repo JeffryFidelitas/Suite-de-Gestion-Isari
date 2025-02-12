@@ -2,7 +2,6 @@
 {
     public class Empleado
     {
-
         public string ID_EMPLEADO { get; set; } = string.Empty;
         public string CEDULA { get; set; } = string.Empty;
         public string NOMBRE { get; set; } = string.Empty;
@@ -13,6 +12,9 @@
         public string TELEFONO { get; set; } = string.Empty;
         public string ID_ROL { get; set; } = string.Empty;
         public string ID_PUESTO { get; set; } = string.Empty;
-       
+        public string DESCRIPCION { get; set; } = string.Empty;
+        public string NOMBRE_POSICION { get; set; } = string.Empty;
+        public string CONTRASENA_TEMPORAL { get; set; } = string.Empty;
+        public DateTime? VIGENCIA_CONTRASENA { get; set; } 
     }
 }

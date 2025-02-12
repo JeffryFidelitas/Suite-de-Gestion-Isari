@@ -391,3 +391,46 @@ BEGIN
 	FROM 
             T_EMPLEADOS
 END
+
+	-- RECUPERACIÓN DE CONTRASEÑA --
+
+ALTER TABLE T_EMPLEADOS
+ADD CONTRASENA_TEMPORAL BIT DEFAULT 0,
+    VIGENCIA_CONTRASENA DATETIME NULL;
+
+
+CREATE PROCEDURE RecuperarClave
+    @EMAIL NVARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NUEVA_CONTRASENA NVARCHAR(10)
+    DECLARE @ID_EMPLEADO INT
+
+    -- Verificar si el correo existe en la base de datos
+    SELECT @ID_EMPLEADO = ID_EMPLEADO 
+    FROM SuiteGestionIsari.dbo.T_EMPLEADOS
+    WHERE EMAIL = @EMAIL;
+
+    IF @ID_EMPLEADO IS NOT NULL
+    BEGIN
+        -- Generar una nueva contraseña temporal aleatoria
+        SET @NUEVA_CONTRASENA = 
+            LEFT(CONVERT(NVARCHAR(50), NEWID()), 10)
+
+        -- Actualizar la contraseña en la base de datos
+        UPDATE SuiteGestionIsari.dbo.T_EMPLEADOS
+        SET CONTRASENA = @NUEVA_CONTRASENA,
+            CONTRASENA_TEMPORAL = 1,
+            VIGENCIA_CONTRASENA = DATEADD(DAY, 1, GETDATE())
+        WHERE ID_EMPLEADO = @ID_EMPLEADO;
+
+        -- Retornar la nueva contraseña generada
+        SELECT 'Su nueva contraseña temporal es: ' + @NUEVA_CONTRASENA AS NUEVA_CONTRASENA;
+    END
+    ELSE
+    BEGIN
+        SELECT 'El correo ingresado no está registrado.' AS MENSAJE_ERROR;
+    END
+END;

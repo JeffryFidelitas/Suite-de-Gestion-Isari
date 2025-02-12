@@ -8,16 +8,12 @@ namespace Suite_de_Gestion_Isari.Models
 {
     public class UsuarioModel
     {
-
-
         private readonly IConfiguration _conf;
 
         public UsuarioModel(IConfiguration conf)
         {
             _conf = conf;
-
         }
-
 
         [HttpPost]
         public Respuesta AgregarEmpleado(Empleado model)
@@ -26,7 +22,16 @@ namespace Suite_de_Gestion_Isari.Models
             {
                 var respuesta = new Respuesta();
 
-                var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.DESCRIPCION, model.NOMBRE_POSICION, model.TELEFONO });
+                var result = context.Execute("CrearEmpleado", new
+                {
+                    model.CEDULA,
+                    model.NOMBRE,
+                    model.EMAIL,
+                    model.CONTRASENA,
+                    model.DESCRIPCION,
+                    model.NOMBRE_POSICION,
+                    model.TELEFONO
+                });
 
                 if (result > 0)
                 {
@@ -88,6 +93,7 @@ namespace Suite_de_Gestion_Isari.Models
                 }
             }
         }
+
         public Empleado ObtenerPerfil(string idEmpleado, out string mensaje)
         {
             mensaje = "";
@@ -123,5 +129,77 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
+        // NUEVO: Método para recuperar contraseña
+        public bool EnviarRecuperacion(string correo, out string mensaje)
+        {
+            mensaje = "";
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                var usuario = context.QueryFirstOrDefault<Empleado>(
+                    "SELECT * FROM Empleados WHERE EMAIL = @Correo",
+                    new { Correo = correo }
+                );
+
+                if (usuario == null)
+                {
+                    mensaje = "No se encontró un usuario con ese correo.";
+                    return false;
+                }
+
+                string nuevaContrasena = GenerarClaveTemporal();
+                usuario.CONTRASENA_TEMPORAL = nuevaContrasena;
+                usuario.VIGENCIA_CONTRASENA = DateTime.Now.AddMinutes(30);
+
+                var filasAfectadas = context.Execute(
+                    "UPDATE Empleados SET CONTRASENA_TEMPORAL = @ContrasenaTemporal, VIGENCIA_CONTRASENA = @Vigencia WHERE EMAIL = @Correo",
+                    new { ContrasenaTemporal = nuevaContrasena, Vigencia = usuario.VIGENCIA_CONTRASENA, Correo = correo }
+                );
+
+                if (filasAfectadas > 0)
+                {
+                    mensaje = "Se ha enviado un correo con la nueva contraseña temporal.";
+                    return true;
+                }
+
+                mensaje = "Error al generar la nueva contraseña.";
+                return false;
+            }
+        }
+
+        // NUEVO: Método para validar login con clave temporal
+        public Empleado ValidarUsuario(string correo, string contrasena)
+        {
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                var usuario = context.QueryFirstOrDefault<Empleado>(
+                    "SELECT * FROM Empleados WHERE EMAIL = @Correo",
+                    new { Correo = correo }
+                );
+
+                if (usuario == null)
+                    return null;
+
+                // Si la contraseña temporal está vigente, permite el acceso y actualiza la contraseña principal
+                if (!string.IsNullOrEmpty(usuario.CONTRASENA_TEMPORAL) && usuario.VIGENCIA_CONTRASENA > DateTime.Now)
+                {
+                    if (usuario.CONTRASENA_TEMPORAL == contrasena)
+                    {
+                        context.Execute(
+                            "UPDATE Empleados SET CONTRASENA = @NuevaContrasena, CONTRASENA_TEMPORAL = NULL, VIGENCIA_CONTRASENA = NULL WHERE EMAIL = @Correo",
+                            new { NuevaContrasena = usuario.CONTRASENA_TEMPORAL, Correo = correo }
+                        );
+                        return usuario;
+                    }
+                    return null;
+                }
+
+                return usuario.CONTRASENA == contrasena ? usuario : null;
+            }
+        }
+
+        private string GenerarClaveTemporal()
+        {
+            return Guid.NewGuid().ToString("N").Substring(0, 8);
+        }
     }
 }
