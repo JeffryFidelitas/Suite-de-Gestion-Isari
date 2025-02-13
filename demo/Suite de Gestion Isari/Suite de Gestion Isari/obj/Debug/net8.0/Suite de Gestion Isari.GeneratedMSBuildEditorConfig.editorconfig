@@ -56,8 +56,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Crear.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50YXJpb1xDcmVhci5jc2h0bWw=
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Agregar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50YXJpb1xBZ3JlZ2FyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Editar.cshtml]
@@ -92,14 +92,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXENvbnN1bHRhclBvc2ljaW9uZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/Editar.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXEVkaXRhci5jc2h0bWw=
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/Index.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXEluZGV4LmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/HistorialVentas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxIaXN0b3JpYWxWZW50YXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -128,8 +120,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBY3R1YWxpemFyUGVyZmlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Agregar_Empleado.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBZ3JlZ2FyX0VtcGxlYWRvLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/CambioContraseña.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDYW1iaW9Db250cmFzZcOxYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/ConsultarEmpleados.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDb25zdWx0YXJFbXBsZWFkb3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Editar.cshtml]
@@ -140,12 +140,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/RegistrarTardia.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3RyYXJUYXJkaWEuY3NodG1s
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/MiPerfil.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xNaVBlcmZpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Registro.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3Ryby5jc2h0bWw=
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/RegistrarTardia.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3RyYXJUYXJkaWEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/SolicitarVacaciones.cshtml]

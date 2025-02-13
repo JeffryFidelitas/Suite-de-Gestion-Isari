@@ -374,20 +374,54 @@ BEGIN
 
 END
 
-----------------Mostrar todos los mpleado------------------------------
-
-Create PROCEDURE ConsultarEmpleados
+---Consulta empleados----------
+Create PROCEDURE [dbo].[ConsultarEmpleados]
 AS
 BEGIN
 
 	SELECT
-	    ID_EMPLEADO,
+	    E.ID_EMPLEADO,
 		NOMBRE,
-	    Cedula,
-	    EMAIL,	
-	    ID_ROL,
-		ID_PUESTO,
-        TELEFONO     
+	    E.CEDULA,
+	    E.EMAIL,	
+	    E.ID_ROL,
+		E.ID_PUESTO,
+        E.TELEFONO,
+		P.NOMBRE_POSICION,
+		R.DESCRIPCION
 	FROM 
-            T_EMPLEADOS
+            T_EMPLEADOS E
+
+			INNER JOIN T_POSICIONES P
+			ON E.ID_PUESTO =P.ID_PUESTO
+			INNER JOIN T_ROLES R
+			ON E.ID_ROL =R.ID_ROL
+END
+
+
+---------Selec de roles en el sistema---------
+
+create procedure LeerRoles 
+
+as
+Begin
+
+select ID_ROL,DESCRIPCION FROM T_ROLES
+
+END
+
+
+
+--------------Login------------
+
+CREATE PROCEDURE IniciarSesion
+    @EMAIL NVARCHAR(255),
+    @CONTRASENA NVARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    SELECT ID_EMPLEADO, NOMBRE, EMAIL, ESTADO,ID_ROL,CONTRASENA_TEMPORAL,VIGENCIA_CONTRASENA
+    FROM T_EMPLEADOS
+    WHERE Email = @EMAIL AND Contrasena = @CONTRASENA AND ESTADO=1;
 END

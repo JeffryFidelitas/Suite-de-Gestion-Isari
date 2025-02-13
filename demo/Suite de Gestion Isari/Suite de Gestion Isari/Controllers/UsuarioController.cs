@@ -8,17 +8,34 @@ namespace Suite_de_Gestion_Isari.Controllers
     {
 
         private readonly UsuarioModel _usuario;
+        private readonly PuestoModel _puestoModel;
 
         public UsuarioController(IConfiguration configuration)
         {
             _usuario = new UsuarioModel(configuration);
+            _puestoModel = new PuestoModel(configuration);
         }
 
         [HttpGet]
-        public IActionResult Agregar_Empleado()
+        public IActionResult Agregar_Empleadoo()
         {
             return View();
         }
+
+
+        [HttpGet]
+        public IActionResult Agregar_Empleado()
+
+        {
+            var listaPuestos = _puestoModel.ObtenerPuestos(); 
+            ViewBag.Puestos = listaPuestos; 
+
+
+            var listarRoles = _usuario.ObtenerRoles(); 
+            ViewBag.Roles = listarRoles; 
+            return View();
+        }
+
 
 
         [HttpPost]
