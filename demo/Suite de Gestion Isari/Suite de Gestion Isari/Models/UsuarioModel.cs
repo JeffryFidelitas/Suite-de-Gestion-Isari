@@ -21,9 +21,9 @@ namespace Suite_de_Gestion_Isari.Models
 
         [HttpPost]
        public Respuesta AgregarEmpleado(Empleado model)
-{
-    using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
-    {
+        {
+        using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+        {
         var respuesta = new Respuesta();
 
         var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.ID_ROL, model.ID_PUESTO, model.TELEFONO});
@@ -40,8 +40,8 @@ namespace Suite_de_Gestion_Isari.Models
         }
 
         return respuesta;
-    }
-}
+        }
+        }
 
         public List<Empleado> ConsultarEmpleados()
         {
@@ -55,14 +55,14 @@ namespace Suite_de_Gestion_Isari.Models
         {
             mensaje = "";
 
-            // Validar que el correo y el teléfono no estén vacíos
+            
             if (string.IsNullOrWhiteSpace(model.EMAIL) || string.IsNullOrWhiteSpace(model.TELEFONO))
             {
                 mensaje = "El correo electrónico y el número de teléfono no pueden estar vacíos.";
                 return false;
             }
 
-            // Validar formato de correo electrónico
+            
             if (!Regex.IsMatch(model.EMAIL, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
                 mensaje = "El correo electrónico no tiene un formato válido.";
@@ -120,6 +120,15 @@ namespace Suite_de_Gestion_Isari.Models
             {
                 mensaje = "Ocurrió un error inesperado.";
                 return null;
+            }
+        }
+
+
+        public List<Empleado> ObtenerRoles()
+        {
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                return context.Query<Empleado>("LeerRoles").ToList();
             }
         }
 

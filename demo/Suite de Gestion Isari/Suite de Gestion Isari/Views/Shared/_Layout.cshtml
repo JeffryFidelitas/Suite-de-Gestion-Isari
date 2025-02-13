@@ -91,11 +91,25 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a>
                         </li>
+
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-danger text-white" asp-controller="Login" asp-action="Login">Cerrar Sesión</a>
-                            </li>
+
+                            @if (Context.Session.GetString("UsuarioNombre") != null)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Bienvenido, @Context.Session.GetString("UsuarioNombre")
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                        <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSesion">Cerrar Sesión</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            
+
+
                         </ul>
+                        
                     </ul>
                 </div>
             </div>

@@ -13,8 +13,8 @@
             <th>Nombre</th>
             <th>Cedula</th>
             <th>EMAIL</th>
-            <th>ID_ROL</th>
-            <th>ID_PUESTO</th>
+            <th>ROL</th>
+            <th>PUESTO</th>
             <th>TELEFONO</th>
             <th>Acciones</th>
 
@@ -32,8 +32,8 @@
                     <td>@empleado.NOMBRE</td>
                     <td>@empleado.CEDULA</td>
                     <td>@empleado.EMAIL</td>
-                    <td>@empleado.ID_ROL</td>
-                    <td>@empleado.ID_PUESTO</td>
+                    <td>@empleado.DESCRIPCION</td>
+                    <td>@empleado.NOMBRE_POSICION</td>
                     <td>@empleado.TELEFONO</td>
                     <td>
                         <a href="@Url.Action("ActualizarPuesto","Puesto", new { ID = empleado.ID_EMPLEADO })" class="btn">
