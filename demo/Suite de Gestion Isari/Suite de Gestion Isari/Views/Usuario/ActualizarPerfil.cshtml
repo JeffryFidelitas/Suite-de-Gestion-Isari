@@ -4,13 +4,19 @@
     ViewData["Title"] = "Actualizar Perfil";
 }
 
+
+
 <div class="container mt-5">
     <h1 class="display-4 text-center mb-4">Actualizar Perfil</h1>
 
-    @if (ViewBag.ErrorMessage != null)
 
+    @if (ViewBag.Mensaje != null)
     {
-        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        <div class="alert alert-success">@ViewBag.Mensaje</div>
+    }
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
     }
 
     <form asp-controller="Usuario" asp-action="ActualizarPerfil" method="post">
@@ -20,10 +26,6 @@
             <input type="text" class="form-control" id="nombre" asp-for="NOMBRE" readonly>
         </div>
 
-        <div class="mb-3">
-            <label for="apellidos" class="form-label">Apellidos</label>
-            <input type="text" class="form-control" id="apellidos" readonly>
-        </div>
 
         <div class="mb-3">
             <label for="cedula" class="form-label">Cédula</label>
@@ -49,12 +51,12 @@
 
         <div class="mb-3">
             <label for="salario" class="form-label">Salario</label>
-            <input type="number" class="form-control" id="salario" readonly>
+            <input type="text" class="form-control" id="salario" asp-for="Salario" readonly>
         </div>
 
         <div class="mb-3">
-            <label for="fechaNacimiento" class="form-label">Fecha de Nacimiento</label>
-            <input type="date" class="form-control" id="fechaNacimiento" asp-for="FECHA_CONTRATACION" readonly>
+            <label for="fechaNacimiento" class="form-label">Fecha de Contratacion</label>
+            <input type="text" class="form-control" id="fechaNacimiento" asp-for="FECHA_CONTRATACION" readonly>
         </div>
 
         <div class="d-flex justify-content-between">
