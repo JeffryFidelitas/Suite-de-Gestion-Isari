@@ -425,3 +425,43 @@ BEGIN
     FROM T_EMPLEADOS
     WHERE Email = @EMAIL AND Contrasena = @CONTRASENA AND ESTADO=1;
 END
+
+----------ActualizarEmpleado------------
+-- Procedimiento para actualizar datos del usuario
+CREATE PROCEDURE ActualizarUsuario
+    @NOMBRE VARCHAR(100),
+    @EMAIL VARCHAR(100),
+    @TELEFONO VARCHAR(20),
+AS
+BEGIN
+    UPDATE T_EMPLEADOS
+    SET 
+        NOMBRE = @NOMBRE,
+        EMAIL = @EMAIL,
+        TELEFONO = @TELEFONO,
+    WHERE 
+        ID_EMPLEADO = @ID_EMPLEADO;
+END;
+
+
+--  Procedimiento para obtener datos del usuario
+CREATE PROCEDURE ObtenerUsuarioPorID
+    @ID_EMPLEADO INT
+AS
+BEGIN
+    SELECT 
+        E.ID_EMPLEADO, 
+        E.NOMBRE, 
+        E.EMAIL, 
+        E.CEDULA, 
+        E.TELEFONO, 
+        E.FECHA_CONTRATACION, 
+        P.NOMBRE_POSICION, 
+        P.SALARIO
+    FROM 
+        T_EMPLEADOS E
+    JOIN 
+        T_POSICIONES P ON E.ID_PUESTO = P.ID_PUESTO
+    WHERE 
+        E.ID_EMPLEADO = @ID_EMPLEADO;
+END;
