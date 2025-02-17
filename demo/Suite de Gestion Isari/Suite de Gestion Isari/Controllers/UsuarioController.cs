@@ -71,32 +71,49 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
 
-        public IActionResult Editar()
+        public IActionResult Editar(int id)
         {
-            return View();
+            var usuario = _usuario.ObtenerUsuarioPorID(id);
+        
+            if (usuario == null)
+            {
+                return RedirectToAction("ConsultarEmpledos");
+            }
+        
+            ViewData["Roles"] = _usuario.ObtenerRoles();  
+                                                              
+        
+            return View(usuario);
         }
-
+        
+        [HttpPost]
+        public IActionResult Editar(Empleado model)
+        {
+            if (ModelState.IsValid)
+            {
+                _usuario.ActualizarEmpleado(model); 
+                return RedirectToAction("ConsultarEmpleados");  
+            }
+        
+            return View(model);  
+        }
+        
+        
         public IActionResult CambioContraseña()
         {
             return View();
         }
+        
+        
         [HttpGet]
         public IActionResult ActualizarPerfil()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult ActualizarPerfil()
-        {
-            // Obtener el ID del usuario desde la sesión
             string usuarioID = HttpContext.Session.GetString("UsuarioID");
             if (string.IsNullOrEmpty(usuarioID))
             {
                 return RedirectToAction("Login", "Login");
             }
         
-            // Obtener la información del usuario desde la base de datos
             var usuario = _usuario.ObtenerUsuarioPorID(int.Parse(usuarioID));
         
             return View(usuario);
@@ -116,6 +133,20 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
         
             return View(model);
+        }
+        
+        [HttpGet]
+        public IActionResult MiPerfil()
+        {
+            string usuarioID = HttpContext.Session.GetString("UsuarioID");
+            if (string.IsNullOrEmpty(usuarioID))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        
+            var usuario = _usuario.ObtenerUsuarioPorID(int.Parse(usuarioID));
+        
+            return View(usuario);
         }
 
         public IActionResult SolicitarVacaciones()
