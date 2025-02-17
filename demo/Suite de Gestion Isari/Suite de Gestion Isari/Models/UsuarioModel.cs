@@ -67,7 +67,7 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-        public void ActualizarUsuario(Empleado model)
+            public void ActualizarUsuario(Empleado model)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
@@ -78,8 +78,30 @@ namespace Suite_de_Gestion_Isari.Models
                 );
             }
         }
-
-
+    
+        public void ActualizarEmpleado(Empleado model)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                context.Execute(
+                    "ActualizarEmpleado", 
+                    new
+                    {
+                        model.ID_EMPLEADO,
+                        model.NOMBRE,
+                        model.CEDULA,
+                        model.EMAIL,
+                        model.CONTRASENA,
+                        model.ID_ROL,
+                        model.ID_PUESTO,
+                        model.TELEFONO,
+                        model.ESTADO
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+    
         public List<Empleado> ObtenerRoles()
         {
             using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
@@ -87,6 +109,6 @@ namespace Suite_de_Gestion_Isari.Models
                 return context.Query<Empleado>("LeerRoles").ToList();
             }
         }
-
+    
     }
 }
