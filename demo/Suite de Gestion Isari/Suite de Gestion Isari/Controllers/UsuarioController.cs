@@ -86,45 +86,36 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult ActualizarPerfil()
+        {
+            // Obtener el ID del usuario desde la sesión
+            string usuarioID = HttpContext.Session.GetString("UsuarioID");
+            if (string.IsNullOrEmpty(usuarioID))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+        
+            // Obtener la información del usuario desde la base de datos
+            var usuario = _usuario.ObtenerUsuarioPorID(int.Parse(usuarioID));
+        
+            return View(usuario);
+        }
+        
         [HttpPost]
         public IActionResult ActualizarPerfil(Empleado model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
-            }
-
-            string mensaje;
-            var resultado = _usuario.ActualizarPerfil(model, out mensaje);
-
-            if (resultado)
-            {
-                TempData["SuccessMessage"] = mensaje;
-                return RedirectToAction("ConsultarEmpleados");
+                _usuario.ActualizarUsuario(model);
+                ViewBag.Mensaje = "Perfil actualizado correctamente";
             }
             else
             {
-                ViewBag.ErrorMessage = mensaje;
-                return View(model);
+                ViewBag.Error = "Error al actualizar el perfil.";
             }
-        }
-
-        [HttpGet]
-        public IActionResult MiPerfil()
-        {
-            // Simulando obtención del ID del empleado (usando un valor fijo)
-            var idEmpleado = "1"; // Simulamos un ID de empleado (reemplazar por uno real si se desea)
-
-            string mensaje;
-            var empleado = _usuario.ObtenerPerfil(idEmpleado, out mensaje);
-
-            if (empleado == null)
-            {
-                ViewBag.ErrorMessage = mensaje;
-                return View();
-            }
-
-            return View(empleado);
+        
+            return View(model);
         }
 
         public IActionResult SolicitarVacaciones()
