@@ -427,25 +427,26 @@ BEGIN
 END
 
 ----------ActualizarEmpleado------------
--- Procedimiento para actualizar datos del usuario
 CREATE PROCEDURE ActualizarUsuario
     @NOMBRE VARCHAR(100),
     @EMAIL VARCHAR(100),
     @TELEFONO VARCHAR(20),
+	@ID_EMPLEADO int
 AS
 BEGIN
     UPDATE T_EMPLEADOS
     SET 
         NOMBRE = @NOMBRE,
         EMAIL = @EMAIL,
-        TELEFONO = @TELEFONO,
+        TELEFONO = @TELEFONO
     WHERE 
         ID_EMPLEADO = @ID_EMPLEADO;
 END;
 
 
+
 --  Procedimiento para obtener datos del usuario
-CREATE PROCEDURE ObtenerUsuarioPorID
+create PROCEDURE ObtenerUsuarioPorID
     @ID_EMPLEADO INT
 AS
 BEGIN
@@ -455,36 +456,33 @@ BEGIN
         E.EMAIL, 
         E.CEDULA, 
         E.TELEFONO, 
-        E.FECHA_CONTRATACION, 
-        P.NOMBRE_POSICION, 
-        P.SALARIO
+        E.FECHA_CONTRATACION,  
+		R.ID_ROL,
+		P.ID_PUESTO
     FROM 
         T_EMPLEADOS E
     JOIN 
         T_POSICIONES P ON E.ID_PUESTO = P.ID_PUESTO
+		inner join 
+		T_ROLES R ON E.ID_ROL =R.ID_ROL
+
     WHERE 
         E.ID_EMPLEADO = @ID_EMPLEADO;
 END;
 
--------LeerRoles----------
-CREATE PROCEDURE LeerRoles
-AS
-BEGIN
-    SELECT ID_ROL, DESCRIPCION
-    FROM T_ROLES
-END
+
+
+
 
 ------ActualizarEmpleado--------
-CREATE PROCEDURE ActualizarEmpleado
+Create PROCEDURE ActualizarEmpleado
     @ID_EMPLEADO INT,
     @NOMBRE NVARCHAR(100),
     @CEDULA NVARCHAR(20),
     @EMAIL NVARCHAR(100),
-    @CONTRASENA NVARCHAR(100),
     @ID_ROL INT,
     @ID_PUESTO INT,
-    @TELEFONO NVARCHAR(50),
-    @ESTADO BIT
+    @TELEFONO NVARCHAR(50)
 AS
 BEGIN
     UPDATE T_EMPLEADOS
@@ -492,10 +490,35 @@ BEGIN
         NOMBRE = @NOMBRE,
         CEDULA = @CEDULA,
         EMAIL = @EMAIL,
-        CONTRASENA = @CONTRASENA,
         ID_ROL = @ID_ROL,
         ID_PUESTO = @ID_PUESTO,
-        TELEFONO = @TELEFONO,
-        ESTADO = @ESTADO
+        TELEFONO = @TELEFONO    
     WHERE ID_EMPLEADO = @ID_EMPLEADO;
 END
+
+
+----datos perfil logueado
+CREATE PROCEDURE ObtenerUsuariologueado
+    @ID_EMPLEADO INT
+AS
+BEGIN
+    SELECT 
+        E.ID_EMPLEADO, 
+        E.NOMBRE, 
+        E.EMAIL, 
+        E.CEDULA, 
+        E.TELEFONO, 
+        E.FECHA_CONTRATACION,  
+		P.NOMBRE_POSICION,
+		P.SALARIO
+    FROM 
+        T_EMPLEADOS E
+
+		INNER JOIN 
+        T_POSICIONES P ON E.ID_PUESTO = P.ID_PUESTO
+  
+		inner join 
+		T_ROLES R ON E.ID_ROL =R.ID_ROL
+    WHERE 
+        E.ID_EMPLEADO = @ID_EMPLEADO;
+END;
