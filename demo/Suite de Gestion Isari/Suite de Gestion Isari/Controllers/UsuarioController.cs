@@ -87,7 +87,7 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
         [HttpPost]
-        public IActionResult ActualizarPerfil(Empleado model)
+        /*public IActionResult ActualizarPerfil(Empleado model)
         {
             if (!ModelState.IsValid)
             {
@@ -107,9 +107,9 @@ namespace Suite_de_Gestion_Isari.Controllers
                 ViewBag.ErrorMessage = mensaje;
                 return View(model);
             }
-        }
+        }*/
 
-        [HttpGet]
+       /* [HttpGet]
         public IActionResult MiPerfil()
         {
             // Simulando obtención del ID del empleado (usando un valor fijo)
@@ -125,7 +125,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
 
             return View(empleado);
-        }
+        }*/
 
         public IActionResult SolicitarVacaciones()
         {

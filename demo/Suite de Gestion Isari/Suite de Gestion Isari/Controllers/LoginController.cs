@@ -39,9 +39,10 @@ namespace Suite_de_Gestion_Isari.Controllers
             {
                 
                   HttpContext.Session.SetString("UsuarioID", empleado!.ID_EMPLEADO.ToString()); 
-                HttpContext.Session.SetString("UsuarioNombre", empleado.NOMBRE);
+                  HttpContext.Session.SetString("UsuarioNombre", empleado.NOMBRE);
+                  HttpContext.Session.SetString("IdRol", empleado.ID_ROL.ToString());
 
-                
+
                 return RedirectToAction("Index", "Home");
             }
 
