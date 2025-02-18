@@ -16,23 +16,13 @@ namespace Suite_de_Gestion_Isari.Controllers
             _puestoModel = new PuestoModel(configuration);
         }
 
-        [HttpGet]
-        public IActionResult Agregar_Empleadoo()
-        {
-            return View();
-        }
 
 
         [HttpGet]
         public IActionResult Agregar_Empleado()
 
         {
-            var listaPuestos = _puestoModel.ObtenerPuestos(); 
-            ViewBag.Puestos = listaPuestos; 
-
-
-            var listarRoles = _usuario.ObtenerRoles(); 
-            ViewBag.Roles = listarRoles; 
+            CargarDatosCompartidos();
             return View();
         }
 
@@ -71,61 +61,100 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
 
-        public IActionResult Editar()
-        {
-            return View();
-        }
+
 
         public IActionResult CambioContraseña()
         {
             return View();
         }
+
         [HttpGet]
-        public IActionResult ActualizarPerfil()
+        public IActionResult Editar(int id)
         {
-            return View();
+            var usuario = _usuario.ObtenerUsuarioPorID(id);
+
+            if (usuario == null)
+            {
+                return RedirectToAction("ConsultarEmpledos");
+            }
+
+            CargarDatosCompartidos();
+
+
+            return View(usuario);
         }
 
         [HttpPost]
-        /*public IActionResult ActualizarPerfil(Empleado model)
+        public IActionResult Editar(Empleado model)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(model);
+                _usuario.ActualizarEmpleado(model);
+                return RedirectToAction("ConsultarEmpleados");
             }
 
-            string mensaje;
-            var resultado = _usuario.ActualizarPerfil(model, out mensaje);
+            return View(model);
+        }
 
-            if (resultado)
+
+        [HttpGet]
+        public IActionResult ActualizarPerfil()
+        {
+            string usuarioID = HttpContext.Session.GetString("UsuarioID");
+            if (string.IsNullOrEmpty(usuarioID))
             {
-                TempData["SuccessMessage"] = mensaje;
-                return RedirectToAction("ConsultarEmpleados");
+                return RedirectToAction("Login", "Login");
+            }
+            
+            var usuario = _usuario.ObtenerUsuariologueado(int.Parse(usuarioID));
+
+            
+
+            return View(usuario);
+        }
+
+
+        [HttpPost]
+        public IActionResult ActualizarPerfil(Empleado model)
+        {
+            if (ModelState.IsValid)
+            {
+                // Obtener el ID del usuario desde la sesión como string
+                string usuarioID = HttpContext.Session.GetString("UsuarioID");
+
+                if (!string.IsNullOrEmpty(usuarioID))
+                {
+                    model.ID_EMPLEADO = usuarioID;                   
+                    _usuario.ActualizarUsuario(model);
+                    ViewBag.Mensaje = "Perfil actualizado correctamente";
+                }
+                else
+                {
+                    ViewBag.Error = "No se ha encontrado un ID de usuario válido en la sesión.";
+                }
             }
             else
             {
-                ViewBag.ErrorMessage = mensaje;
-                return View(model);
+                ViewBag.Error = "Error al actualizar el perfil.";
             }
-        }*/
 
-       /* [HttpGet]
+            return View(model);
+        }
+
+
+        [HttpGet]
         public IActionResult MiPerfil()
         {
-            // Simulando obtención del ID del empleado (usando un valor fijo)
-            var idEmpleado = "1"; // Simulamos un ID de empleado (reemplazar por uno real si se desea)
-
-            string mensaje;
-            var empleado = _usuario.ObtenerPerfil(idEmpleado, out mensaje);
-
-            if (empleado == null)
+            string usuarioID = HttpContext.Session.GetString("UsuarioID");
+            if (string.IsNullOrEmpty(usuarioID))
             {
-                ViewBag.ErrorMessage = mensaje;
-                return View();
+                return RedirectToAction("Login", "Login");
             }
 
-            return View(empleado);
-        }*/
+            var usuario = _usuario.ObtenerUsuarioPorID(int.Parse(usuarioID));
+
+            return View(usuario);
+        }
 
         public IActionResult SolicitarVacaciones()
         {
@@ -135,6 +164,16 @@ namespace Suite_de_Gestion_Isari.Controllers
         public IActionResult RegistrarTardia()
         {
             return View();
+        }
+
+
+        private void CargarDatosCompartidos()
+        {
+            var listaPuestos = _puestoModel.ObtenerPuestos();
+            ViewBag.Puestos = listaPuestos;
+
+            var listarRoles = _usuario.ObtenerRoles();
+            ViewBag.Roles = listarRoles;
         }
 
     }

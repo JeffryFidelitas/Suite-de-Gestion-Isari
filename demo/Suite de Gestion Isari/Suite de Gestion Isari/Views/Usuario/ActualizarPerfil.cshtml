@@ -19,7 +19,7 @@
         <div class="alert alert-danger">@ViewBag.Error</div>
     }
 
-    <form asp-controller="Usuario" asp-action="ActualizarPerfil" method="post">
+    <form asp-controller="Usuario" asp-action="ActualizarPerfil">
 
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre</label>
@@ -46,7 +46,7 @@
 
         <div class="mb-3">
             <label for="puesto" class="form-label">Puesto</label>
-            <input type="text" class="form-control" id="puesto" asp-for="NOMBRE_POSICION" readonly>
+            <input type="text" class="form-control" asp-for="NOMBRE_POSICION" readonly>
         </div>
 
         <div class="mb-3">
@@ -61,8 +61,10 @@
 
         <div class="d-flex justify-content-between">
             <a class="btn btn-secondary" role="button" asp-controller="Usuario" asp-action="Index">Volver</a>
-            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
+           
         </div>
+        <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Guardar Informacion">
     </form>
 </div>
 
