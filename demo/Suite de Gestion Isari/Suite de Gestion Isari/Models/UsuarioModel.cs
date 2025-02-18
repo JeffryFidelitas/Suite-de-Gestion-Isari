@@ -30,7 +30,7 @@ namespace Suite_de_Gestion_Isari.Models
         {
         var respuesta = new Respuesta();
 
-        var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.ID_ROL, model.ID_PUESTO, model.TELEFONO});
+        var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.TELEFONO, model.ID_ROL, model.ID_PUESTO });
 
         if (result > 0)
         {
@@ -67,7 +67,19 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-            public void ActualizarUsuario(Empleado model)
+        public Empleado ObtenerUsuariologueado(int id)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                return context.QueryFirstOrDefault<Empleado>(
+                    "ObtenerUsuariologueado",
+                    new { ID_EMPLEADO = id },
+                    commandType: CommandType.StoredProcedure
+                ) ?? new Empleado();
+            }
+        }
+
+        public void ActualizarUsuario(Empleado model)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
@@ -78,30 +90,31 @@ namespace Suite_de_Gestion_Isari.Models
                 );
             }
         }
-    
+
         public void ActualizarEmpleado(Empleado model)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 context.Execute(
-                    "ActualizarEmpleado", 
+                    "ActualizarEmpleado",
                     new
                     {
                         model.ID_EMPLEADO,
                         model.NOMBRE,
                         model.CEDULA,
                         model.EMAIL,
-                        model.CONTRASENA,
                         model.ID_ROL,
                         model.ID_PUESTO,
-                        model.TELEFONO,
-                        model.ESTADO
+                        model.TELEFONO
+                        
                     },
                     commandType: CommandType.StoredProcedure
                 );
             }
         }
-    
+
+
+
         public List<Empleado> ObtenerRoles()
         {
             using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
@@ -109,6 +122,6 @@ namespace Suite_de_Gestion_Isari.Models
                 return context.Query<Empleado>("LeerRoles").ToList();
             }
         }
-    
+
     }
 }
