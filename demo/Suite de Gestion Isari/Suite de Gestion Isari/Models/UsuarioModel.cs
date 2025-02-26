@@ -2,7 +2,11 @@ using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Suite_de_Gestion_Isari.Entidades;
+using System.Data;
 using System.Text.RegularExpressions;
+
+
+
 
 namespace Suite_de_Gestion_Isari.Models
 {
@@ -16,7 +20,7 @@ namespace Suite_de_Gestion_Isari.Models
         }
 
         [HttpPost]
-        public Respuesta AgregarEmpleado(Empleado model)
+       public Respuesta AgregarEmpleado(Empleado model)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
@@ -56,41 +60,39 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-        public bool ActualizarPerfil(Empleado model, out string mensaje)
+        public Empleado ObtenerUsuarioPorID(int id)
         {
-            mensaje = "";
-
-            // Validar que el correo y el teléfono no estén vacíos
-            if (string.IsNullOrWhiteSpace(model.EMAIL) || string.IsNullOrWhiteSpace(model.TELEFONO))
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
-                mensaje = "El correo electrónico y el número de teléfono no pueden estar vacíos.";
-                return false;
+                return context.QueryFirstOrDefault<Empleado>(
+                    "ObtenerUsuarioPorID",
+                    new { ID_EMPLEADO = id },
+                    commandType: CommandType.StoredProcedure
+                ) ?? new Empleado();
             }
+        }
 
-            // Validar formato de correo electrónico
-            if (!Regex.IsMatch(model.EMAIL, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        public Empleado ObtenerUsuariologueado(int id)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
-                mensaje = "El correo electrónico no tiene un formato válido.";
-                return false;
+                return context.QueryFirstOrDefault<Empleado>(
+                    "ObtenerUsuariologueado",
+                    new { ID_EMPLEADO = id },
+                    commandType: CommandType.StoredProcedure
+                ) ?? new Empleado();
             }
+        }
 
-            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+        public void ActualizarUsuario(Empleado model)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
-                var filasAfectadas = context.Execute(
-                    "ActualizarPerfil",
-                    new { model.ID_EMPLEADO, model.EMAIL, model.TELEFONO }
+                context.Execute(
+                    "ActualizarUsuario",
+                    new { model.ID_EMPLEADO, model.NOMBRE, model.EMAIL, model.TELEFONO },
+                    commandType: CommandType.StoredProcedure
                 );
-
-                if (filasAfectadas > 0)
-                {
-                    mensaje = "Perfil actualizado correctamente.";
-                    return true;
-                }
-                else
-                {
-                    mensaje = "Error al actualizar el perfil. Intente nuevamente.";
-                    return false;
-                }
             }
         }
 
@@ -126,6 +128,38 @@ namespace Suite_de_Gestion_Isari.Models
             {
                 mensaje = "Ocurrió un error inesperado.";
                 return null;
+            }
+        }
+
+        public void ActualizarEmpleado(Empleado model)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                context.Execute(
+                    "ActualizarEmpleado",
+                    new
+                    {
+                        model.ID_EMPLEADO,
+                        model.NOMBRE,
+                        model.CEDULA,
+                        model.EMAIL,
+                        model.ID_ROL,
+                        model.ID_PUESTO,
+                        model.TELEFONO
+                        
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
+
+
+        public List<Empleado> ObtenerRoles()
+        {
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                return context.Query<Empleado>("LeerRoles").ToList();
             }
         }
 

@@ -374,39 +374,41 @@ BEGIN
 
 END
 
-----------------Mostrar todos los mpleado------------------------------
-
-Create PROCEDURE ConsultarEmpleados
+---Consulta empleados----------
+Create PROCEDURE [dbo].[ConsultarEmpleados]
 AS
 BEGIN
 
 	SELECT
-	    ID_EMPLEADO,
+	    E.ID_EMPLEADO,
 		NOMBRE,
-	    Cedula,
-	    EMAIL,	
-	    ID_ROL,
-		ID_PUESTO,
-        TELEFONO     
+	    E.CEDULA,
+	    E.EMAIL,	
+	    E.ID_ROL,
+		E.ID_PUESTO,
+        E.TELEFONO,
+		P.NOMBRE_POSICION,
+		R.DESCRIPCION
 	FROM 
-            T_EMPLEADOS
+     T_EMPLEADOS E
+  INNER JOIN T_POSICIONES P
+			ON E.ID_PUESTO =P.ID_PUESTO
+			INNER JOIN T_ROLES R
+			ON E.ID_ROL =R.ID_ROL
 END
 
-	-- RECUPERACIÓN DE CONTRASEÑA --
-
+-- RECUPERACIÓN DE CONTRASEÑA --
 ALTER TABLE T_EMPLEADOS
 ADD CONTRASENA_TEMPORAL BIT DEFAULT 0,
     VIGENCIA_CONTRASENA DATETIME NULL;
-
 
 CREATE PROCEDURE RecuperarClave
     @EMAIL NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    DECLARE @NUEVA_CONTRASENA NVARCHAR(10)
-    DECLARE @ID_EMPLEADO INT
+    DECLARE @NUEVA_CONTRASENA NVARCHAR(10);
+    DECLARE @ID_EMPLEADO INT;
 
     -- Verificar si el correo existe en la base de datos
     SELECT @ID_EMPLEADO = ID_EMPLEADO 
@@ -416,8 +418,7 @@ BEGIN
     IF @ID_EMPLEADO IS NOT NULL
     BEGIN
         -- Generar una nueva contraseña temporal aleatoria
-        SET @NUEVA_CONTRASENA = 
-            LEFT(CONVERT(NVARCHAR(50), NEWID()), 10)
+        SET @NUEVA_CONTRASENA = LEFT(CONVERT(NVARCHAR(50), NEWID()), 10);
 
         -- Actualizar la contraseña en la base de datos
         UPDATE SuiteGestionIsari.dbo.T_EMPLEADOS
@@ -432,5 +433,116 @@ BEGIN
     ELSE
     BEGIN
         SELECT 'El correo ingresado no está registrado.' AS MENSAJE_ERROR;
-    END
+    END;
 END;
+
+--------- Selección de roles en el sistema ---------
+CREATE PROCEDURE LeerRoles 
+AS
+BEGIN
+    SELECT ID_ROL, DESCRIPCION FROM T_ROLES;
+END;
+
+-------------- Login ------------
+CREATE PROCEDURE IniciarSesion
+    @EMAIL NVARCHAR(255),
+    @CONTRASENA NVARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ID_EMPLEADO, NOMBRE, EMAIL, ESTADO, ID_ROL, CONTRASENA_TEMPORAL, VIGENCIA_CONTRASENA
+    FROM T_EMPLEADOS
+    WHERE EMAIL = @EMAIL AND CONTRASENA = @CONTRASENA AND ESTADO = 1;
+END;
+
+----------ActualizarEmpleado------------
+CREATE PROCEDURE ActualizarUsuario
+    @NOMBRE VARCHAR(100),
+    @EMAIL VARCHAR(100),
+    @TELEFONO VARCHAR(20),
+	@ID_EMPLEADO int
+AS
+BEGIN
+    UPDATE T_EMPLEADOS
+    SET 
+        NOMBRE = @NOMBRE,
+        EMAIL = @EMAIL,
+        TELEFONO = @TELEFONO
+    WHERE 
+        ID_EMPLEADO = @ID_EMPLEADO;
+END;
+
+--  Procedimiento para obtener datos del usuario
+create PROCEDURE ObtenerUsuarioPorID
+    @ID_EMPLEADO INT
+AS
+BEGIN
+    SELECT 
+        E.ID_EMPLEADO, 
+        E.NOMBRE, 
+        E.EMAIL, 
+        E.CEDULA, 
+        E.TELEFONO, 
+        E.FECHA_CONTRATACION,  
+		R.ID_ROL,
+		P.ID_PUESTO
+    FROM 
+        T_EMPLEADOS E
+    JOIN 
+        T_POSICIONES P ON E.ID_PUESTO = P.ID_PUESTO
+		inner join 
+		T_ROLES R ON E.ID_ROL =R.ID_ROL
+
+    WHERE 
+        E.ID_EMPLEADO = @ID_EMPLEADO;
+END;
+
+
+------ActualizarEmpleado--------
+Create PROCEDURE ActualizarEmpleado
+    @ID_EMPLEADO INT,
+    @NOMBRE NVARCHAR(100),
+    @CEDULA NVARCHAR(20),
+    @EMAIL NVARCHAR(100),
+    @ID_ROL INT,
+    @ID_PUESTO INT,
+    @TELEFONO NVARCHAR(50)
+AS
+BEGIN
+    UPDATE T_EMPLEADOS
+    SET 
+        NOMBRE = @NOMBRE,
+        CEDULA = @CEDULA,
+        EMAIL = @EMAIL,
+        ID_ROL = @ID_ROL,
+        ID_PUESTO = @ID_PUESTO,
+        TELEFONO = @TELEFONO    
+    WHERE ID_EMPLEADO = @ID_EMPLEADO;
+END;
+
+----datos perfil logueado
+CREATE PROCEDURE ObtenerUsuariologueado
+    @ID_EMPLEADO INT
+AS
+BEGIN
+    SELECT 
+        E.ID_EMPLEADO, 
+        E.NOMBRE, 
+        E.EMAIL, 
+        E.CEDULA, 
+        E.TELEFONO, 
+        E.FECHA_CONTRATACION,  
+		P.NOMBRE_POSICION,
+		P.SALARIO
+    FROM 
+        T_EMPLEADOS E
+
+		INNER JOIN 
+        T_POSICIONES P ON E.ID_PUESTO = P.ID_PUESTO
+  
+		inner join 
+		T_ROLES R ON E.ID_ROL =R.ID_ROL
+    WHERE 
+        E.ID_EMPLEADO = @ID_EMPLEADO;
+END;
+

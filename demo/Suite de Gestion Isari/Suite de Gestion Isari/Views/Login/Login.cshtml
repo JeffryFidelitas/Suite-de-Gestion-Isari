@@ -1,21 +1,34 @@
-﻿@{
+﻿@model Suite_de_Gestion_Isari.Entidades.Empleado
+@{
     Layout = "~/Views/Shared/Layout_Externo.cshtml";
 }
+
+
+
+
+ 
+
 
 <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="card p-4 shadow" style="width: 25rem;">
         <h1 class="display-6 text-center mb-4">Iniciar Sesión</h1>
-        <form>
+        @if (ViewData["Error"] != null)
+        {
+            <div class="alert alert-danger text-center">
+                @ViewData["Error"]
+            </div>
+        }
+        <form asp-action="IniciarSesion" asp-controller="Login">
             <div class="mb-3">
                 <label for="correo" class="form-label">Correo Electrónico</label>
-                <input type="email" class="form-control" id="correo" placeholder="Ingrese su correo">
+                <input type="email" asp-for="EMAIL" class="form-control" placeholder="Ingrese su correo" required>
             </div>
             <div class="mb-3">
                 <label for="precio" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="precio" placeholder="Ingrese su contraseña">
+                <input type="password" asp-for="CONTRASENA" class="form-control" placeholder="Ingrese su contraseña" required>
             </div>
             
-            <a class="btn btn-primary w-100" role="button" asp-controller="Home" asp-action="Index">Iniciar Sesión</a>
+            <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Iniciar Sesion">
         </form>
         <div class="text-center mt-3">
             <a class="text-decoration-none" asp-controller="Login" asp-action="OlvideContraseña">Olvidé mi contraseña</a>

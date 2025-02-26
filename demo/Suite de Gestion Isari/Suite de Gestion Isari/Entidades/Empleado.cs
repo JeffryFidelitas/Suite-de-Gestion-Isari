@@ -1,4 +1,4 @@
-﻿namespace Suite_de_Gestion_Isari.Entidades
+namespace Suite_de_Gestion_Isari.Entidades
 {
     public class Empleado
     {
