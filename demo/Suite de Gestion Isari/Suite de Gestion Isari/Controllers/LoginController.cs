@@ -9,11 +9,11 @@ namespace Suite_de_Gestion_Isari.Controllers
     public class LoginController : Controller
     {
 
-        private readonly LoginModel _login;
+        private readonly LoginModel _loginn;
 
-        public LoginController(IConfiguration configuration)
+        public LoginController(LoginModel loginn)
         {
-            _login = new LoginModel(configuration);
+            _loginn = loginn;
         }
 
         [HttpGet]
@@ -33,7 +33,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
 
             
-            var empleado = _login.IniciarSesion(model);
+            var empleado = _loginn.IniciarSesion(model);
 
             if (!string.IsNullOrEmpty(empleado.EMAIL))
             {
@@ -61,13 +61,36 @@ namespace Suite_de_Gestion_Isari.Controllers
             return RedirectToAction("Login", "Login");
         }
 
-
-        public ActionResult OlvideContraseña()
+        [HttpGet]
+        public ActionResult OlvideContrasena()
         {
             return View();
         }
 
-        
+
+        [HttpPost]
+        public IActionResult OlvideContrasena(Empleado model)
+        {
+            var respuesta = _loginn.OlvideContrasena(model.EMAIL);
+            if (respuesta.Codigo == 0)
+            {
+                // Redirige al login si el correo fue enviado correctamente
+                TempData["Mensaje"] = "Correo de recuperación enviado correctamente.";
+                return RedirectToAction("Login", "Login");
+            }
+            else
+            {
+                // Si hay algún error, muestra el mensaje
+                TempData["Mensaje"] = respuesta.Mensaje;
+                return View(model);
+            }
+        }
+
+
+
+
+
+
+
     }
 }
-
