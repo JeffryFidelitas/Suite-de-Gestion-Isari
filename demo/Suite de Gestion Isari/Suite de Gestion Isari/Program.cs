@@ -1,3 +1,5 @@
+sing Suite_de_Gestion_Isari.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers().AddJsonOptions(x => { x.JsonSerializerOptions.PropertyNamingPolicy = null; });
@@ -5,6 +7,8 @@ builder.Services.AddControllers().AddJsonOptions(x => { x.JsonSerializerOptions.
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
+builder.Services.AddScoped<LoginModel>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
