@@ -524,3 +524,41 @@ BEGIN
     WHERE 
         E.ID_EMPLEADO = @ID_EMPLEADO;
 END;
+
+
+
+--Metodo para recuperar contraseña----
+create PROCEDURE [dbo].[ActualizarContrasenna]
+	@ID_EMPLEADO			bigint,
+	@Contrasenna			varchar(255),
+	@UsaClaveTemp			bit,
+	@Vigencia				datetime
+AS
+BEGIN
+
+	UPDATE dbo.T_EMPLEADOS
+	   SET CONTRASENA = @Contrasenna,
+		   CONTRASENA_TEMPORAL = @UsaClaveTemp,
+		   VIGENCIA_CONTRASENA = @Vigencia
+	 WHERE ID_EMPLEADO = @ID_EMPLEADO
+	
+END
+
+--Metodo para validar usuario recuperar contraseña----
+create PROCEDURE [dbo].[ValidarUsuario]
+	@EMAIL	varchar(80)
+AS
+BEGIN
+	
+	SELECT	U.ID_EMPLEADO,
+			CEDULA,
+			Nombre,
+			EMAIL,
+			ESTADO,
+			U.ID_ROL,
+			R.DESCRIPCION
+	  FROM	dbo.T_EMPLEADOS U
+	  INNER JOIN dbo.T_ROLES R ON U.ID_ROL = R.ID_ROL
+	  WHERE	EMAIL = @EMAIL
+
+END

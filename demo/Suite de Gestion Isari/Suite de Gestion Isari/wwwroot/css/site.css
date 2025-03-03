@@ -31,3 +31,12 @@ body {
   justify-content: center;
   gap: 10px;
 }
+
+
+.navbar-brand {
+    color: #28a745; 
+}
+
+    .navbar-brand:hover {
+        color: #218838;
+    }
