@@ -9,7 +9,7 @@ namespace Suite_de_Gestion_Isari.Controllers
     public class LoginController : Controller
     {
 
-        private readonly LoginModel _loginn;
+        private readonly LoginModel _login;
 
         public LoginController(LoginModel loginn)
         {
@@ -33,7 +33,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
 
             
-            var empleado = _loginn.IniciarSesion(model);
+            var empleado = _login.IniciarSesion(model);
 
             if (!string.IsNullOrEmpty(empleado.EMAIL))
             {
@@ -71,7 +71,7 @@ namespace Suite_de_Gestion_Isari.Controllers
         [HttpPost]
         public IActionResult OlvideContrasena(Empleado model)
         {
-            var respuesta = _loginn.OlvideContrasena(model.EMAIL);
+            var respuesta = _login.OlvideContrasena(model.EMAIL);
             if (respuesta.Codigo == 0)
             {
                 // Redirige al login si el correo fue enviado correctamente
