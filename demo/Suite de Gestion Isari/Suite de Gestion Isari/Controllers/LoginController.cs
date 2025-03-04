@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Models;
 using Suite_de_Gestion_Isari.Entidades;
