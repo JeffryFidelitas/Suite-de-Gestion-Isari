@@ -388,41 +388,70 @@ BEGIN
 		P.NOMBRE_POSICION,
 		R.DESCRIPCION
 	FROM 
-            T_EMPLEADOS E
-
-			INNER JOIN T_POSICIONES P
+     T_EMPLEADOS E
+  INNER JOIN T_POSICIONES P
 			ON E.ID_PUESTO =P.ID_PUESTO
 			INNER JOIN T_ROLES R
 			ON E.ID_ROL =R.ID_ROL
 END
 
+-- RECUPERACIÓN DE CONTRASEÑA --
+ALTER TABLE T_EMPLEADOS
+ADD CONTRASENA_TEMPORAL BIT DEFAULT 0,
+    VIGENCIA_CONTRASENA DATETIME NULL;
 
----------Selec de roles en el sistema---------
+CREATE PROCEDURE RecuperarClave
+    @EMAIL NVARCHAR(255)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @NUEVA_CONTRASENA NVARCHAR(10);
+    DECLARE @ID_EMPLEADO INT;
 
-create procedure LeerRoles 
+    -- Verificar si el correo existe en la base de datos
+    SELECT @ID_EMPLEADO = ID_EMPLEADO 
+    FROM SuiteGestionIsari.dbo.T_EMPLEADOS
+    WHERE EMAIL = @EMAIL;
 
-as
-Begin
+    IF @ID_EMPLEADO IS NOT NULL
+    BEGIN
+        -- Generar una nueva contraseña temporal aleatoria
+        SET @NUEVA_CONTRASENA = LEFT(CONVERT(NVARCHAR(50), NEWID()), 10);
 
-select ID_ROL,DESCRIPCION FROM T_ROLES
+        -- Actualizar la contraseña en la base de datos
+        UPDATE SuiteGestionIsari.dbo.T_EMPLEADOS
+        SET CONTRASENA = @NUEVA_CONTRASENA,
+            CONTRASENA_TEMPORAL = 1,
+            VIGENCIA_CONTRASENA = DATEADD(DAY, 1, GETDATE())
+        WHERE ID_EMPLEADO = @ID_EMPLEADO;
 
-END
+        -- Retornar la nueva contraseña generada
+        SELECT 'Su nueva contraseña temporal es: ' + @NUEVA_CONTRASENA AS NUEVA_CONTRASENA;
+    END
+    ELSE
+    BEGIN
+        SELECT 'El correo ingresado no está registrado.' AS MENSAJE_ERROR;
+    END;
+END;
 
+--------- Selección de roles en el sistema ---------
+CREATE PROCEDURE LeerRoles 
+AS
+BEGIN
+    SELECT ID_ROL, DESCRIPCION FROM T_ROLES;
+END;
 
-
---------------Login------------
-
+-------------- Login ------------
 CREATE PROCEDURE IniciarSesion
     @EMAIL NVARCHAR(255),
     @CONTRASENA NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
-
-    SELECT ID_EMPLEADO, NOMBRE, EMAIL, ESTADO,ID_ROL,CONTRASENA_TEMPORAL,VIGENCIA_CONTRASENA
+    SELECT ID_EMPLEADO, NOMBRE, EMAIL, ESTADO, ID_ROL, CONTRASENA_TEMPORAL, VIGENCIA_CONTRASENA
     FROM T_EMPLEADOS
-    WHERE Email = @EMAIL AND Contrasena = @CONTRASENA AND ESTADO=1;
-END
+    WHERE EMAIL = @EMAIL AND CONTRASENA = @CONTRASENA AND ESTADO = 1;
+END;
 
 ----------ActualizarEmpleado------------
 -- Procedimiento para actualizar datos del usuario
@@ -442,8 +471,6 @@ BEGIN
     WHERE 
         ID_EMPLEADO = @ID_EMPLEADO;
 END;
-
-
 
 --  Procedimiento para obtener datos del usuario
 create PROCEDURE ObtenerUsuarioPorID
@@ -471,9 +498,6 @@ BEGIN
 END;
 
 
-
-
-
 ------ActualizarEmpleado--------
 Create PROCEDURE ActualizarEmpleado
     @ID_EMPLEADO INT,
@@ -494,8 +518,7 @@ BEGIN
         ID_PUESTO = @ID_PUESTO,
         TELEFONO = @TELEFONO    
     WHERE ID_EMPLEADO = @ID_EMPLEADO;
-END
-
+END;
 
 ----datos perfil logueado
 CREATE PROCEDURE ObtenerUsuariologueado
@@ -523,6 +546,7 @@ BEGIN
         E.ID_EMPLEADO = @ID_EMPLEADO;
 END;
 
+<<<<<<< HEAD
 
 
 --Metodo para recuperar contraseña----
@@ -560,3 +584,5 @@ BEGIN
 	  WHERE	EMAIL = @EMAIL
 
 END
+=======
+>>>>>>> 8ae54023dfeadcbde19b8a547547ebd06218889e

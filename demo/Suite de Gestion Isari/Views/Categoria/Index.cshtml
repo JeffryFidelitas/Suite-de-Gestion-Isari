@@ -1,0 +1,44 @@
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Categorias>
+
+@{
+    ViewData["Title"] = "Categorías";
+}
+
+<div class="container mt-5">
+    <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
+        <h1 class="display-4 flex-grow-1 text-center mb-4">Categorías</h1>
+        <a class="btn btn-primary" role="button" asp-controller="Categoria" asp-action="Agregar">Agregar</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var categoria in Model)
+                {
+                    <tr>
+                        <td>@categoria.ID_CATEGORIA</td>
+                        <td>@categoria.DESCRIPCION</td>
+                        <td>
+                            <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="Editar" asp-route-id="1">Editar</a>
+                            <a class="btn btn-danger" role="button" asp-controller="Inventario" asp-action="Eliminar" asp-route-id="1">Eliminar</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="3" class="text-center">No hay categorias registradas</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
