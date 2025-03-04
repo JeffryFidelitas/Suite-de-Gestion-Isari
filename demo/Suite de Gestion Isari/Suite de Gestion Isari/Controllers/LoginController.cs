@@ -1,26 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Net.Mail;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Models;
 using Suite_de_Gestion_Isari.Entidades;
+
 
 namespace Suite_de_Gestion_Isari.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly string _connectionString;
-        private readonly IConfiguration _configuration;
-        private readonly PasswordHasher<object> _passwordHasher;
-        private readonly LoginModel _login;
+
+        private readonly LoginModel _loginn;
 
         public LoginController(LoginModel loginn)
         {
@@ -33,10 +22,6 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-        public IActionResult OlvideContrasena()
-        {
-            return View("OlvideContrasena");
-        }
 
         [HttpPost]
         public IActionResult IniciarSesion(Empleado model)
@@ -48,7 +33,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
 
             
-            var empleado = _login.IniciarSesion(model);
+            var empleado = _loginn.IniciarSesion(model);
 
             if (!string.IsNullOrEmpty(empleado.EMAIL))
             {
@@ -86,7 +71,7 @@ namespace Suite_de_Gestion_Isari.Controllers
         [HttpPost]
         public IActionResult OlvideContrasena(Empleado model)
         {
-            var respuesta = _login.OlvideContrasena(model.EMAIL);
+            var respuesta = _loginn.OlvideContrasena(model.EMAIL);
             if (respuesta.Codigo == 0)
             {
                 // Redirige al login si el correo fue enviado correctamente
