@@ -1,33 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Net.Mail;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Models;
 using Suite_de_Gestion_Isari.Entidades;
+
 
 namespace Suite_de_Gestion_Isari.Controllers
 {
     public class LoginController : Controller
     {
-        private readonly string _connectionString;
-        private readonly IConfiguration _configuration;
-        private readonly PasswordHasher<object> _passwordHasher;
-        private readonly LoginModel _login;
 
-        public LoginController(IConfiguration configuration)
+        private readonly LoginModel _loginn;
+
+        public LoginController(LoginModel loginn)
         {
-            _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
-            _passwordHasher = new PasswordHasher<object>();
-            _login = new LoginModel(configuration);
+            _loginn = loginn;
         }
 
         [HttpGet]
@@ -36,10 +22,6 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-        public IActionResult OlvideContrasena()
-        {
-            return View("OlvideContrasena");
-        }
 
         [HttpPost]
         public IActionResult IniciarSesion(Empleado model)
@@ -51,7 +33,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
 
             
-            var empleado = _login.IniciarSesion(model);
+            var empleado = _loginn.IniciarSesion(model);
 
             if (!string.IsNullOrEmpty(empleado.EMAIL))
             {
@@ -79,156 +61,36 @@ namespace Suite_de_Gestion_Isari.Controllers
             return RedirectToAction("Login", "Login");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> OlvideContrasena(string correo)
+        [HttpGet]
+        public ActionResult OlvideContrasena()
         {
-            if (string.IsNullOrEmpty(correo))
-            {
-                ViewBag.Error = "Ingrese un correo válido.";
-                return View();
-            }
-
-            string userId = null;
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string query = "SELECT Id FROM Usuarios WHERE Email = @Email";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Email", correo);
-
-                await connection.OpenAsync();
-                var result = await command.ExecuteScalarAsync();
-                if (result != null)
-                    userId = result.ToString();
-            }
-
-            if (userId == null)
-            {
-                ViewBag.Error = "No se encontró un usuario con ese correo.";
-                return View();
-            }
-
-            string token = GenerarTokenSeguro();
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string insertQuery = "INSERT INTO TokensRecuperacion (UsuarioId, Token, Expiracion, Usado) VALUES (@UsuarioId, @Token, DATEADD(HOUR, 1, GETDATE()), 0)";
-                SqlCommand command = new SqlCommand(insertQuery, connection);
-                command.Parameters.AddWithValue("@UsuarioId", userId);
-                command.Parameters.AddWithValue("@Token", token);
-
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-            }
-
-            string resetLink = Url.Action("RestablecerContrasena", "Login", new { token = token }, Request.Scheme);
-            await EnviarCorreo(correo, resetLink);
-
-            ViewBag.Mensaje = "Se ha enviado un enlace de recuperación a tu correo.";
             return View();
         }
 
-        public IActionResult RestablecerContrasena(string token)
-        {
-            ViewBag.Token = token;
-            return View();
-        }
 
         [HttpPost]
-        public async Task<IActionResult> RestablecerContrasena(string token, string nuevaContrasena)
+        public IActionResult OlvideContrasena(Empleado model)
         {
-            if (string.IsNullOrEmpty(nuevaContrasena))
+            var respuesta = _loginn.OlvideContrasena(model.EMAIL);
+            if (respuesta.Codigo == 0)
             {
-                ViewBag.Error = "Ingrese una nueva contraseña.";
-                return View();
+                // Redirige al login si el correo fue enviado correctamente
+                TempData["Mensaje"] = "Correo de recuperación enviado correctamente.";
+                return RedirectToAction("Login", "Login");
             }
-
-            string userId = null;
-            using (SqlConnection connection = new SqlConnection(_connectionString))
+            else
             {
-                string query = "SELECT UsuarioId FROM TokensRecuperacion WHERE Token = @Token AND Expiracion > GETDATE() AND Usado = 0";
-                SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("@Token", token);
-
-                await connection.OpenAsync();
-                var result = await command.ExecuteScalarAsync();
-                if (result != null)
-                    userId = result.ToString();
-            }
-
-            if (userId == null)
-            {
-                ViewBag.Error = "El enlace ha expirado o es inválido.";
-                return View();
-            }
-
-            string contraseñaHasheada = _passwordHasher.HashPassword(null, nuevaContrasena);
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string updateQuery = "UPDATE Usuarios SET ContraseñaHash = @Password WHERE Id = @UsuarioId";
-                SqlCommand command = new SqlCommand(updateQuery, connection);
-                command.Parameters.AddWithValue("@Password", contraseñaHasheada);
-                command.Parameters.AddWithValue("@UsuarioId", userId);
-
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-            }
-
-            using (SqlConnection connection = new SqlConnection(_connectionString))
-            {
-                string deleteQuery = "UPDATE TokensRecuperacion SET Usado = 1 WHERE Token = @Token";
-                SqlCommand command = new SqlCommand(deleteQuery, connection);
-                command.Parameters.AddWithValue("@Token", token);
-
-                await connection.OpenAsync();
-                await command.ExecuteNonQueryAsync();
-            }
-
-            TempData["SuccessMessage"] = "Tu contraseña ha sido actualizada.";
-            return RedirectToAction("Login");
-        }
-
-        private async Task EnviarCorreo(string correo, string resetLink)
-        {
-            try
-            {
-                string smtpServer = _configuration["EmailSettings:SmtpServer"];
-                int smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
-                string emailSender = _configuration["EmailSettings:SenderEmail"];
-                string emailPassword = _configuration["EmailSettings:SenderPassword"];
-
-                using var smtpClient = new SmtpClient(smtpServer)
-                {
-                    Port = smtpPort,
-                    Credentials = new NetworkCredential(emailSender, emailPassword),
-                    EnableSsl = true
-                };
-
-                var mailMessage = new MailMessage
-                {
-                    From = new MailAddress(emailSender),
-                    Subject = "Recuperación de Contraseña",
-                    Body = $"Haz clic en el siguiente enlace para restablecer tu contraseña: <a href='{resetLink}'>Restablecer Contraseña</a>",
-                    IsBodyHtml = true
-                };
-                mailMessage.To.Add(correo);
-
-                await smtpClient.SendMailAsync(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Error = "No se pudo enviar el correo. Inténtelo más tarde.";
-                Console.WriteLine($"Error al enviar correo: {ex.Message}");
+                // Si hay algún error, muestra el mensaje
+                TempData["Mensaje"] = respuesta.Mensaje;
+                return View(model);
             }
         }
 
-        private string GenerarTokenSeguro()
-        {
-            using (var rng = new RNGCryptoServiceProvider())
-            {
-                byte[] tokenBytes = new byte[32];
-                rng.GetBytes(tokenBytes);
-                return Convert.ToBase64String(tokenBytes);
-            }
-        }
+
+
+
+
+
+
     }
 }
-

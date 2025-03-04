@@ -9,159 +9,165 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Suite_de_Gestion_Isari
 build_property.RootNamespace = Suite_de_Gestion_Isari
-build_property.ProjectDir = C:\Users\franc\Source\Repos\Suite-de-Gestion-Isari\demo\Suite de Gestion Isari\Suite de Gestion Isari\
+build_property.ProjectDir = C:\Users\Andy Madrigal\source\repos\Suite-de-Gestion-Isari\demo\Suite de Gestion Isari\Suite de Gestion Isari\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\franc\Source\Repos\Suite-de-Gestion-Isari\demo\Suite de Gestion Isari\Suite de Gestion Isari
+build_property.MSBuildProjectDirectory = C:\Users\Andy Madrigal\source\repos\Suite-de-Gestion-Isari\demo\Suite de Gestion Isari\Suite de Gestion Isari
 build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 8.0
+build_property.EnableCodeStyleSeverity = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Categoria/Agregar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Categoria/Agregar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhXEFncmVnYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Categoria/Editar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Categoria/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhXEVkaXRhci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Categoria/Index.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Categoria/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcmlhXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/Caja.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/Caja.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXENhamEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/RegistroCuentas.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/RegistroCuentas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXFJlZ2lzdHJvQ3VlbnRhcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ReportesFinancieros.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ReportesFinancieros.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXFJlcG9ydGVzRmluYW5jaWVyb3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ResumenDiario.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ResumenDiario.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXFJlc3VtZW5EaWFyaW8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Home/Index.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Home/Privacy.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Agregar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Agregar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50YXJpb1xBZ3JlZ2FyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Editar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50YXJpb1xFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Eliminar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Eliminar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50YXJpb1xFbGltaW5hci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Index.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Inventario/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW52ZW50YXJpb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Login/Login.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Login/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Login/OlvideContraseña.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Login/OlvideContrasena.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cT2x2aWRlQ29udHJhc2VuYS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Login/OlvideContraseña.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cT2x2aWRlQ29udHJhc2XDsWEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/ActualizarPuesto.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/ActualizarPuesto.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXEFjdHVhbGl6YXJQdWVzdG8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/Agregar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/Agregar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXEFncmVnYXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/ConsultarPosiciones.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Puesto/ConsultarPosiciones.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXENvbnN1bHRhclBvc2ljaW9uZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/HistorialVentas.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/HistorialVentas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxIaXN0b3JpYWxWZW50YXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroDevolucion.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroDevolucion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxSZWdpc3Ryb0Rldm9sdWNpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroVenta.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroVenta.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxSZWdpc3Ryb1ZlbnRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Reporteria/Index.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Reporteria/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0ZXJpYVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/Error.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/ActualizarPerfil.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/ActualizarPerfil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBY3R1YWxpemFyUGVyZmlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Agregar_Empleado.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Agregar_Empleado.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xBZ3JlZ2FyX0VtcGxlYWRvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/CambioContraseña.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/CambioContraseña.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDYW1iaW9Db250cmFzZcOxYS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/ConsultarEmpleados.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/ConsultarEmpleados.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xDb25zdWx0YXJFbXBsZWFkb3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Editar.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Editar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xFZGl0YXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Index.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/MiPerfil.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/MiPerfil.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xNaVBlcmZpbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/RegistrarTardia.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/RegistrarTardia.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xSZWdpc3RyYXJUYXJkaWEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/SolicitarVacaciones.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Usuario/SolicitarVacaciones.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXN1YXJpb1xTb2xpY2l0YXJWYWNhY2lvbmVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/_ViewImports.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/_ViewStart.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/Layout_Externo.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/Layout_Externo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dF9FeHRlcm5vLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = b-ivs35tbrfn
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/_Layout.cshtml]
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ajgicvrsda

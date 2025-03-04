@@ -1,6 +1,4 @@
-
-
-CREATE TABLE SuiteGestionIsari.dbo.CATEGORIA_PRODUCTOS (
+/*CREATE TABLE SuiteGestionIsari.dbo.CATEGORIA_PRODUCTOS (
 	ID_CATEGORIA int IDENTITY(1,1) NOT NULL,
 	DESCRIPCION nvarchar(255) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
 	CONSTRAINT PK__CATEGORI__4BD51FA56F205036 PRIMARY KEY (ID_CATEGORIA)
@@ -390,72 +388,45 @@ BEGIN
 		P.NOMBRE_POSICION,
 		R.DESCRIPCION
 	FROM 
-     T_EMPLEADOS E
-  INNER JOIN T_POSICIONES P
+            T_EMPLEADOS E
+
+			INNER JOIN T_POSICIONES P
 			ON E.ID_PUESTO =P.ID_PUESTO
 			INNER JOIN T_ROLES R
 			ON E.ID_ROL =R.ID_ROL
 END
 
--- RECUPERACIÓN DE CONTRASEÑA --
-ALTER TABLE T_EMPLEADOS
-ADD CONTRASENA_TEMPORAL BIT DEFAULT 0,
-    VIGENCIA_CONTRASENA DATETIME NULL;
 
-CREATE PROCEDURE RecuperarClave
-    @EMAIL NVARCHAR(255)
-AS
-BEGIN
-    SET NOCOUNT ON;
-    DECLARE @NUEVA_CONTRASENA NVARCHAR(10);
-    DECLARE @ID_EMPLEADO INT;
+---------Selec de roles en el sistema---------
 
-    -- Verificar si el correo existe en la base de datos
-    SELECT @ID_EMPLEADO = ID_EMPLEADO 
-    FROM SuiteGestionIsari.dbo.T_EMPLEADOS
-    WHERE EMAIL = @EMAIL;
+create procedure LeerRoles 
 
-    IF @ID_EMPLEADO IS NOT NULL
-    BEGIN
-        -- Generar una nueva contraseña temporal aleatoria
-        SET @NUEVA_CONTRASENA = LEFT(CONVERT(NVARCHAR(50), NEWID()), 10);
+as
+Begin
 
-        -- Actualizar la contraseña en la base de datos
-        UPDATE SuiteGestionIsari.dbo.T_EMPLEADOS
-        SET CONTRASENA = @NUEVA_CONTRASENA,
-            CONTRASENA_TEMPORAL = 1,
-            VIGENCIA_CONTRASENA = DATEADD(DAY, 1, GETDATE())
-        WHERE ID_EMPLEADO = @ID_EMPLEADO;
+select ID_ROL,DESCRIPCION FROM T_ROLES
 
-        -- Retornar la nueva contraseña generada
-        SELECT 'Su nueva contraseña temporal es: ' + @NUEVA_CONTRASENA AS NUEVA_CONTRASENA;
-    END
-    ELSE
-    BEGIN
-        SELECT 'El correo ingresado no está registrado.' AS MENSAJE_ERROR;
-    END;
-END;
+END
 
---------- Selección de roles en el sistema ---------
-CREATE PROCEDURE LeerRoles 
-AS
-BEGIN
-    SELECT ID_ROL, DESCRIPCION FROM T_ROLES;
-END;
 
--------------- Login ------------
+
+--------------Login------------
+
 CREATE PROCEDURE IniciarSesion
     @EMAIL NVARCHAR(255),
     @CONTRASENA NVARCHAR(255)
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT ID_EMPLEADO, NOMBRE, EMAIL, ESTADO, ID_ROL, CONTRASENA_TEMPORAL, VIGENCIA_CONTRASENA
+
+    SELECT ID_EMPLEADO, NOMBRE, EMAIL, ESTADO,ID_ROL,CONTRASENA_TEMPORAL,VIGENCIA_CONTRASENA
     FROM T_EMPLEADOS
-    WHERE EMAIL = @EMAIL AND CONTRASENA = @CONTRASENA AND ESTADO = 1;
-END;
+    WHERE Email = @EMAIL AND Contrasena = @CONTRASENA AND ESTADO=1;
+END
 
 ----------ActualizarEmpleado------------
+-- Procedimiento para actualizar datos del usuario
+-- Procedimiento para actualizar datos del usuario
 CREATE PROCEDURE ActualizarUsuario
     @NOMBRE VARCHAR(100),
     @EMAIL VARCHAR(100),
@@ -471,6 +442,8 @@ BEGIN
     WHERE 
         ID_EMPLEADO = @ID_EMPLEADO;
 END;
+
+
 
 --  Procedimiento para obtener datos del usuario
 create PROCEDURE ObtenerUsuarioPorID
@@ -498,6 +471,9 @@ BEGIN
 END;
 
 
+
+
+
 ------ActualizarEmpleado--------
 Create PROCEDURE ActualizarEmpleado
     @ID_EMPLEADO INT,
@@ -518,7 +494,8 @@ BEGIN
         ID_PUESTO = @ID_PUESTO,
         TELEFONO = @TELEFONO    
     WHERE ID_EMPLEADO = @ID_EMPLEADO;
-END;
+END
+
 
 ----datos perfil logueado
 CREATE PROCEDURE ObtenerUsuariologueado
@@ -546,3 +523,40 @@ BEGIN
         E.ID_EMPLEADO = @ID_EMPLEADO;
 END;
 
+
+
+--Metodo para recuperar contraseña----
+create PROCEDURE [dbo].[ActualizarContrasenna]
+	@ID_EMPLEADO			bigint,
+	@Contrasenna			varchar(255),
+	@UsaClaveTemp			bit,
+	@Vigencia				datetime
+AS
+BEGIN
+
+	UPDATE dbo.T_EMPLEADOS
+	   SET CONTRASENA = @Contrasenna,
+		   CONTRASENA_TEMPORAL = @UsaClaveTemp,
+		   VIGENCIA_CONTRASENA = @Vigencia
+	 WHERE ID_EMPLEADO = @ID_EMPLEADO
+	
+END
+
+--Metodo para validar usuario recuperar contraseña----
+create PROCEDURE [dbo].[ValidarUsuario]
+	@EMAIL	varchar(80)
+AS
+BEGIN
+	
+	SELECT	U.ID_EMPLEADO,
+			CEDULA,
+			Nombre,
+			EMAIL,
+			ESTADO,
+			U.ID_ROL,
+			R.DESCRIPCION
+	  FROM	dbo.T_EMPLEADOS U
+	  INNER JOIN dbo.T_ROLES R ON U.ID_ROL = R.ID_ROL
+	  WHERE	EMAIL = @EMAIL
+
+END
