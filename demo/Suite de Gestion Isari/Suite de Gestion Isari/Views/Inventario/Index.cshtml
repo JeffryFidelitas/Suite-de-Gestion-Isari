@@ -18,6 +18,7 @@
                 <th scope="col">Precio</th>
                 <th scope="col">Unidades</th>
                 <th scope="col">Acciones</th>
+                <th scope="col">COMPRA</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,15 @@
                             <a class="btn btn-warning" role="button" asp-controller="Inventario" asp-action="Editar" asp-route-id="1">Editar</a>
                             <a class="btn btn-danger" role="button" asp-controller="Inventario" asp-action="Eliminar" asp-route-id="1">Eliminar</a>
                         </td>
+                        <td>
+                            <a href="@Url.Action("PuntoVenta","RegistrarVenta", new { ID = producto.ID_PRODUCTO })" class="btn">
+                                <i class="bi bi-bi-pencil-square" style="font-size: 1.6em;"></i>
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <div class="col-6">
+                                <a onclick="ActualizarCarrito(@producto.ID_PRODUCTO);" class="btn btn-primary" style="width:100%">Actualizar</a>
+                            </div>
+                        </td>
                     </tr>
                 }
             }
@@ -46,3 +56,58 @@
         </tbody>
     </table>
 </div>
+
+
+<script>
+
+       function ActualizarCarrito(ID_PRODUCTO) {
+        //let cantidad = $("#" + ID_PRODUCTO).val();
+
+        $.ajax({
+            method: "POST",
+            url: "/PuntoVenta/RegistrarVenta", // Asegúrate de que este sea el nombre correcto del controlador y acción.
+            dataType: "json",
+           // contentType: "application/json",
+            data: {
+                "ID_PRODUCTO": ID_PRODUCTO
+                
+            },
+            success: function (data) {
+                if (data == 0) {
+                    MostrarMensajeOk("El producto se actualizó correctamente en su carrito");
+                } else {
+                    MostrarMensaje("El producto no fue actualizado en su carrito");
+                }
+            },
+            error: function () {
+                MostrarMensaje("Ocurrió un error al procesar la solicitud.");
+            }
+        });
+    }
+
+
+    function MostrarMensajeOk(texto)
+    {
+          Swal.fire({
+            title: "Información",
+            confirmButtonText: "Aceptar",
+            text: texto,
+            icon: "success"
+          }).then((result) => {
+
+            if (result.isConfirmed) {
+              window.location.href = "/Home/Inicio";
+            }
+          });
+    }
+
+    function MostrarMensaje(texto)
+    {
+        Swal.fire({
+          title: "Información",
+          text: texto,
+          icon: "info"
+        });
+    }
+
+</script>

@@ -20,5 +20,7 @@ namespace Suite_de_Gestion_Isari.Entidades
         [Display(Name = "Categoria")]
         [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar una categoría valida")]
         public int ID_CATEGORIA { get; set; }
+
+        public string CODIGO_PRODUCTO { get; set; } = string.Empty;
     }
 }
