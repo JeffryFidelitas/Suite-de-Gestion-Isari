@@ -1,62 +1,68 @@
-﻿@{
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Venta>
+
+@{
     ViewData["Title"] = "Historial de Ventas";
 }
 
 <div class="container mt-5">
     <h1 class="display-4 text-center mb-4">Historial de Ventas</h1>
 
-    <!-- Filtros de Búsqueda -->
-    <form method="get" asp-controller="Ventas" asp-action="HistorialVentas">
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <label for="numeroTicket" class="form-label">Número de Ticket</label>
-                <input type="text" class="form-control" id="numeroTicket" name="numeroTicket" placeholder="Ingrese número de ticket">
-            </div>
-            <div class="col-md-3">
-                <label for="fechaInicio" class="form-label">Fecha Inicio</label>
-                <input type="date" class="form-control" id="fechaInicio" name="fechaInicio" max="@DateTime.Now.ToString("yyyy-MM-dd")">
-            </div>
-            <div class="col-md-3">
-                <label for="fechaFin" class="form-label">Fecha Fin</label>
-                <input type="date" class="form-control" id="fechaFin" name="fechaFin" max="@DateTime.Now.ToString("yyyy-MM-dd")">
-            </div>
-            <div class="col-md-2 d-flex align-items-end">
-                <button type="submit" class="btn btn-primary w-100">Buscar</button>
-            </div>
+    
+    @if (ViewBag.MensajeError != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.MensajeError
         </div>
-    </form>
+    }
 
-    <!-- Tabla de Ventas -->
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th># Ticket</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Método de Pago</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @* Ejemplo de filas *@
-            <tr>
-                <td>00123</td>
-                <td>2024-05-01</td>
-                <td>₡15,000.00</td>
-                <td>Efectivo</td>
-                <td>
-                    <a class="btn btn-info btn-sm" asp-controller="Puesto" asp-action="DetallesVenta" asp-route-ticket="123">Ver Detalles</a>
-                </td>
-            </tr>
-            <tr>
-                <td>00124</td>
-                <td>2024-05-02</td>
-                <td>₡25,500.00</td>
-                <td>Tarjeta</td>
-                <td>
-                    <a class="btn btn-info btn-sm" asp-controller="Puesto" asp-action="DetallesVenta" asp-route-ticket="124">Ver Detalles</a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    @if (Model != null && Model.Any())
+    {
+        <table id="tablaFacturas" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Factura ID</th>
+                    <th>Vendedor</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var factura in Model)
+                {
+                    <tr>
+                        <td>@factura.ConsecutivoFactura</td>}
+                        <td>@factura.Nombre</td>
+                        <td>@factura.Fecha</td>
+                        <td>@factura.Total</td>
+                        <td>
+                            <a href="@Url.Action("ConsultarDetalleFactura","PuntoVenta", new { consecutivo = factura.ConsecutivoFactura })" class="btn">
+                                <i class="bi bi-eye" style="font-size: 1.6em;"></i>
+                            </a>
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No se han encontrado facturas para este usuario.</p>
+    }
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#tablaFacturas").DataTable({
+            language: {
+                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },columnDefs: [
+                { targets: [0, 1, 2, 3], type: "string" }
+            ]
+        });
+    })
+</script>

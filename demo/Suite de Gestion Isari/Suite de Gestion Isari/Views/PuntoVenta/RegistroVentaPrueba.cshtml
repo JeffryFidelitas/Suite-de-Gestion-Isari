@@ -1,0 +1,171 @@
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Venta>
+
+@{
+    ViewData["Title"] = "Registro de Venta";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Registro de Venta</h1>
+
+
+    <!-- Mensajes de éxito o error -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+    } 
+    <form asp-action="Registrarventa" asp-controller="PuntoVenta">
+        <div class="mb-3">
+            <label for="productos" class="form-label">Productos</label>
+            <div class="d-flex justify-content-between">
+                <input type="text" class="form-control w-75" id="codigoBarras" placeholder="Escanear o agregar Artículo" onkeypress="RegistrarPorCodigo(event)">
+            </div>
+        </div>
+
+        <!-- Tabla de productos -->
+        <div id="detalleVenta" data-total="@ViewBag.MontoTotal">
+            @Html.Partial("_DetalleVenta", Model)
+        </div>
+
+        <!-- Selección de método de pago -->
+        <div class="mt-4 mb-3">
+            <label for="metodoPago" class="form-label">Método de Pago</label>
+            <select class="form-select" id="metodoPago" onchange="cambiarMetodoPago()" required>
+                <option value="efectivo">Efectivo</option>
+                <option value="tarjeta">Tarjeta</option>
+            </select>
+        </div>
+
+        <!-- Pago en Efectivo -->
+        <div id="pagoEfectivo" class="d-none">
+            <div class="mb-3">
+                <label for="montoPago" class="form-label">Monto Recibido</label>
+                <input type="number" class="form-control" id="montoPago" placeholder="Ingrese monto recibido en efectivo" oninput="calcularCambio()">
+            </div>
+
+            <div class="mb-3">
+                <label for="cambio" class="form-label">Cambio a Devolver</label>
+                <input type="text" class="form-control" id="cambio" readonly>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="d-flex justify-content-between mt-4">
+                     
+            <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Finalizar Venta">
+
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+    <script>
+         
+            
+            function RegistrarPorCodigo(event) {
+        if (event.key === "Enter") { // Detecta la tecla Enter
+            event.preventDefault(); // Evita que se envíe el formulario
+
+            let codigoBarras = event.target.value;
+
+            // Llama al controlador para buscar el producto y agregarlo a la venta
+            $.ajax({
+                method: "POST",
+                url: "/PuntoVenta/RegistroVentaPrueba",
+                data: { codigoBarras: codigoBarras },
+                success: function (html) {
+                    // Reemplaza el contenido de la tabla con la respuesta parcial
+                    $("#detalleVenta").html(html);
+                },
+                error: function () {
+                    alert("Error al registrar el producto.");
+                }
+            });
+
+            // Limpia el campo para el siguiente escaneo
+            event.target.value = "";
+        }
+    }
+
+     
+    </script>
+
+
+    <script>
+
+
+
+            // Cambiar el método de pago
+    function cambiarMetodoPago() {
+        const metodoPago = document.getElementById("metodoPago").value;
+        const pagoEfectivo = document.getElementById("pagoEfectivo");
+
+        if (metodoPago === "efectivo") {
+            pagoEfectivo.classList.remove("d-none");
+        } else {
+            pagoEfectivo.classList.add("d-none");
+        }
+    }
+
+    // Calcular el cambio
+    function calcularCambio() {
+        const montoPago = parseFloat(document.getElementById("montoPago").value) || 0;
+        const totalVenta = parseFloat(document.getElementById("detalleVenta").dataset.total) || 0;
+
+        if (montoPago >= totalVenta) {
+            const cambio = montoPago - totalVenta;
+            document.getElementById("cambio").value = cambio.toFixed(2);
+        } else {
+            document.getElementById("cambio").value = "Monto insuficiente";
+        }
+    }
+
+    // Procesar la venta
+    function procesarVenta() {
+        const metodoPago = document.getElementById("metodoPago").value;
+        const montoPago = parseFloat(document.getElementById("montoPago").value) || 0;
+        const totalVenta = parseFloat(document.getElementById("detalleVenta").dataset.total) || 0;
+
+        if (metodoPago === "efectivo" && montoPago < totalVenta) {
+            alert("El monto recibido es insuficiente.");
+            return;
+        }
+
+        // Preparar datos para el servidor
+        const data = {
+            metodoPago: metodoPago,
+            montoPago: metodoPago === "efectivo" ? montoPago : null,
+            totalVenta: totalVenta
+        };
+
+        // Enviar datos al servidor
+        fetch("/Venta/ProcesarVenta", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert("Venta procesada exitosamente.");
+                window.location.href = "/Venta/ConsultaVentas"; // Redirigir
+            } else {
+                alert("Error al procesar la venta.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    }
+
+    </script>
+</div>
+
+
+

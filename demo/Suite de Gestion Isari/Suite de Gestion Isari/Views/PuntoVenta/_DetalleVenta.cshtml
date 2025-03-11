@@ -1,0 +1,46 @@
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Venta>
+
+<div class="alert alert-danger" role="alert" style="display: @(ViewBag.MensajeError != null ? "block" : "none")">
+    @ViewBag.MensajeError
+</div>
+
+<div class="table-responsive">
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Artículo</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.NOMBRE</td>
+                        <td>@item.DESCRIPCION</td>
+                        <td>@item.cantidad</td>
+                        <td>@item.Precio</td>
+                    </tr>
+                }
+                <!-- Fila adicional para totales -->
+                <tr>
+                    <td colspan="1">
+                        <strong>Cantidad de Artículos:</strong> @ViewBag.MontoCantidadArticulos
+                    </td>
+                    <td colspan="2"></td> <!-- Espacio en blanco -->
+                    <td>
+                        <strong>Monto Total:</strong> @ViewBag.MontoTotal
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No hay productos en el carrito.</p> <!-- Mensaje si no hay productos en la lista -->
+    }
+</div>
