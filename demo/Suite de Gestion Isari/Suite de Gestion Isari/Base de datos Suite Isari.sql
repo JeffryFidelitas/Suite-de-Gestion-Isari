@@ -560,3 +560,14 @@ BEGIN
 	  WHERE	EMAIL = @EMAIL
 
 END
+-----Actualizar días de vacaciones--------------
+
+CREATE PROCEDURE ActualizarEstadoSolicitud
+    @ID_SOLICITUD INT,
+    @ESTADO VARCHAR(50)
+AS
+BEGIN
+    UPDATE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES
+    SET ESTADO = @ESTADO
+    WHERE ID_SOLICITUD = @ID_SOLICITUD;
+END;

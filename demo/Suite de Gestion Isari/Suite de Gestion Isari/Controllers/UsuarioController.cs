@@ -1,87 +1,66 @@
 using Microsoft.AspNetCore.Mvc;
-using Suite_de_Gestion_Isari.Entidades;
 using Suite_de_Gestion_Isari.Models;
+using Suite_de_Gestion_Isari.Entidades;
 
 namespace Suite_de_Gestion_Isari.Controllers
 {
     public class UsuarioController : Controller
     {
-
-        private readonly UsuarioModel _usuario;
-        private readonly PuestoModel _puestoModel;
+        private readonly UsuarioModel _usuarioModel;
 
         public UsuarioController(IConfiguration configuration)
         {
-            _usuario = new UsuarioModel(configuration);
-            _puestoModel = new PuestoModel(configuration);
+            _usuarioModel = new UsuarioModel(configuration);
         }
 
-
-
-        [HttpGet]
-        public IActionResult Agregar_Empleado()
-
+        public IActionResult Index()
         {
-            CargarDatosCompartidos();
-            return View();
-        }
-
-
-
-        [HttpPost]
-        public IActionResult Agregar_Empleado(Empleado model)
-        {
-            if (!ModelState.IsValid)
-            {
-
-                return View(model);
-            }
-
-            var respuesta = _usuario.AgregarEmpleado(model);
-
-            if (respuesta.Codigo == 0)
-            {
-
-                TempData["SuccessMessage"] = respuesta.Mensaje;
-                return RedirectToAction("ConsultarEmpleados");
-            }
-            else
-            {
-
-                ViewBag.ErrorMessage = respuesta.Mensaje;
-                return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult ConsultarEmpleados()
-        {
-            var empleados = _usuario.ConsultarEmpleados();
+            var empleados = _usuarioModel.ConsultarEmpleados();
             return View(empleados);
         }
 
+        public IActionResult Detalles(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
 
+            var empleado = _usuarioModel.ObtenerUsuarioPorID(id);
+            if (empleado == null)
+                return NotFound();
 
+            return View(empleado);
+        }
 
-        public IActionResult CambioContraseña()
+        public IActionResult Crear()
         {
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Editar(int id)
+        [HttpPost]
+        public IActionResult Crear(Empleado model)
         {
-            var usuario = _usuario.ObtenerUsuarioPorID(id);
-
-            if (usuario == null)
+            if (ModelState.IsValid)
             {
-                return RedirectToAction("ConsultarEmpledos");
+                var respuesta = _usuarioModel.AgregarEmpleado(model);
+                if (respuesta.Codigo == 0)
+                    return RedirectToAction("Index");
+
+                ModelState.AddModelError(string.Empty, respuesta.Mensaje);
             }
 
-            CargarDatosCompartidos();
+            return View(model);
+        }
 
+        public IActionResult Editar(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
 
-            return View(usuario);
+            var empleado = _usuarioModel.ObtenerUsuarioPorID(id);
+            if (empleado == null)
+                return NotFound();
+
+            return View(empleado);
         }
 
         [HttpPost]
@@ -89,92 +68,23 @@ namespace Suite_de_Gestion_Isari.Controllers
         {
             if (ModelState.IsValid)
             {
-                _usuario.ActualizarEmpleado(model);
-                return RedirectToAction("ConsultarEmpleados");
+                _usuarioModel.ActualizarEmpleado(model);
+                return RedirectToAction("Index");
             }
 
             return View(model);
         }
 
-
-        [HttpGet]
-        public IActionResult ActualizarPerfil()
+        public IActionResult ObtenerUsuarioLogueado(string id)
         {
-            string usuarioID = HttpContext.Session.GetString("UsuarioID");
-            if (string.IsNullOrEmpty(usuarioID))
-            {
-                return RedirectToAction("Login", "Login");
-            }
-            
-            var usuario = _usuario.ObtenerUsuariologueado(int.Parse(usuarioID));
+            if (string.IsNullOrEmpty(id))
+                return BadRequest("El ID del usuario no puede estar vacío.");
 
-            
+            var usuario = _usuarioModel.ObtenerUsuarioLogueado(id);
+            if (usuario == null)
+                return NotFound();
 
             return View(usuario);
         }
-
-
-        [HttpPost]
-        public IActionResult ActualizarPerfil(Empleado model)
-        {
-            if (ModelState.IsValid)
-            {
-                // Obtener el ID del usuario desde la sesión como string
-                string usuarioID = HttpContext.Session.GetString("UsuarioID");
-
-                if (!string.IsNullOrEmpty(usuarioID))
-                {
-                    model.ID_EMPLEADO = usuarioID;                   
-                    _usuario.ActualizarUsuario(model);
-                    ViewBag.Mensaje = "Perfil actualizado correctamente";
-                }
-                else
-                {
-                    ViewBag.Error = "No se ha encontrado un ID de usuario válido en la sesión.";
-                }
-            }
-            else
-            {
-                ViewBag.Error = "Error al actualizar el perfil.";
-            }
-
-            return View(model);
-        }
-
-
-        [HttpGet]
-        public IActionResult MiPerfil()
-        {
-            string usuarioID = HttpContext.Session.GetString("UsuarioID");
-            if (string.IsNullOrEmpty(usuarioID))
-            {
-                return RedirectToAction("Login", "Login");
-            }
-
-            var usuario = _usuario.ObtenerUsuarioPorID(int.Parse(usuarioID));
-
-            return View(usuario);
-        }
-
-        public IActionResult SolicitarVacaciones()
-        {
-            return View();
-        }
-
-        public IActionResult RegistrarTardia()
-        {
-            return View();
-        }
-
-
-        private void CargarDatosCompartidos()
-        {
-            var listaPuestos = _puestoModel.ObtenerPuestos();
-            ViewBag.Puestos = listaPuestos;
-
-            var listarRoles = _usuario.ObtenerRoles();
-            ViewBag.Roles = listarRoles;
-        }
-
     }
 }
