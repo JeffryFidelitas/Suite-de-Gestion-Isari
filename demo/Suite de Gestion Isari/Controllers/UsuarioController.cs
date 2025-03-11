@@ -156,10 +156,60 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View(usuario);
         }
 
+        [HttpGet]
         public IActionResult SolicitarVacaciones()
         {
             return View();
         }
+        
+        [HttpPost]
+        public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+        
+            var respuesta = _usuario.AgregarSolicitudVacaciones(model);
+        
+            if (respuesta.Codigo == 0)
+            {
+                TempData["SuccessMessage"] = respuesta.Mensaje;
+                return RedirectToAction("VerSolicitudesVacaciones");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = respuesta.Mensaje;
+                return View(model);
+            }
+        }
+        
+        [HttpGet]
+        public IActionResult VerSolicitudesVacaciones()
+        {
+            var solicitudes = _usuario.ObtenerSolicitudesVacaciones();
+            var solicitudesOrdenadas = solicitudes.OrderByDescending(s => s.ESTADO == "Pendiente").ToList();
+            return View(solicitudesOrdenadas); 
+        }
+        
+        
+        [HttpPost]
+        public IActionResult CambiarEstadoSolicitud(int idSolicitud, string estado)
+        {
+            var respuesta = _usuario.ActualizarEstadoSolicitud(idSolicitud, estado);
+        
+            if (respuesta.Codigo == 0)
+            {
+                TempData["SuccessMessage"] = respuesta.Mensaje;
+            }
+            else
+            {
+                ViewBag.ErrorMessage = respuesta.Mensaje;
+            }
+        
+            return RedirectToAction("VerSolicitudesVacaciones");
+        }
+
 
         public IActionResult RegistrarTardia()
         {
