@@ -14,9 +14,11 @@ namespace Suite_de_Gestion_Isari.Controllers
             _categoriaModel = new CategoriaModel(configuration);
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string? search)
         {
-            return View(_categoriaModel.ObtenerCategorias());
+            ViewBag.search = search;
+
+            return View(_categoriaModel.ObtenerCategorias().Where(c => search == null || c.DESCRIPCION.Contains(search)).ToList());
         }
         public IActionResult Editar()
         {
@@ -49,5 +51,39 @@ namespace Suite_de_Gestion_Isari.Controllers
                 
         }
 
+        [HttpGet]
+        public IActionResult Editar(int id)
+        {
+            var categoria = _categoriaModel.ConsultaCategoria(id);
+            if (categoria.ID_CATEGORIA > 0)
+                return View(categoria);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult Editar(Categorias model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var respuesta = _categoriaModel.ActualizarCategoria(model);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult Eliminar(int id)
+        {
+            var categoria = _categoriaModel.ConsultaCategoria(id);
+            if (categoria.ID_CATEGORIA > 0)
+                return View(categoria);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult EliminarConfirmar(int ID_CATEGORIA)
+        {
+            var respuesta = _categoriaModel.EliminarCategoria(ID_CATEGORIA);
+            return RedirectToAction("Index");
+        }
     }
 }

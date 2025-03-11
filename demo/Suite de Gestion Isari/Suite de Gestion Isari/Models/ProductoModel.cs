@@ -80,5 +80,32 @@ namespace Suite_de_Gestion_Isari.Models
                 return filasAfectadas > 0;
             }
         }
+
+        public Respuesta EliminarProducto(int ID_PRODUCTO)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+
+                var parametros = new DynamicParameters();
+                parametros.Add("@ID_PRODUCTO", ID_PRODUCTO);
+                parametros.Add("@Resultado", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
+                context.Execute("EliminarProducto", parametros, commandType: CommandType.StoredProcedure);
+                int result = parametros.Get<int>("@Resultado");
+
+                if (result == 0)
+                {
+                    respuesta.Codigo = 0;
+                    respuesta.Mensaje = "Producto eliminado exitosamente.";
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "No existe el producto "+ID_PRODUCTO;
+                }
+                return respuesta;
+            }
+        }
     }
 }

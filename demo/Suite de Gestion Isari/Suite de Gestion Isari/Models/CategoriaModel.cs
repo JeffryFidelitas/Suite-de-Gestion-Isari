@@ -14,8 +14,6 @@ namespace Suite_de_Gestion_Isari.Models
         {
             _conf = conf;
         }
-
-        [HttpPost]
         public Respuesta AgregarCategoria(Categorias model)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
@@ -73,5 +71,32 @@ namespace Suite_de_Gestion_Isari.Models
                 return filasAfectadas > 0;
             }
         }
+
+        [HttpPost]
+        public Respuesta EliminarCategoria(int ID_CATEGORIA)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
+                var parametros = new DynamicParameters();
+                parametros.Add("@ID_CATEGORIA", ID_CATEGORIA);
+                parametros.Add("@Resultado", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+                context.Execute("EliminarCategoria", parametros, commandType: CommandType.StoredProcedure);
+                int result = parametros.Get<int>("@Resultado");
+
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;
+                    respuesta.Mensaje = "Categoria eliminada exitosamente.";
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "No existe la categoria "+ID_CATEGORIA;
+                }
+                return respuesta;
+            }
+        }
+
     }
 }
