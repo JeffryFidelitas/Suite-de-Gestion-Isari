@@ -16,21 +16,41 @@ public class InventarioController : Controller
         _categoriaModel = new CategoriaModel(configuration);
     }
 
-    public IActionResult Index()
+    public IActionResult Index(string? search)
     {
-        return View(_productoModel.ObtenerProductos());
+        ViewBag.search = search;
+        return View(_productoModel.ObtenerProductos().Where(p => search == null || p.NOMBRE.Contains(search)).ToList());
     }
 
-    public IActionResult Eliminar(int id)
-    {
-        ViewBag.id = id;
-        return View();
-    }
-
+    [HttpGet]
     public IActionResult Editar(int id)
     {
-        ViewBag.id = id;
-        return View();
+        ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
+        var producto = _productoModel.ConsultaProducto(id);
+        if (producto.ID_PRODUCTO > 0)
+            return View(producto);
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult Editar(Productos model)
+    {
+        if (!ModelState.IsValid)
+        {
+            ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
+            return View(model);
+        }
+
+        var respuesta = _productoModel.ActualizarProducto(model);
+        if (respuesta)
+        {
+            return RedirectToAction("Index");
+        }
+        else
+        {
+            ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
+            return View(model);
+        }
     }
 
     [HttpGet]
@@ -42,7 +62,7 @@ public class InventarioController : Controller
 
     [HttpPost]
     public IActionResult Agregar(Productos model)
-    {
+    { 
         if (!ModelState.IsValid)
         {
             ViewData["categorias"] = _categoriaModel.ObtenerCategorias();
@@ -61,5 +81,21 @@ public class InventarioController : Controller
             ViewBag.ErrorMessage = respuesta.Mensaje;
             return View(model);
         }
+    }
+
+    [HttpGet]
+    public IActionResult Eliminar(int id)
+    {
+        var producto = _productoModel.ConsultaProducto(id);
+        if (producto.ID_PRODUCTO > 0)
+            return View(producto);
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public IActionResult EliminarConfirmar(int ID_PRODUCTO)
+    {
+        var respuesta = _productoModel.EliminarProducto(ID_PRODUCTO);
+        return RedirectToAction("Index");
     }
 }

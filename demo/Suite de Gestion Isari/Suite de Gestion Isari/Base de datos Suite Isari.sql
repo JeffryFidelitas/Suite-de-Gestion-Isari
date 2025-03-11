@@ -287,6 +287,22 @@ BEGIN
     END
 END;
 
+-- -------------------------- Eliminar Producto -------------------------
+CREATE PROCEDURE EliminarProducto
+    @ID_PRODUCTO INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM T_PRODUCTOS WHERE ID_PRODUCTO = @ID_PRODUCTO)
+    BEGIN
+        BEGIN TRANSACTION;
+        DELETE FROM T_PRODUCTOS WHERE ID_PRODUCTO = @ID_PRODUCTO;
+        COMMIT;
+        RETURN 1;
+    END
+END;
+
 -- -------------------------- Agregar Categoría -------------------------
 CREATE PROCEDURE AgregarCategoria
     @DESCRIPCION NVARCHAR(255)
@@ -332,7 +348,7 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT 1 FROM CATEGORIAS 
+    IF NOT EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS 
                    WHERE DESCRIPCION = @DESCRIPCION 
                    AND ID_CATEGORIA != @ID_CATEGORIA)
     BEGIN
@@ -345,6 +361,22 @@ BEGIN
     END
 END;
 
+-- ---------------------------- Eliminar Categoria -------------------------------
+CREATE PROCEDURE EliminarCategoria
+    @ID_CATEGORIA INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA)
+    BEGIN
+    	BEGIN TRANSACTION;
+        DELETE FROM T_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA;
+        DELETE FROM CATEGORIA_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA;
+        COMMIT;
+        RETURN 1;
+    END
+END;
 
 ----------------Crear Empleado------------------------------
 CREATE PROCEDURE CrearEmpleado

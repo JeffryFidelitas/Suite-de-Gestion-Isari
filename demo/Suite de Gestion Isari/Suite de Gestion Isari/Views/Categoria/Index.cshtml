@@ -9,7 +9,11 @@
         <h1 class="display-4 flex-grow-1 text-center mb-4">Categorías</h1>
         <a class="btn btn-primary" role="button" asp-controller="Categoria" asp-action="Agregar">Agregar</a>
     </div>
-
+    <div class="pb-10">
+        <form method="GET">
+            <input class="form-control" placeholder="Busqueda" name="search" type="text" value="@ViewBag.search"/>
+        </form>
+    </div>
     <table class="table table-striped">
         <thead>
             <tr>
@@ -27,8 +31,8 @@
                         <td>@categoria.ID_CATEGORIA</td>
                         <td>@categoria.DESCRIPCION</td>
                         <td>
-                            <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="Editar" asp-route-id="1">Editar</a>
-                            <a class="btn btn-danger" role="button" asp-controller="Inventario" asp-action="Eliminar" asp-route-id="1">Eliminar</a>
+                            <a class="btn btn-warning btn-sm" asp-controller="Categoria" asp-action="Editar" asp-route-id="@categoria.ID_CATEGORIA">Editar</a>
+                            <a class="btn btn-danger btn-sm" role="button" asp-controller="Categoria" asp-action="Eliminar" asp-route-id="@categoria.ID_CATEGORIA">Eliminar</a>
                         </td>
                     </tr>
                 }

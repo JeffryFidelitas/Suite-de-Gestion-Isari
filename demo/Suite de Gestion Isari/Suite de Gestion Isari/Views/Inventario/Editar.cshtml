@@ -1,36 +1,63 @@
+@model Suite_de_Gestion_Isari.Entidades.Productos
 @{
     ViewData["Title"] = "Editar Item";
+    var categorias = ViewData["categorias"] as List<Suite_de_Gestion_Isari.Entidades.Categorias>;
 }
 
-<div>
+<div class="container mt-5">
     <h1 class="display-4 text-center mb-4">Editar Item</h1>
-    <div class="alert alert-warning" role="alert">
-        Editando item @ViewBag.id
-    </div>
-    <form>
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" value="Arroz 91% 1.8kg">
+    
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="alert alert-danger text-center w-50">
+                @ViewBag.ErrorMessage
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="categoria" class="form-label">Categoria</label>
-            <input class="form-control" list="datalistCategoria" id="categoria" placeholder="Escribe para buscar..." value="Alimento">
-            <datalist id="datalistCategoria">
-                <option value="Alimento"/>
-                <option value="Limpieza"/>
-            </datalist>
+    }
+
+    <form asp-action="Editar" method="post">
+        @Html.HiddenFor(model => model.ID_PRODUCTO)
+        <div class="form-group mb-3">
+            <label asp-for="NOMBRE"></label>
+            <input asp-for="NOMBRE" class="form-control" />
+            <span asp-validation-for="NOMBRE" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <label for="precio" class="form-label">Precio</label>
-            <input type="number" class="form-control" id="precio" value="7000">
+        <div class="form-group mb-3">
+            <label asp-for="DESCRIPCION"></label>
+            <input asp-for="DESCRIPCION" class="form-control" />
+            <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
         </div>
-        <div class="mb-3">
-            <label for="unidades" class="form-label">Unidades</label>
-            <input type="number" class="form-control" id="unidades" value="4312">
+        <div class="form-group mb-3">
+            <label asp-for="PROVEEDOR"></label>
+            <input asp-for="PROVEEDOR" class="form-control" />
+            <span asp-validation-for="PROVEEDOR" class="text-danger"></span>
         </div>
-        <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" role="button" asp-controller="Inventario" asp-action="Index">Volver</a>
-            <button type="submit" class="btn btn-primary">Guardar</button>
+        <div class="form-group mb-3">
+            <label asp-for="PRECIO"></label>
+            <input asp-for="PRECIO" class="form-control" />
+            <span asp-validation-for="PRECIO" class="text-danger"></span>
         </div>
+        <div class="form-group mb-3">
+            <label asp-for="ID_CATEGORIA"></label>
+            <select asp-for="ID_CATEGORIA" class="form-control">
+                @if (categorias != null && categorias.Count() > 0)
+                {
+                    @foreach(var categoria in categorias)
+                    {
+                        <option value="@categoria.ID_CATEGORIA">
+                            @categoria.DESCRIPCION
+                        </option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="ID_CATEGORIA" class="text-danger"></span>
+        </div>
+        <div class="form-group mb-3">
+            <label asp-for="CANTIDAD_DISPONIBLE"></label>
+            <input asp-for="CANTIDAD_DISPONIBLE" class="form-control" />
+            <span asp-validation-for="CANTIDAD_DISPONIBLE" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar</button>
     </form>
 </div>
