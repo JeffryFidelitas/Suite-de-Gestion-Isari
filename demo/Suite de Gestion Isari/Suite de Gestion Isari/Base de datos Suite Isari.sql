@@ -571,3 +571,332 @@ BEGIN
     SET ESTADO = @ESTADO
     WHERE ID_SOLICITUD = @ID_SOLICITUD;
 END;
+
+
+---------------tabla nueva productos
+CREATE TABLE [dbo].[T_PRODUCTOS](
+	[ID_PRODUCTO] [int] IDENTITY(1,1) NOT NULL,
+	[NOMBRE] [nvarchar](255) NOT NULL,
+	[DESCRIPCION] [nvarchar](255) NULL,
+	[PROVEEDOR] [nvarchar](255) NULL,
+	[PRECIO] [decimal](10, 2) NOT NULL,
+	[CANTIDAD_DISPONIBLE] [int] NOT NULL,
+	[ID_CATEGORIA] [int] NOT NULL,
+	[CODIGO_PRODUCTO] [nvarchar](50) NULL,
+ CONSTRAINT [PK__PRODUCTO__88BD03576E55F2C6] PRIMARY KEY CLUSTERED 
+(
+	[ID_PRODUCTO] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+-----------tabla detalle factura
+CREATE TABLE [dbo].[tDetalle](
+	[ConsecutivoDetalle] [int] IDENTITY(1,1) NOT NULL,
+	[ConsecutivoFactura] [int] NOT NULL,
+	[ConsecutivoProducto] [int] NOT NULL,
+	[Precio] [decimal](18, 2) NOT NULL,
+	[Cantidad] [int] NOT NULL,
+	[Total] [decimal](18, 2) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ConsecutivoDetalle] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+---tabla factura----------
+CREATE TABLE [dbo].[tFactura](
+	[ConsecutivoFactura] [int] IDENTITY(1,1) NOT NULL,
+	[ConsecutivoUsuario] [int] NULL,
+	[Total] [decimal](18, 2) NOT NULL,
+	[Fecha] [datetime] NOT NULL,
+ CONSTRAINT [PK__tFactura__B290888BDB3F572B] PRIMARY KEY CLUSTERED 
+(
+	[ConsecutivoFactura] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+----tabla venta temporal---
+CREATE TABLE [dbo].[VentaTemporal](
+	[ID_VentaTemporal] [int] IDENTITY(1,1) NOT NULL,
+	[Consecutivo] [int] NOT NULL,
+	[CODIGO_PRODUCTO] [varchar](max) NOT NULL,
+	[ID_PRODUCTO] [int] NOT NULL,
+	[NOMBRE] [varchar](100) NOT NULL,
+	[Cantidad] [int] NOT NULL,
+	[Precio] [decimal](10, 2) NOT NULL,
+	[FechaCreacion] [datetime] NULL,
+	[MontoTotal] [decimal](18, 0) NULL,
+	[DESCRIPCION] [nvarchar](max) NULL,
+ CONSTRAINT [PK__VentaTem__107AE267385B5795] PRIMARY KEY CLUSTERED 
+(
+	[ID_VentaTemporal] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[tFactura] ADD  CONSTRAINT [DF__tFactura__Fecha__1BC821DD]  DEFAULT (getdate()) FOR [Fecha]
+GO
+ALTER TABLE [dbo].[VentaTemporal] ADD  CONSTRAINT [DF__VentaTemp__Fecha__123EB7A3]  DEFAULT (getdate()) FOR [FechaCreacion]
+GO
+ALTER TABLE [dbo].[T_EMPLEADOS]  WITH CHECK ADD  CONSTRAINT [FK__T_EMPLEAD__ID_PU__5DCAEF64] FOREIGN KEY([ID_PUESTO])
+REFERENCES [dbo].[T_POSICIONES] ([ID_PUESTO])
+GO
+ALTER TABLE [dbo].[T_EMPLEADOS] CHECK CONSTRAINT [FK__T_EMPLEAD__ID_PU__5DCAEF64]
+GO
+ALTER TABLE [dbo].[T_EMPLEADOS]  WITH CHECK ADD  CONSTRAINT [FK__T_EMPLEAD__ID_RO__5CD6CB2B] FOREIGN KEY([ID_ROL])
+REFERENCES [dbo].[T_ROLES] ([ID_ROL])
+GO
+ALTER TABLE [dbo].[T_EMPLEADOS] CHECK CONSTRAINT [FK__T_EMPLEAD__ID_RO__5CD6CB2B]
+GO
+ALTER TABLE [dbo].[T_PRODUCTOS]  WITH CHECK ADD  CONSTRAINT [FK__PRODUCTOS__ID_CA__6477ECF3] FOREIGN KEY([ID_CATEGORIA])
+REFERENCES [dbo].[CATEGORIA_PRODUCTOS] ([ID_CATEGORIA])
+GO
+ALTER TABLE [dbo].[T_PRODUCTOS] CHECK CONSTRAINT [FK__PRODUCTOS__ID_CA__6477ECF3]
+GO
+ALTER TABLE [dbo].[tDetalle]  WITH CHECK ADD  CONSTRAINT [FK__tDetalle__Consec__22751F6C] FOREIGN KEY([ConsecutivoFactura])
+REFERENCES [dbo].[tFactura] ([ConsecutivoFactura])
+GO
+ALTER TABLE [dbo].[tDetalle] CHECK CONSTRAINT [FK__tDetalle__Consec__22751F6C]
+GO
+ALTER TABLE [dbo].[tDetalle]  WITH CHECK ADD FOREIGN KEY([ConsecutivoProducto])
+REFERENCES [dbo].[T_PRODUCTOS] ([ID_PRODUCTO])
+
+
+
+-----sp actualizar venta temporal
+/****** Object:  StoredProcedure [dbo].[ActualizarTotalVentaTemporal]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ActualizarTotalVentaTemporal]
+    @Consecutivo INT
+AS
+BEGIN
+    DECLARE @Total DECIMAL(18, 2);
+
+    -- Calcular el total sumando cantidad * precio de los productos
+    SELECT @Total = SUM(cantidad * Precio)
+    FROM VentaTemporal
+    WHERE Consecutivo = @Consecutivo;
+
+    -- Actualizar el campo MontoTotal
+    UPDATE VentaTemporal
+    SET MontoTotal = @Total
+    WHERE Consecutivo = @Consecutivo;
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[AgregarVentaTemporal]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[AgregarVentaTemporal]
+	@ID_PRODUCTO	int,
+	@CODIGO_PRODUCTO nvarchar(100),
+	@Consecutivo int,--del usuario que esta realizando la venta
+	@cantidad INT,
+	@NOMBRE VARCHAR(100),
+	@Precio decimal,
+	@Descripcion VARCHAR(100)
+
+AS
+
+BEGIN
+
+   DECLARE @Total DECIMAL(18, 2);
+    -- Inserta directamente el producto en la tabla temporal de ventas
+    INSERT INTO VentaTemporal (CODIGO_PRODUCTO, Consecutivo, ID_PRODUCTO, Cantidad,NOMBRE,Precio,DESCRIPCION)
+            VALUES (@CODIGO_PRODUCTO, @Consecutivo, @ID_PRODUCTO, @cantidad,@NOMBRE,@Precio,@Descripcion);
+
+
+
+   SELECT @Total = SUM(cantidad * Precio)
+    FROM VentaTemporal
+    WHERE Consecutivo = @Consecutivo;
+
+    -- Actualizar el campo MontoTotal
+    UPDATE VentaTemporal
+    SET MontoTotal = @Total
+    WHERE Consecutivo = @Consecutivo;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[ConssultarExistenciaProducto]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create procedure [dbo].[ConssultarExistenciaProducto]
+@CODIGO_PRODUCTO NVARCHAR(50)
+AS
+BEGIN
+	SELECT ID_PRODUCTO,NOMBRE,DESCRIPCION,PRECIO,CANTIDAD_DISPONIBLE,CODIGO_PRODUCTO 
+	FROM T_PRODUCTOS WHERE CODIGO_PRODUCTO = @CODIGO_PRODUCTO
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[ConsultaCategoria]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+/****** Object:  StoredProcedure [dbo].[ConsultaProducto]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ConsultaProducto]
+    @ID_PRODUCTO INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA
+    FROM T_PRODUCTOS
+    WHERE ID_PRODUCTO = @ID_PRODUCTO;
+END;
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[ConsultarFacturas]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[ConsultarFacturas]
+	@Consecutivo BIGINT
+AS
+BEGIN
+	
+	SELECT	F.ConsecutivoFactura,
+			U.Nombre,
+			F.Total,
+			F.Fecha
+	FROM	tFactura F
+	INNER JOIN T_EMPLEADOS U ON F.ConsecutivoUsuario = U.ID_EMPLEADO
+	WHERE	ConsecutivoUsuario = @Consecutivo
+
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[ObtenerDetalleVentaTemporal]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[ObtenerDetalleVentaTemporal]
+	@Consecutivo int
+	
+AS
+
+BEGIN
+    Select ID_VentaTemporal,ID_PRODUCTO,Consecutivo,NOMBRE,Precio,cantidad, (cantidad*Precio) as total,MontoTotal,Descripcion
+	from VentaTemporal where consecutivo= @Consecutivo;
+
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[ObtenerMontoTotalVentaTemporal]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+create PROCEDURE [dbo].[ObtenerMontoTotalVentaTemporal]
+    @Consecutivo INT
+AS
+BEGIN
+    SELECT MontoTotal
+    FROM VentaTemporal
+    WHERE Consecutivo = @Consecutivo
+    GROUP BY MontoTotal; -- Asegura que solo se obtiene un único valor
+END;
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[PagarVentaTemporal]    Script Date: 10/3/2025 23:15:38 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[PagarVentaTemporal]
+    @ConsecutivoUsuario BIGINT,
+    @Resultado INT OUTPUT -- Variable de salida para indicar éxito (1) o error (0)
+AS
+BEGIN
+    BEGIN TRANSACTION;
+
+    BEGIN TRY
+        -- Validar el stock agrupando por producto
+        IF EXISTS (
+            SELECT 1
+            FROM (
+                SELECT ID_PRODUCTO, SUM(Cantidad) AS TotalCantidad
+                FROM VentaTemporal
+                WHERE Consecutivo = @ConsecutivoUsuario
+                GROUP BY ID_PRODUCTO
+            ) AS VT
+            INNER JOIN T_PRODUCTOS P ON VT.ID_PRODUCTO = P.ID_PRODUCTO
+            WHERE VT.TotalCantidad > P.CANTIDAD_DISPONIBLE
+        )
+        BEGIN
+            ROLLBACK TRANSACTION;
+            SET @Resultado = 0; -- Operación fallida
+            RETURN;
+        END;
+
+        -- Insertar en la tabla de factura (encabezado)
+        INSERT INTO tFactura (ConsecutivoUsuario, Total, Fecha)
+        SELECT Consecutivo, SUM(VT.Cantidad * P.Precio), GETDATE()
+        FROM VentaTemporal VT
+        INNER JOIN T_PRODUCTOS P ON VT.ID_PRODUCTO = P.ID_PRODUCTO
+        WHERE VT.Consecutivo = @ConsecutivoUsuario
+        GROUP BY VT.Consecutivo;
+
+        -- Obtener el ID de la factura recién creada
+        DECLARE @ID_FACTURA BIGINT = SCOPE_IDENTITY();
+
+        -- Insertar en la tabla de detalles agrupando por producto
+        INSERT INTO tDetalle (ConsecutivoFactura, ConsecutivoProducto, Precio, Cantidad, Total)
+        SELECT 
+            @ID_FACTURA, 
+            VT.ID_PRODUCTO, 
+            P.Precio, 
+            SUM(VT.Cantidad) AS TotalCantidad, 
+            SUM(VT.Cantidad * P.Precio) AS TotalPrecio
+        FROM VentaTemporal VT
+        INNER JOIN T_PRODUCTOS P ON VT.ID_PRODUCTO = P.ID_PRODUCTO
+        WHERE VT.Consecutivo = @ConsecutivoUsuario
+        GROUP BY VT.ID_PRODUCTO, P.Precio;
+
+        -- Reducir el inventario agrupando por producto
+        UPDATE P
+        SET P.CANTIDAD_DISPONIBLE = P.CANTIDAD_DISPONIBLE - VT.TotalCantidad
+        FROM T_PRODUCTOS P
+        INNER JOIN (
+            SELECT ID_PRODUCTO, SUM(Cantidad) AS TotalCantidad
+            FROM VentaTemporal
+            WHERE Consecutivo = @ConsecutivoUsuario
+            GROUP BY ID_PRODUCTO
+        ) AS VT ON P.ID_PRODUCTO = VT.ID_PRODUCTO;
+
+        -- Limpiar la tabla temporal
+        DELETE FROM VentaTemporal
+        WHERE Consecutivo = @ConsecutivoUsuario;
+
+        COMMIT TRANSACTION;
+        SET @Resultado = 1; -- Operación exitosa
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRANSACTION;
+        SET @Resultado = 0; -- Operación fallida
+    END CATCH
+END;
+GO
+
+
+
