@@ -94,7 +94,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVlc3RvXENvbnN1bHRhclBvc2ljaW9uZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/HistorialVentas.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxIaXN0b3JpYWxWZW50YXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
@@ -102,8 +101,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxSZWdpc3Ryb0Rldm9sdWNpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroVentaPrueba.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxSZWdpc3Ryb1ZlbnRhUHJ1ZWJhLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/_DetalleVenta.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxfRGV0YWxsZVZlbnRhLmNzaHRtbA==
+
 [C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/PuntoVenta/RegistroVenta.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHVudG9WZW50YVxSZWdpc3Ryb1ZlbnRhLmNzaHRtbA==
+
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/franc/Source/Repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Reporteria/Index.cshtml]

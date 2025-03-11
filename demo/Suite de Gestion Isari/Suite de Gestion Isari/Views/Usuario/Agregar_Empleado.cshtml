@@ -42,18 +42,19 @@
             <input type="text" asp-for="TELEFONO" class="form-control" placeholder="Ingrese el teléfono" required>
         </div>
 
-       
         <div class="mb-3">
-            <label for="IDROL" class="form-label">ROL</label>
-            <input type="number" asp-for="ID_ROL" class="form-control" placeholder="ID ROL" required>
+            <label for="Roles" class="form-label">Rol</label>
+            <select asp-for="ID_ROL" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "ID_ROL", "DESCRIPCION"))">
+                <option value="">Seleccione un Rol</option>
+            </select>
         </div>
-
-        
+             
         <div class="mb-3">
-            <label for="IDROL" class="form-label">PUESTO</label>
-            <input type="number" asp-for="ID_PUESTO" class="form-control" placeholder="ID PUESTO" required>
+            <label for="Puesto" class="form-label">Puesto</label>
+            <select asp-for="ID_PUESTO" class="form-control" asp-items="@(new SelectList(ViewBag.Puestos, "ID_PUESTO", "NOMBRE_POSICION"))">
+                <option value="">Seleccione un puesto</option>
+            </select>
         </div>
-
 
         <div class="mb-3">
             <label for="contraseña" class="form-label">Contraseña</label>

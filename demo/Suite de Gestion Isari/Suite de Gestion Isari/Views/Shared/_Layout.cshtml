@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -10,8 +10,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/2.1.3/css/dataTables.bootstrap4.css" rel="stylesheet">
 
+    <style>
+        
+        body {
+            background-color: #f8f9fa; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-
+        footer {
+            margin-top: auto; 
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -24,78 +35,112 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+                        @if (@Context.Session.GetString("IdRol") == "2")
+                        {
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownInventario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Inventario
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownInventario">
+                                    <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Index">Lista Inventario</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Agregar">Agregar Item</a>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Administracion
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="ConsultarPosiciones">Puestos laborales</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="Agregar">Agregar Puesto laboral</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownContabilidad" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Contabilidad
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownContabilidad">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="ReportesFinancieros">Reportes Financieros</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="RegistroCuentas">Registro de Cuentas</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="ResumenDiario">Resumen Diario</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="Caja">Caja</a></li>
+                                </ul>
+                            </li>
+
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownCat" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Categoria Productos
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownCat">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Lista Categorias</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Agregar">Agregar Categoria</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Usuarios
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Agregar_Empleado">Agregar Usuario</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ConsultarEmpleados">Lista Usuarios</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="RegistrarTardia">Registrar Tardia</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Reporteria" asp-action="Index">Reporteria</a>
+                            </li>
+
+                        }
+
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownInventario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Inventario
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Vacaciones
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownInventario">
-                                <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Index">Lista Inventario</a>
-                                <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Agregar">Agregar Item</a>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="SolicitarVacaciones">Solicitar Vacaciones</a></li>
                             </ul>
                         </li>
+
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownPuntoVenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Punto de Venta
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownPuntoVenta">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroVenta">Registrar Venta</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroVentaPrueba">Registrar Venta PRUEBA</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroDevolucion">Registro de Devolución</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="HistorialVentas">Historial de Ventas</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownAdmin" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Administracion
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownAdmin">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="ConsultarPosiciones">Puestos laborales</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Puesto" asp-action="Agregar">Agregar Puesto laboral</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownContabilidad" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Contabilidad
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownContabilidad">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="ReportesFinancieros">Reportes Financieros</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="RegistroCuentas">Registro de Cuentas</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="ResumenDiario">Resumen Diario</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Contabilidad" asp-action="Caja">Caja</a></li>
-                            </ul>
-                        </li>
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownCat" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Categoria Productos
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownCat">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Index">Lista Categorias</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Categoria" asp-action="Agregar">Agregar Categoria</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Usuarios
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ConsultarEmpleados">Lista Usuarios</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="SolicitarVacaciones">Solicitar Vacaciones</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="RegistrarTardia">Registrar Tardia</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Agregar_Empleado">Agregar Usuario</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Reporteria" asp-action="Index">Reporteria</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a>
-                        </li>
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-danger text-white" asp-controller="Login" asp-action="Login">Cerrar Sesión</a>
-                            </li>
+
+                            @if (Context.Session.GetString("UsuarioNombre") != null)
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownUsuario" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Bienvenido, @Context.Session.GetString("UsuarioNombre")
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
+                                        <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a>
+                                        <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSesion">Cerrar Sesión</a></li>
+
+                                    </ul>
+                                </li>
+                            }
+
+
+
                         </ul>
+
                     </ul>
                 </div>
             </div>
@@ -109,7 +154,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            <!--&copy; 2024 - Suite de Gestión Isari - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>-->
+            
             &copy; 2024 - Suite de Gestión Isari
         </div>
     </footer>
@@ -118,7 +163,6 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src=https://cdn.datatables.net/2.1.3/js/dataTables.js></script>
     <script src=https://cdn.datatables.net/2.1.3/js/dataTables.bootstrap4.js></script>
-
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

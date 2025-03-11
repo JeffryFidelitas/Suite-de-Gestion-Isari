@@ -1,0 +1,68 @@
+﻿@model Suite_de_Gestion_Isari.Entidades.Empleado
+@{
+    ViewData["Title"] = "Crear Usuario";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Crear Usuario</h1>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="alert alert-danger text-center w-50">
+                @ViewBag.ErrorMessage
+            </div>
+        </div>
+    }
+    <form asp-action="Agregar_Empleado" asp-controller="Usuario">
+        
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre Completo</label>
+            <input type="text" asp-for="NOMBRE" class="form-control" placeholder="Ingrese el nombre del puesto" required>
+            
+        </div>
+
+              
+        <div class="mb-3">
+            <label for="cedula" class="form-label">Cédula</label>
+            <input type="text" asp-for="CEDULA" class="form-control" placeholder="Ingrese el nombre del puesto" required>
+            
+        </div>
+
+       
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo Electrónico</label>
+            <input type="email" asp-for="EMAIL" class="form-control" placeholder="Ingrese el correo" required>
+            
+        </div>
+
+        
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="text" asp-for="TELEFONO" class="form-control" placeholder="Ingrese el teléfono" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="Roles" class="form-label">Rol</label>
+            <select asp-for="ID_ROL" class="form-control" asp-items="@(new SelectList(ViewBag.Roles, "ID_ROL", "DESCRIPCION"))">
+                <option value="">Seleccione un Rol</option>
+            </select>
+        </div>
+             
+        <div class="mb-3">
+            <label for="Puesto" class="form-label">Puesto</label>
+            <select asp-for="ID_PUESTO" class="form-control" asp-items="@(new SelectList(ViewBag.Puestos, "ID_PUESTO", "NOMBRE_POSICION"))">
+                <option value="">Seleccione un puesto</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <input type="password" asp-for="CONTRASENA" class="form-control" placeholder="Contraseña" required>
+        </div>
+
+       
+        <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Agregar Empleado">
+    </form>
+</div>
+

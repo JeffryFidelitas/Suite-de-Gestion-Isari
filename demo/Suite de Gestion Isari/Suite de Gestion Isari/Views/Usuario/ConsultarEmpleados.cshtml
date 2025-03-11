@@ -9,13 +9,13 @@
 <table id="tablaEmpleado" class="table text-nowrap align-middle mb-0">
     <thead>
         <tr>
-            <th>ID EMPLEADO</th>
+            <th>Id Empleado</th>
             <th>Nombre</th>
             <th>Cedula</th>
-            <th>EMAIL</th>
-            <th>ID_ROL</th>
-            <th>ID_PUESTO</th>
-            <th>TELEFONO</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Puesto</th>
+            <th>Telefono</th>
             <th>Acciones</th>
 
         </tr>
@@ -32,11 +32,11 @@
                     <td>@empleado.NOMBRE</td>
                     <td>@empleado.CEDULA</td>
                     <td>@empleado.EMAIL</td>
-                    <td>@empleado.ID_ROL</td>
-                    <td>@empleado.ID_PUESTO</td>
+                    <td>@empleado.DESCRIPCION</td>
+                    <td>@empleado.NOMBRE_POSICION</td>
                     <td>@empleado.TELEFONO</td>
                     <td>
-                        <a href="@Url.Action("ActualizarPuesto","Puesto", new { ID = empleado.ID_EMPLEADO })" class="btn">
+                        <a href="@Url.Action("Editar","Usuario", new { ID = empleado.ID_EMPLEADO })" class="btn">
                             <i class="bi bi-bi-pencil-square" style="font-size: 1.6em;"></i>
                             <i class="bi bi-pencil-square"></i>
                         </a>
@@ -67,4 +67,7 @@
         });
     })
 </script>
+
+
+
 

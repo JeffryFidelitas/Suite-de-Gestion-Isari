@@ -62,7 +62,7 @@ namespace Suite_de_Gestion_Isari.Models
                     new { ID_PUESTO }
                 );
 
-                return puesto ?? new Puestos(); // Devuelve un objeto vacío si el resultado es nulo
+                return puesto ?? new Puestos(); 
             }
         }
 

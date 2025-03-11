@@ -1,124 +1,90 @@
 using Microsoft.AspNetCore.Mvc;
-using Suite_de_Gestion_Isari.Entidades;
 using Suite_de_Gestion_Isari.Models;
+using Suite_de_Gestion_Isari.Entidades;
 
 namespace Suite_de_Gestion_Isari.Controllers
 {
     public class UsuarioController : Controller
     {
-
-        private readonly UsuarioModel _usuario;
+        private readonly UsuarioModel _usuarioModel;
 
         public UsuarioController(IConfiguration configuration)
         {
-            _usuario = new UsuarioModel(configuration);
+            _usuarioModel = new UsuarioModel(configuration);
         }
 
-        [HttpGet]
-        public IActionResult Agregar_Empleado()
+        public IActionResult Index()
         {
-            return View();
-        }
-
-
-        [HttpPost]
-        public IActionResult Agregar_Empleado(Empleado model)
-        {
-            if (!ModelState.IsValid)
-            {
-
-                return View(model);
-            }
-
-            var respuesta = _usuario.AgregarEmpleado(model);
-
-            if (respuesta.Codigo == 0)
-            {
-
-                TempData["SuccessMessage"] = respuesta.Mensaje;
-                return RedirectToAction("ConsultarEmpleados");
-            }
-            else
-            {
-
-                ViewBag.ErrorMessage = respuesta.Mensaje;
-                return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult ConsultarEmpleados()
-        {
-            var empleados = _usuario.ConsultarEmpleados();
+            var empleados = _usuarioModel.ConsultarEmpleados();
             return View(empleados);
         }
 
-
-        public IActionResult Editar()
+        public IActionResult Detalles(string id)
         {
-            return View();
-        }
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
 
-        public IActionResult CambioContraseña()
-        {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult ActualizarPerfil()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult ActualizarPerfil(Empleado model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-            string mensaje;
-            var resultado = _usuario.ActualizarPerfil(model, out mensaje);
-
-            if (resultado)
-            {
-                TempData["SuccessMessage"] = mensaje;
-                return RedirectToAction("ConsultarEmpleados");
-            }
-            else
-            {
-                ViewBag.ErrorMessage = mensaje;
-                return View(model);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult MiPerfil()
-        {
-            // Simulando obtención del ID del empleado (usando un valor fijo)
-            var idEmpleado = "1"; // Simulamos un ID de empleado (reemplazar por uno real si se desea)
-
-            string mensaje;
-            var empleado = _usuario.ObtenerPerfil(idEmpleado, out mensaje);
-
+            var empleado = _usuarioModel.ObtenerUsuarioPorID(id);
             if (empleado == null)
-            {
-                ViewBag.ErrorMessage = mensaje;
-                return View();
-            }
+                return NotFound();
 
             return View(empleado);
         }
 
-        public IActionResult SolicitarVacaciones()
+        public IActionResult Crear()
         {
             return View();
         }
 
-        public IActionResult RegistrarTardia()
+        [HttpPost]
+        public IActionResult Crear(Empleado model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                var respuesta = _usuarioModel.AgregarEmpleado(model);
+                if (respuesta.Codigo == 0)
+                    return RedirectToAction("Index");
+
+                ModelState.AddModelError(string.Empty, respuesta.Mensaje);
+            }
+
+            return View(model);
         }
 
+        public IActionResult Editar(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return NotFound();
+
+            var empleado = _usuarioModel.ObtenerUsuarioPorID(id);
+            if (empleado == null)
+                return NotFound();
+
+            return View(empleado);
+        }
+
+        [HttpPost]
+        public IActionResult Editar(Empleado model)
+        {
+            if (ModelState.IsValid)
+            {
+                _usuarioModel.ActualizarEmpleado(model);
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        public IActionResult ObtenerUsuarioLogueado(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest("El ID del usuario no puede estar vacío.");
+
+            var usuario = _usuarioModel.ObtenerUsuarioLogueado(id);
+            if (usuario == null)
+                return NotFound();
+
+            return View(usuario);
+        }
     }
 }

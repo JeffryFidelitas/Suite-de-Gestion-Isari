@@ -1,0 +1,95 @@
+@model List<Suite_de_Gestion_Isari.Entidades.Horario>
+
+@{
+    ViewData["Title"] = "Horarios de Empleados";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Horarios de los Empleados</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+    <div class="text-center mb-4">
+        <a href="@Url.Action("RegistrarTardia", "Usuario")" class="btn btn-success">Registrar Horario</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID Empleado</th>
+                <th>Día Semana</th>
+                <th>Hora Entrada</th>
+                <th>Hora Salida</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var horario in Model)
+            {
+                <tr>
+                    <td>@horario.ID_EMPLEADO</td>
+                    <td>@horario.DIA_SEMANA</td>
+                    <td>@horario.HORA_ENTRADA.ToString(@"hh\:mm")</td>
+                    <td>@horario.HORA_SALIDA.ToString(@"hh\:mm")</td>
+                    <td>
+                        @if (horario.Estado == "A tiempo")
+                        {
+                            <span class="badge bg-success">A tiempo</span>
+                        }
+                        else if (horario.Estado == "Tarde")
+                        {
+                            <span class="badge bg-warning">Tarde</span>
+                        }
+                        else if (horario.Estado == "Falta")
+                        {
+                            <span class="badge bg-danger">Falta</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">Sin estado</span>
+                        }
+                    </td>
+                    <td>
+                        <form method="post" asp-action="CambiarEstadoHorario">
+                            <input type="hidden" name="idHorario" value="@horario.ID_HORARIO" />
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="estado" id="aTiempo_@horario.ID_HORARIO" value="A tiempo" @((horario.Estado == "Presente") ? "checked" : "")>
+                                <label class="form-check-label" for="aTiempo_@horario.ID_HORARIO">
+                                    A tiempo
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="estado" id="tarde_@horario.ID_HORARIO" value="Tarde" @((horario.Estado == "Tarde") ? "checked" : "")>
+                                <label class="form-check-label" for="tarde_@horario.ID_HORARIO">
+                                    Tarde
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="estado" id="falta_@horario.ID_HORARIO" value="Falta" @((horario.Estado == "Falta") ? "checked" : "")>
+                                <label class="form-check-label" for="falta_@horario.ID_HORARIO">
+                                    Falta
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary mt-2">Actualizar Estado</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
