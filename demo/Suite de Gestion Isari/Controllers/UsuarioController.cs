@@ -156,15 +156,114 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View(usuario);
         }
 
+        [HttpGet]
         public IActionResult SolicitarVacaciones()
         {
             return View();
         }
+        
+        [HttpPost]
+        public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+        
+            var respuesta = _usuario.AgregarSolicitudVacaciones(model);
+        
+            if (respuesta.Codigo == 0)
+            {
+                TempData["SuccessMessage"] = respuesta.Mensaje;
+                return RedirectToAction("VerSolicitudesVacaciones");
+            }
+            else
+            {
+                ViewBag.ErrorMessage = respuesta.Mensaje;
+                return View(model);
+            }
+        }
+        
+        [HttpGet]
+        public IActionResult VerSolicitudesVacaciones()
+        {
+            var solicitudes = _usuario.ObtenerSolicitudesVacaciones();
+            var solicitudesOrdenadas = solicitudes.OrderByDescending(s => s.ESTADO == "Pendiente").ToList();
+            return View(solicitudesOrdenadas); 
+        }
+        
+        
+        [HttpPost]
+        public IActionResult CambiarEstadoSolicitud(int idSolicitud, string estado)
+        {
+            var respuesta = _usuario.ActualizarEstadoSolicitud(idSolicitud, estado);
+        
+            if (respuesta.Codigo == 0)
+            {
+                TempData["SuccessMessage"] = respuesta.Mensaje;
+            }
+            else
+            {
+                ViewBag.ErrorMessage = respuesta.Mensaje;
+            }
+        
+            return RedirectToAction("VerSolicitudesVacaciones");
+        }
 
+
+        [HttpGet]
         public IActionResult RegistrarTardia()
         {
             return View();
         }
+        
+        [HttpPost]
+        public IActionResult RegistrarTardia(Horario model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+        
+            var respuesta = _usuario.AgregarHorario(model);
+        
+            if (respuesta.Codigo == 0)  
+            {
+                return RedirectToAction("VerHorarios"); 
+            }
+            else
+            {
+                return RedirectToAction("VerHorarios");  
+            }
+        }
+        
+        [HttpPost]
+        public IActionResult CambiarEstadoHorario(int idHorario, string estado)
+        {
+            try
+            {
+                var respuesta = _usuario.ActualizarEstadoHorario(idHorario, estado);
+        
+                if (respuesta.Codigo == 0)
+                {
+                    TempData["SuccessMessage"] = "Estado actualizado correctamente.";
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "No se pudo actualizar el estado.";
+                }
+        
+                return RedirectToAction("VerHorarios");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = "Error al actualizar el estado: " + ex.Message;
+                return RedirectToAction("VerHorarios");
+            }
+        }
+
+
+
 
 
         private void CargarDatosCompartidos()

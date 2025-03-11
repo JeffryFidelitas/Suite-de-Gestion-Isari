@@ -123,5 +123,197 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
+        public Respuesta AgregarSolicitudVacaciones(SolicitudVacaciones model)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                {
+                    var respuesta = new Respuesta();
+        
+                    var result = context.Execute(
+                        "CrearSolicitudVacaciones",
+                        new
+                        {
+                            model.ID_EMPLEADO,
+                            model.FECHA_INICIO,
+                            model.FECHA_FIN,
+                            model.DIAS_SOLICITADOS,
+                            model.ESTADO,
+                            model.FECHA_SOLICITUD,
+                            model.MOTIVO 
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+        
+        
+                    if (result > 0)
+                    {
+                        respuesta.Codigo = 0;
+                        respuesta.Mensaje = "Solicitud de vacaciones registrada exitosamente.";
+                    }
+                    else
+                    {
+                        respuesta.Codigo = -1;
+                        respuesta.Mensaje = "No se pudo registrar la solicitud de vacaciones.";
+                    }
+        
+                    return respuesta;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Codigo = -1,
+                    Mensaje = "Error al registrar la solicitud: " + ex.Message
+                };
+            }
+        }
+        
+        public List<SolicitudVacaciones> ObtenerSolicitudesVacaciones()
+        {
+            try
+            {
+                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                {
+                    var solicitudes = context.Query<SolicitudVacaciones>(
+                        "SELECT * FROM SuiteGestionIsari.dbo.SOLICITUD_VACACIONES",
+                        commandType: CommandType.Text
+                    ).ToList();
+        
+                    return solicitudes;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<SolicitudVacaciones>();
+            }
+        }
+        
+        
+        public Respuesta ActualizarEstadoSolicitud(int idSolicitud, string estado)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                {
+                    var respuesta = new Respuesta();
+        
+                    var result = context.Execute(
+                        "UPDATE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES SET ESTADO = @ESTADO WHERE ID_SOLICITUD = @ID_SOLICITUD",
+                        new { ESTADO = estado, ID_SOLICITUD = idSolicitud },
+                        commandType: CommandType.Text
+                    );
+        
+                    if (result > 0)
+                    {
+                        respuesta.Codigo = 0;
+                        respuesta.Mensaje = "Estado de la solicitud actualizado correctamente.";
+                    }
+                    else
+                    {
+                        respuesta.Codigo = -1;
+                        respuesta.Mensaje = "No se pudo actualizar el estado de la solicitud.";
+                    }
+        
+                    return respuesta;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Codigo = -1,
+                    Mensaje = "Error al actualizar el estado: " + ex.Message
+                };
+            }
+        }
+
+        public Respuesta AgregarHorario(Horario model)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                {
+                    context.Open();
+        
+                    var result = context.Execute(
+                        "dbo.RegistrarHorario", 
+                        new
+                        {
+                            model.ID_EMPLEADO,
+                            model.DIA_SEMANA,
+                            model.HORA_ENTRADA,
+                            model.HORA_SALIDA
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+        
+                    if (result > 0)
+                    {
+                        return new Respuesta { Codigo = 0 };
+                    }
+                    else
+                    {
+                        return new Respuesta { Codigo = -1 };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Codigo = -1,
+                    Mensaje = "Error al registrar la solicitud: " + ex.Message  
+                };
+            }
+        }
+        
+        
+        public Respuesta ActualizarEstadoHorario(int idHorario, string estado)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                {
+                    var respuesta = new Respuesta();
+        
+                    context.Open();
+        
+                    var result = context.Execute(
+                        "dbo.ActualizarEstadoHorario",
+                        new
+                        {
+                            ID_HORARIO = idHorario,
+                            ESTADO = estado
+                        },
+                        commandType: CommandType.StoredProcedure
+                    );
+        
+                    if (result > 0)
+                    {
+                        respuesta.Codigo = 0;
+                        respuesta.Mensaje = "Estado actualizado correctamente.";
+                    }
+                    else
+                    {
+                        respuesta.Codigo = -1;
+                        respuesta.Mensaje = "No se pudo actualizar el estado.";
+                    }
+        
+                    return respuesta;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Respuesta
+                {
+                    Codigo = -1,
+                    Mensaje = "Error al actualizar el estado: " + ex.Message
+                };
+            }
+        }
+
     }
 }
