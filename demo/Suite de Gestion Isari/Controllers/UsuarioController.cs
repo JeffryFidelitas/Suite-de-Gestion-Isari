@@ -211,110 +211,57 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
 
-        public Respuesta AgregarHorario(Horario model)
+        [HttpGet]
+        public IActionResult RegistrarTardia()
         {
-            try
+            return View();
+        }
+        
+        [HttpPost]
+        public IActionResult RegistrarTardia(Horario model)
+        {
+            if (!ModelState.IsValid)
             {
-                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
-                {
-                    context.Open();
-        
-                    var result = context.Execute(
-                        "dbo.RegistrarHorario", 
-                        new
-                        {
-                            model.ID_EMPLEADO,
-                            model.DIA_SEMANA,
-                            model.HORA_ENTRADA,
-                            model.HORA_SALIDA
-                        },
-                        commandType: CommandType.StoredProcedure
-                    );
-        
-                    if (result > 0)
-                    {
-                        return new Respuesta { Codigo = 0 };
-                    }
-                    else
-                    {
-                        return new Respuesta { Codigo = -1 };
-                    }
-                }
+                return View(model);
             }
-            catch (Exception ex)
+        
+            var respuesta = _usuario.AgregarHorario(model);
+        
+            if (respuesta.Codigo == 0)  
             {
-                return new Respuesta
-                {
-                    Codigo = -1,
-                    Mensaje = "Error al registrar la solicitud: " + ex.Message  
-                };
+                return RedirectToAction("VerHorarios"); 
+            }
+            else
+            {
+                return RedirectToAction("VerHorarios");  
             }
         }
         
-        
-        public Respuesta ActualizarEstadoHorario(int idHorario, string estado)
+        [HttpPost]
+        public IActionResult CambiarEstadoHorario(int idHorario, string estado)
         {
             try
             {
-                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                var respuesta = _usuario.ActualizarEstadoHorario(idHorario, estado);
+        
+                if (respuesta.Codigo == 0)
                 {
-                    var respuesta = new Respuesta();
-        
-                    context.Open();
-        
-                    var result = context.Execute(
-                        "dbo.ActualizarEstadoHorario",
-                        new
-                        {
-                            ID_HORARIO = idHorario,
-                            ESTADO = estado
-                        },
-                        commandType: CommandType.StoredProcedure
-                    );
-        
-                    if (result > 0)
-                    {
-                        respuesta.Codigo = 0;
-                        respuesta.Mensaje = "Estado actualizado correctamente.";
-                    }
-                    else
-                    {
-                        respuesta.Codigo = -1;
-                        respuesta.Mensaje = "No se pudo actualizar el estado.";
-                    }
-        
-                    return respuesta;
+                    TempData["SuccessMessage"] = "Estado actualizado correctamente.";
                 }
+                else
+                {
+                    ViewBag.ErrorMessage = "No se pudo actualizar el estado.";
+                }
+        
+                return RedirectToAction("VerHorarios");
             }
             catch (Exception ex)
             {
-                return new Respuesta
-                {
-                    Codigo = -1,
-                    Mensaje = "Error al actualizar el estado: " + ex.Message
-                };
+                ViewBag.ErrorMessage = "Error al actualizar el estado: " + ex.Message;
+                return RedirectToAction("VerHorarios");
             }
         }
-        
-        public List<Horario> ObtenerHorarios()
-        {
-            try
-            {
-                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
-                {
-                    var horarios = context.Query<Horario>(
-                        "SELECT * FROM SuiteGestionIsari.dbo.T_HORARIOS",
-                        commandType: CommandType.Text
-                    ).ToList();
-        
-                    return horarios;
-                }
-            }
-            catch (Exception ex)
-            {
-                return new List<Horario>();
-            }
-        }
+
 
 
 
