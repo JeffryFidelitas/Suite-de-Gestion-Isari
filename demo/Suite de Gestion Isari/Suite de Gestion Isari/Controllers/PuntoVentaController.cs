@@ -32,7 +32,7 @@ namespace Suite_de_Gestion_Isari.Controllers
      
         
         [HttpGet]
-        public ActionResult RegistroVentaPrueba()
+        public ActionResult RegistroVenta()
         {
             // Recupera el ID del usuario desde la sesión
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
@@ -50,7 +50,7 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
         [HttpPost]
-        public IActionResult RegistroVentaPrueba(string codigoBarras)
+        public IActionResult RegistroVenta(string codigoBarras)
         {
             // Obtener el producto por código de barras
             var producto = _productosService.ObtenerProductoPorCodigoBarras(codigoBarras);
@@ -112,7 +112,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             if (!hayProductos)
             {
                 TempData["ErrorMessage"] = "No hay productos en la venta. Agregue productos antes de finalizar.";
-                return RedirectToAction("RegistroVentaPrueba");
+                return RedirectToAction("RegistroVenta");
             }
 
             // Registrar la venta
@@ -120,12 +120,12 @@ namespace Suite_de_Gestion_Isari.Controllers
             if (resultado)
             {
                 TempData["SuccessMessage"] = "Venta registrada exitosamente.";
-                return RedirectToAction("RegistroVentaPrueba");
+                return RedirectToAction("RegistroVenta");
             }
             else
             {
                 TempData["ErrorMessage"] = "No se pudo registrar la venta. Verifique el inventario y vuelva a intentarlo.";
-                return RedirectToAction("RegistroVentaPrueba");
+                return RedirectToAction("RegistroVenta");
             }
         }
 

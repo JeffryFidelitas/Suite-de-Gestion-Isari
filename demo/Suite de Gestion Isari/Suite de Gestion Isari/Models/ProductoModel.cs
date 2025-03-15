@@ -34,7 +34,7 @@ namespace Suite_de_Gestion_Isari.Models
                 context.Execute("AgregarProducto", parametros, commandType: CommandType.StoredProcedure);
                 int result = parametros.Get<int>("@Resultado");
 
-                if (result == 0)
+                if (result == 1)
                 {
                     respuesta.Codigo = 0;
                     respuesta.Mensaje = "Producto agregado exitosamente.";

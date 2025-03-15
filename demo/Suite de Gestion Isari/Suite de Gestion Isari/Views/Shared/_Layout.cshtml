@@ -89,7 +89,7 @@
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Agregar_Empleado">Agregar Usuario</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ConsultarEmpleados">Lista Usuarios</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="RegistrarTardia">Registrar Tardia</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="VerHorarios">Ver Horarios</a></li>                              
                                 </ul>
                             </li>
 
@@ -105,6 +105,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="SolicitarVacaciones">Solicitar Vacaciones</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="VerSolicitudesVacaciones">Solicitudes Realizadas</a></li>
+                                
                             </ul>
                         </li>
 
@@ -113,9 +115,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="dropdownPuntoVenta" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Punto de Venta
                             </a>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownPuntoVenta">
+                            <ul class="dropdown-menu" aria-labelledby="dropdownPuntoVenta">                               
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroVenta">Registrar Venta</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroVentaPrueba">Registrar Venta PRUEBA</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="RegistroDevolucion">Registro de Devolución</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="PuntoVenta" asp-action="HistorialVentas">Historial de Ventas</a></li>
                             </ul>
@@ -130,7 +131,8 @@
                                         Bienvenido, @Context.Session.GetString("UsuarioNombre")
                                     </a>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
-                                        <a class="nav-link" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
                                         <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSesion">Cerrar Sesión</a></li>
 
                                     </ul>
@@ -167,3 +169,5 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+

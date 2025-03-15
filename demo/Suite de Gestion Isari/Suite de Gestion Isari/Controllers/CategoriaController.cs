@@ -19,11 +19,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             ViewBag.search = search;
 
             return View(_categoriaModel.ObtenerCategorias().Where(c => search == null || c.DESCRIPCION.Contains(search)).ToList());
-        }
-        public IActionResult Editar()
-        {
-            return View();
-        }
+        } 
 
         [HttpGet]
         public IActionResult Agregar()
