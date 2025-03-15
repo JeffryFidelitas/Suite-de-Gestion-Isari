@@ -8,13 +8,16 @@
     <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
         <h1 class="display-4 flex-grow-1 text-center mb-4">Inventario</h1>
         <a class="btn btn-primary" role="button" asp-controller="Inventario" asp-action="Agregar">Agregar</a>
+        <br /> <br />
     </div>
     <div class="pb-10">
         <form method="GET">
             <input class="form-control" placeholder="Busqueda" name="search" type="text" value="@ViewBag.search"/>
+
+            <br /> <br />
         </form>
     </div>
-    <table class="table table-striped">
+    <table id="Productos"  class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -22,8 +25,7 @@
                 <th scope="col">Proveedor</th>
                 <th scope="col">Precio</th>
                 <th scope="col">Unidades</th>
-                <th scope="col">Acciones</th>
-                <th scope="col">COMPRA</th>
+                <th scope="col">Acciones</th>              
             </tr>
         </thead>
         <tbody>
@@ -40,16 +42,7 @@
                         <td>
                             <a class="btn btn-warning btn-sm" role="button" asp-controller="Inventario" asp-action="Editar" asp-route-id="@producto.ID_PRODUCTO">Editar</a>
                             <a class="btn btn-danger btn-sm" role="button" asp-controller="Inventario" asp-action="Eliminar" asp-route-id="@producto.ID_PRODUCTO">Eliminar</a>
-                        </td>
-                        <td>
-                            <a href="@Url.Action("PuntoVenta","RegistrarVenta", new { ID = producto.ID_PRODUCTO })" class="btn">
-                                <i class="bi bi-bi-pencil-square" style="font-size: 1.6em;"></i>
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <div class="col-6">
-                                <a onclick="ActualizarCarrito(@producto.ID_PRODUCTO);" class="btn btn-primary" style="width:100%">Actualizar</a>
-                            </div>
-                        </td>
+                        </td>                     
                     </tr>
                 }
             }
@@ -62,6 +55,22 @@
     </table>
 </div>
 
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#Productos").DataTable({
+            language: {
+                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },columnDefs: [
+                { targets: [0, 1, 2, 3,4,5], type: "string" }
+            ]
+        });
+    })
+</script>
 
 <script>
 

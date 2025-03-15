@@ -14,7 +14,7 @@
             <input class="form-control" placeholder="Busqueda" name="search" type="text" value="@ViewBag.search"/>
         </form>
     </div>
-    <table class="table table-striped">
+    <table id="TablaCategorias" class="table table-striped">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -46,3 +46,18 @@
         </tbody>
     </table>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#TablaCategorias").DataTable({
+            language: {
+                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },columnDefs: [
+                { targets: [0, 1, 2], type: "string" }
+            ]
+        });
+    })
+</script>
