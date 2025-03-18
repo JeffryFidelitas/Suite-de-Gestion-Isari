@@ -9,11 +9,6 @@
         <h1 class="display-4 flex-grow-1 text-center mb-4">Categorías</h1>
         <a class="btn btn-primary" role="button" asp-controller="Categoria" asp-action="Agregar">Agregar</a>
     </div>
-    <div class="pb-10">
-        <form method="GET">
-            <input class="form-control" placeholder="Busqueda" name="search" type="text" value="@ViewBag.search"/>
-        </form>
-    </div>
     <table id="TablaCategorias" class="table table-striped">
         <thead>
             <tr>

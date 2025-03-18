@@ -1,47 +1,44 @@
-﻿@{
-    ViewData["Title"] = "Registro de Devoluciones";
+﻿@model Suite_de_Gestion_Isari.Entidades.Devolucion
+@{
+    ViewData["Title"] = "Registro de Devolución";
 }
 
 <div class="container mt-5">
     <h1 class="display-4 text-center mb-4">Registro de Devolución</h1>
 
-    <form>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="alert alert-danger text-center w-50">
+                @ViewBag.ErrorMessage
+            </div>
+        </div>
+    }
+
+    <form asp-action="RegistroDevolucion" method="post">
         <!-- Selección de Ticket de Venta -->
         <div class="mb-3">
-            <label for="numeroTicket" class="form-label">Número de Ticket</label>
-            <input type="text" class="form-control" id="numeroTicket" placeholder="Ingrese el número de ticket de la venta" required>
+            <label asp-for="@Model.ID_FACTURA" class="form-label"></label>
+            <input type="text" class="form-control" asp-for="@Model.ID_FACTURA" placeholder="Ingrese el número de ticket de la venta" required>
+            <span asp-validation-for="@Model.ID_FACTURA" class="text-danger"></span>
         </div>
 
         <!-- Razón de la Devolución -->
         <div class="mb-3">
-            <label for="razonDevolucion" class="form-label">Razón de la Devolución</label>
-            <textarea class="form-control" id="razonDevolucion" rows="4" placeholder="Ingrese la razón de la devolución" required></textarea>
+            <label asp-for="@Model.DESCRIPCION" class="form-label"></label>
+            <textarea class="form-control" asp-for="@Model.DESCRIPCION" rows="4" placeholder="Ingrese la razón de la devolución" required></textarea>
+            <span asp-validation-for="@Model.DESCRIPCION" class="text-danger"></span>
         </div>
 
-        <!-- Productos de la Venta -->
         <div class="mb-3">
-            <label for="productos" class="form-label">Productos de la Venta</label>
-            <select class="form-select" id="productos" multiple required>
-                <option value="1">Producto A - ₡1,500.00</option>
-                <option value="2">Producto B - ₡2,000.00</option>
-                <option value="3">Producto C - ₡3,000.00</option>
-                <option value="4">Producto D - ₡1,200.00</option>
-            </select>
-        </div>
-
-        <!-- Método de Reembolso -->
-        <div class="mb-3">
-            <label for="metodoReembolso" class="form-label">Método de Reembolso</label>
-            <select class="form-select" id="metodoReembolso" required>
-                <option value="efectivo">Efectivo</option>
-                <option value="tarjeta">Tarjeta</option>
-                <option value="sinpe">SINPE Móvil</option>
-            </select>
+            <label asp-for="@Model.DINERO" class="form-label"></label>
+            <input type="number" class="form-control" asp-for="@Model.DINERO" placeholder="Ingrese la cantidad de dinero a reembolsar" required>
+            <span asp-validation-for="@Model.DINERO" class="text-danger"></span>
         </div>
 
         <!-- Confirmar Devolución -->
         <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" role="button" asp-controller="Devoluciones" asp-action="ConsultaDevoluciones">Cancelar</a>
+            <a class="btn btn-secondary" role="button" asp-controller="PuntoVenta" asp-action="ConsultaDevoluciones">Cancelar</a>
             <button type="submit" class="btn btn-primary">Registrar Devolución</button>
         </div>
     </form>

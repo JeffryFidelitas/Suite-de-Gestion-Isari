@@ -14,11 +14,9 @@ namespace Suite_de_Gestion_Isari.Controllers
             _categoriaModel = new CategoriaModel(configuration);
         }
 
-        public IActionResult Index(string? search)
+        public IActionResult Index()
         {
-            ViewBag.search = search;
-
-            return View(_categoriaModel.ObtenerCategorias().Where(c => search == null || c.DESCRIPCION.Contains(search)).ToList());
+            return View(_categoriaModel.ObtenerCategorias().ToList());
         } 
 
         [HttpGet]

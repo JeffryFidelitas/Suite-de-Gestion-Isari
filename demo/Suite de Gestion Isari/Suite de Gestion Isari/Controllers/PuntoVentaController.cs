@@ -14,14 +14,14 @@ namespace Suite_de_Gestion_Isari.Controllers
 
         private readonly PuntoVentaModel _venta;
         private readonly PuntoVentaModel _productosService;
+        private readonly DevolucionModel _devolucion;
 
 
         public PuntoVentaController(IConfiguration configuration)
         {
             _venta = new PuntoVentaModel(configuration);
             _productosService = new PuntoVentaModel(configuration);
-
-
+            _devolucion = new DevolucionModel(configuration);
         }
        
         public ActionResult RegistroDevolucion()
@@ -29,7 +29,27 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-     
+        [HttpPost]
+        public ActionResult RegistroDevolucion(Devolucion devolucion)
+        {
+            //if (devolucion == null)
+            var res = _devolucion.AgregarDevolucion(devolucion);
+            if (res.Codigo > 0)
+            {
+                ViewBag.ErrorMessage = res.Mensaje;
+                return View(); // TODO: ListarDevoluycionsesadas
+            }
+            else
+            {
+                ViewBag.ErrorMessage = res.Mensaje;
+                return View(devolucion);
+            }
+        }
+
+        public ActionResult ConsultaDevoluciones()
+        {
+            return View(_devolucion.ObtenerDevoluciones().ToList());
+        }
         
         [HttpGet]
         public ActionResult RegistroVenta()
