@@ -5,15 +5,11 @@ using Suite_de_Gestion_Isari.Models;
 public class PuntoVentaController : Controller
 {
         private readonly PuntoVentaModel _puntoVentaModel;
-        private readonly PuntoVentaModel _venta;
-        private readonly PuntoVentaModel _productosService;
         private readonly DevolucionModel _devolucion;
 
 
         public PuntoVentaController(IConfiguration configuration)
         {
-            _venta = new PuntoVentaModel(configuration);
-            _productosService = new PuntoVentaModel(configuration);
             _devolucion = new DevolucionModel(configuration);
             _puntoVentaModel = new PuntoVentaModel(configuration);
         }
@@ -52,10 +48,10 @@ public class PuntoVentaController : Controller
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
 
             
-            var detallesVenta = _venta.ObtenerDetalleVentaTemporal(usuarioID);
+            var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(usuarioID);
             var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
 
-            var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(usuarioID);
+            var montoTotal = _puntoVentaModel.ObtenerMontoTotalVentaTemporal(usuarioID);
 
             ViewBag.MontoTotal = montoTotal;
             ViewBag.MontoCantidadArticulos = cantidadArticulos;
@@ -67,7 +63,7 @@ public class PuntoVentaController : Controller
         public IActionResult RegistroVenta(string codigoBarras)
         {
             // Obtener el producto por código de barras
-            var producto = _productosService.ObtenerProductoPorCodigoBarras(codigoBarras);
+            var producto = _puntoVentaModel.ObtenerProductoPorCodigoBarras(codigoBarras);
 
             if (producto.ID_PRODUCTO != 0)
             {
@@ -84,13 +80,13 @@ public class PuntoVentaController : Controller
                 };
 
                 // Agregar a la tabla temporal
-                var resultado = _venta.AgregarVentaTemporal(venta);
+                var resultado = _puntoVentaModel.AgregarVentaTemporal(venta);
                 
 
                 if (resultado)
                 {
-                    var detallesVenta = _venta.ObtenerDetalleVentaTemporal(venta.Consecutivo);
-                    var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(venta.Consecutivo);
+                    var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(venta.Consecutivo);
+                    var montoTotal = _puntoVentaModel.ObtenerMontoTotalVentaTemporal(venta.Consecutivo);
                     var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
                     ViewBag.MontoTotal = montoTotal;
                     ViewBag.MontoCantidadArticulos = cantidadArticulos;
@@ -104,9 +100,9 @@ public class PuntoVentaController : Controller
 
                 ViewBag.MensajeError = "Producto no encontrado. Por favor, verifique el código de barras.";
                 var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-                var detallesVenta = _venta.ObtenerDetalleVentaTemporal(usuarioID);
+                var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(usuarioID);
                 var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
-                var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(usuarioID);
+                var montoTotal = _puntoVentaModel.ObtenerMontoTotalVentaTemporal(usuarioID);
                 ViewBag.MontoTotal = montoTotal;
                 ViewBag.MontoCantidadArticulos = cantidadArticulos;
                 return PartialView("_DetalleVenta", detallesVenta); 
@@ -146,5 +142,14 @@ public class PuntoVentaController : Controller
     {
         var detalle = _puntoVentaModel.ConsultarDetalleFactura(consecutivo);
         return View(detalle.Contenido);
+    }
+
+    public IActionResult HistorialVentas()
+    {
+        if (HttpContext.Session.GetString("UsuarioID") == null)
+            return View();
+        var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+        var results = _puntoVentaModel.ConsultarFacturas(usuarioID);
+        return View(results.Contenido);
     }
 }
