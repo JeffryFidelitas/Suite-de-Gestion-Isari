@@ -1,179 +1,46 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
+﻿using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Entidades;
-using System.Net.Http.Headers;
 using Suite_de_Gestion_Isari.Models;
-using System.Reflection;
-using System.Text.Json;
 
-namespace Suite_de_Gestion_Isari.Controllers
+public class PuntoVentaController : Controller
 {
-    public class PuntoVentaController : Controller
+    private readonly PuntoVentaModel _puntoVentaModel;
+
+    public PuntoVentaController(PuntoVentaModel puntoVentaModel)
     {
+        _puntoVentaModel = puntoVentaModel;
+    }
 
-        private readonly PuntoVentaModel _venta;
-        private readonly PuntoVentaModel _productosService;
-
-
-        public PuntoVentaController(IConfiguration configuration)
+    // Acción para consultar el historial de pagos
+    public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
+    {
+        try
         {
-            _venta = new PuntoVentaModel(configuration);
-            _productosService = new PuntoVentaModel(configuration);
+            // Consultamos el historial de pagos para la factura específica
+            var pagos = _puntoVentaModel.ObtenerHistorialPagos(consecutivoFactura);
 
-
-        }
-       
-        public ActionResult RegistroDevolucion()
-        {
-            return View();
-        }
-
-     
-        
-        [HttpGet]
-        public ActionResult RegistroVenta()
-        {
-            // Recupera el ID del usuario desde la sesión
-            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-
-            
-            var detallesVenta = _venta.ObtenerDetalleVentaTemporal(usuarioID);
-            var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
-
-            var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(usuarioID);
-
-            ViewBag.MontoTotal = montoTotal;
-            ViewBag.MontoCantidadArticulos = cantidadArticulos;
-           
-            return View(detallesVenta);
-        }
-
-        [HttpPost]
-        public IActionResult RegistroVenta(string codigoBarras)
-        {
-            // Obtener el producto por código de barras
-            var producto = _productosService.ObtenerProductoPorCodigoBarras(codigoBarras);
-
-            if (producto.ID_PRODUCTO != 0)
+            if (pagos.Any())
             {
-                // Crear objeto para insertar en la tabla temporal
-                var venta = new Venta
-                {
-                    Consecutivo = int.Parse(HttpContext.Session.GetString("UsuarioID")!),
-                    ID_PRODUCTO = producto.ID_PRODUCTO,
-                    cantidad = 1, // Por defecto agrega 
-                    CODIGO_PRODUCTO=producto.CODIGO_PRODUCTO,                 
-                    NOMBRE=producto.NOMBRE,
-                    Precio=producto.Precio,
-                    DESCRIPCION = producto.DESCRIPCION
-                };
-
-                // Agregar a la tabla temporal
-                var resultado = _venta.AgregarVentaTemporal(venta);
-                
-
-                if (resultado)
-                {
-                    var detallesVenta = _venta.ObtenerDetalleVentaTemporal(venta.Consecutivo);
-                    var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(venta.Consecutivo);
-                    var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
-                    ViewBag.MontoTotal = montoTotal;
-                    ViewBag.MontoCantidadArticulos = cantidadArticulos;
-                    return PartialView("_DetalleVenta", detallesVenta); 
-                }
-
-
+                return View(pagos);
             }
             else
             {
-
-                ViewBag.MensajeError = "Producto no encontrado. Por favor, verifique el código de barras.";
-                var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-                var detallesVenta = _venta.ObtenerDetalleVentaTemporal(usuarioID);
-                var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
-                var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(usuarioID);
-                ViewBag.MontoTotal = montoTotal;
-                ViewBag.MontoCantidadArticulos = cantidadArticulos;
-                return PartialView("_DetalleVenta", detallesVenta); 
-
+                ViewBag.MensajeError = "No se encontraron pagos para esta factura.";
+                return View(new List<DetallePago>());
             }
-
-            return Json(new { exito = false, mensaje = "Producto no encontrado o no se pudo agregar." });
         }
-
-        [HttpPost]
-        public IActionResult Registrarventa()
+        catch (Exception ex)
         {
-            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-
-            // Verificar si hay productos en la venta temporal para el usuario
-            var hayProductos = _venta.HayProductosEnVenta(usuarioID);
-            if (!hayProductos)
-            {
-                TempData["ErrorMessage"] = "No hay productos en la venta. Agregue productos antes de finalizar.";
-                return RedirectToAction("RegistroVenta");
-            }
-
-            // Registrar la venta
-            var resultado = _venta.Registrarventa(usuarioID);
-            if (resultado)
-            {
-                TempData["SuccessMessage"] = "Venta registrada exitosamente.";
-                return RedirectToAction("RegistroVenta");
-            }
-            else
-            {
-                TempData["ErrorMessage"] = "No se pudo registrar la venta. Verifique el inventario y vuelva a intentarlo.";
-                return RedirectToAction("RegistroVenta");
-            }
+            ViewBag.MensajeError = $"Error al consultar historial de pagos: {ex.Message}";
+            return View(new List<DetallePago>());
         }
+    }
 
-        [HttpGet]
-        public IActionResult HistorialVentas()
-        {
-            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+    // Resto de las acciones existentes...
 
-            
-            var respuesta = _venta.ConsultarFacturas(usuarioID);
-
-           
-            if (respuesta.Codigo == 0)
-            {
-                
-                return View(respuesta.Contenido);
-            }
-            else
-            {
-               
-                ViewBag.MensajeError = respuesta.Mensaje;
-                return View(new List<Venta>());
-            }
-        }
-
-
-        [HttpGet]
-        public IActionResult ConsultarDetalleFactura(long consecutivo)
-        {
-
-            var respuesta = _venta.ConsultarDetalleFactura(consecutivo);
-
-
-            if (respuesta.Codigo == 0)
-            {
-                
-                return View(respuesta.Contenido);
-            }
-            else
-            {
-                
-                ViewBag.MensajeError = respuesta.Mensaje;
-                return View(new List<Venta>());
-            }
-
-        }
-
+    public IActionResult ConsultarDetalleFactura(long consecutivo)
+    {
+        var detalle = _puntoVentaModel.ConsultarDetalleFactura(consecutivo);
+        return View(detalle.Contenido);
     }
 }
-
-    

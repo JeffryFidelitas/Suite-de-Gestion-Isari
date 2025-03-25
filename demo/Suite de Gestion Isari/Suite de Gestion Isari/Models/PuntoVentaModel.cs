@@ -1,17 +1,11 @@
-﻿using Dapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+﻿namespace Suite_de_Gestion_Isari.Models;
 using Suite_de_Gestion_Isari.Entidades;
+using Microsoft.Data.SqlClient;
+using Dapper;
 using System.Data;
-using System.Data.Common;
-using System.Reflection;
 
-namespace Suite_de_Gestion_Isari.Models
-{
-    public class PuntoVentaModel
+public class PuntoVentaModel
     {
-
-
         private readonly IConfiguration _conf;
 
         public PuntoVentaModel(IConfiguration conf)
@@ -19,59 +13,49 @@ namespace Suite_de_Gestion_Isari.Models
             _conf = conf;
         }
 
-
-
-        
+        // Obtener producto por código de barras
         public Venta ObtenerProductoPorCodigoBarras(string codigoBarras)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
-                return context.QueryFirstOrDefault <Venta>(
+                return context.QueryFirstOrDefault<Venta>(
                     "ConssultarExistenciaProducto",
-                    new { CODIGO_PRODUCTO =codigoBarras },
+                    new { CODIGO_PRODUCTO = codigoBarras },
                     commandType: CommandType.StoredProcedure
                 ) ?? new Venta();
-           
             }
         }
 
-
+        // Agregar venta temporal
         public bool AgregarVentaTemporal(Venta venta)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
-            {              
-                
-                var result = context.Execute("AgregarVentaTemporal", new { venta.ID_PRODUCTO, venta.CODIGO_PRODUCTO,venta.Consecutivo,venta.cantidad,venta.NOMBRE,venta.Precio,venta.DESCRIPCION});
-               
-                
+            {
+                var result = context.Execute("AgregarVentaTemporal", new { venta.ID_PRODUCTO, venta.CODIGO_PRODUCTO, venta.Consecutivo, venta.cantidad, venta.NOMBRE, venta.Precio, venta.DESCRIPCION });
                 return result > 0;
             }
         }
 
-
-
+        // Obtener detalle de venta temporal
         public List<Venta> ObtenerDetalleVentaTemporal(int Consecutivo)
         {
-            
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
                 return context.Query<Venta>("ObtenerDetalleVentaTemporal", new { Consecutivo }).ToList();
-              
             }
         }
 
+        // Obtener monto total venta temporal
         public decimal ObtenerMontoTotalVentaTemporal(int Consecutivo)
         {
-
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {
-                var montoTotal= context.QuerySingleOrDefault<decimal?>("ObtenerMontoTotalVentaTemporal", new {Consecutivo});
-
+                var montoTotal = context.QuerySingleOrDefault<decimal?>("ObtenerMontoTotalVentaTemporal", new { Consecutivo });
                 return montoTotal ?? 0;
-
             }
         }
 
+        // Registrar venta
         public bool Registrarventa(int ConsecutivoUsuario)
         {
             using (var connection = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
@@ -87,7 +71,7 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-
+        // Verificar si hay productos en la venta
         public bool HayProductosEnVenta(int usuarioID)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
@@ -98,7 +82,7 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-
+        // Consultar facturas
         public Respuesta ConsultarFacturas(long consecutivo)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
@@ -119,9 +103,9 @@ namespace Suite_de_Gestion_Isari.Models
 
                 return respuesta;
             }
-
         }
 
+        // Consultar detalle de factura
         public Respuesta ConsultarDetalleFactura(long Consecutivo)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
@@ -144,15 +128,13 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-
-
+        // Obtener historial de pagos
+        public List<DetallePago> ObtenerHistorialPagos(long consecutivoFactura)
+        {
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                return context.Query<DetallePago>("ObtenerHistorialPagos", new { ConsecutivoFactura = consecutivoFactura }, commandType: CommandType.StoredProcedure).ToList();
+            }
+        }
     }
-
-
-}
-
-
-
-
-
 
