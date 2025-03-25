@@ -8,14 +8,6 @@
     <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
         <h1 class="display-4 flex-grow-1 text-center mb-4">Inventario</h1>
         <a class="btn btn-primary" role="button" asp-controller="Inventario" asp-action="Agregar">Agregar</a>
-        <br /> <br />
-    </div>
-    <div class="pb-10">
-        <form method="GET">
-            <input class="form-control" placeholder="Busqueda" name="search" type="text" value="@ViewBag.search"/>
-
-            <br /> <br />
-        </form>
     </div>
     <table id="Productos"  class="table table-striped">
         <thead>
@@ -79,7 +71,7 @@
 
         $.ajax({
             method: "POST",
-            url: "/PuntoVenta/RegistrarVenta", // Asegúrate de que este sea el nombre correcto del controlador y acción.
+            url: "/PuntoVenta/RegistrarVenta", // Asegï¿½rate de que este sea el nombre correcto del controlador y acciï¿½n.
             dataType: "json",
            // contentType: "application/json",
             data: {
@@ -88,13 +80,13 @@
             },
             success: function (data) {
                 if (data == 0) {
-                    MostrarMensajeOk("El producto se actualizó correctamente en su carrito");
+                    MostrarMensajeOk("El producto se actualizï¿½ correctamente en su carrito");
                 } else {
                     MostrarMensaje("El producto no fue actualizado en su carrito");
                 }
             },
             error: function () {
-                MostrarMensaje("Ocurrió un error al procesar la solicitud.");
+                MostrarMensaje("Ocurriï¿½ un error al procesar la solicitud.");
             }
         });
     }
@@ -103,7 +95,7 @@
     function MostrarMensajeOk(texto)
     {
           Swal.fire({
-            title: "Información",
+            title: "Informaciï¿½n",
             confirmButtonText: "Aceptar",
             text: texto,
             icon: "success"
@@ -118,7 +110,7 @@
     function MostrarMensaje(texto)
     {
         Swal.fire({
-          title: "Información",
+          title: "Informaciï¿½n",
           text: texto,
           icon: "info"
         });

@@ -1,0 +1,57 @@
+@model List<Suite_de_Gestion_Isari.Entidades.Devolucion>
+
+@{
+    ViewData["Title"] = "Devoluciones";
+}
+
+<div>
+    <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
+        <h1 class="display-4 flex-grow-1 text-center mb-4">Devoluciones</h1>
+        <a class="btn btn-primary" role="button" asp-controller="PuntoVenta" asp-action="RegistroDevolucion">Agregar</a>
+    </div>
+    <table id="TablaDevoluciones" class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Número de Factura</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Cantidad de Dinero</th>         
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var devolucion in Model)
+                {
+                    <tr>
+                        <td scope="row">@devolucion.ID_DEVOLUCION</td>
+                        <td>@devolucion.ID_FACTURA</td>
+                        <td>@devolucion.DESCRIPCION</td>
+                        <td>@devolucion.DINERO</td>
+                    </tr>
+                }
+            }
+            else {
+                <tr>
+                    <td colspan="4" class="text-center">No hay devoluciones registradas</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#TablaDevoluciones").DataTable({
+            language: {
+                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },columnDefs: [
+                { targets: [0, 1, 2, 3], type: "string" }
+            ]
+        });
+    })
+</script>

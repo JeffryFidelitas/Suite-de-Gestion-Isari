@@ -16,10 +16,9 @@ public class InventarioController : Controller
         _categoriaModel = new CategoriaModel(configuration);
     }
 
-    public IActionResult Index(string? search)
+    public IActionResult Index()
     {
-        ViewBag.search = search;
-        return View(_productoModel.ObtenerProductos().Where(p => search == null || p.NOMBRE.Contains(search)).ToList());
+        return View(_productoModel.ObtenerProductos().ToList());
     }
 
     [HttpGet]
