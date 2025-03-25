@@ -112,6 +112,7 @@ public class PuntoVentaController : Controller
                 return PartialView("_DetalleVenta", detallesVenta); 
 
             }
+        return View();
       }
 
     // Acción para consultar el historial de pagos
