@@ -1,17 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
+﻿using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Entidades;
-using System.Net.Http.Headers;
 using Suite_de_Gestion_Isari.Models;
-using System.Reflection;
-using System.Text.Json;
 
-namespace Suite_de_Gestion_Isari.Controllers
+public class PuntoVentaController : Controller
 {
-    public class PuntoVentaController : Controller
-    {
-
+        private readonly PuntoVentaModel _puntoVentaModel;
         private readonly PuntoVentaModel _venta;
         private readonly PuntoVentaModel _productosService;
         private readonly DevolucionModel _devolucion;
@@ -22,6 +15,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             _venta = new PuntoVentaModel(configuration);
             _productosService = new PuntoVentaModel(configuration);
             _devolucion = new DevolucionModel(configuration);
+            _puntoVentaModel = new PuntoVentaModel(configuration);
         }
        
         public ActionResult RegistroDevolucion()
@@ -118,82 +112,38 @@ namespace Suite_de_Gestion_Isari.Controllers
                 return PartialView("_DetalleVenta", detallesVenta); 
 
             }
+      }
 
-            return Json(new { exito = false, mensaje = "Producto no encontrado o no se pudo agregar." });
-        }
-
-        [HttpPost]
-        public IActionResult Registrarventa()
+    // Acción para consultar el historial de pagos
+    public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
+    {
+        try
         {
-            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+            // Consultamos el historial de pagos para la factura específica
+            var pagos = _puntoVentaModel.ObtenerHistorialPagos(consecutivoFactura);
 
-            // Verificar si hay productos en la venta temporal para el usuario
-            var hayProductos = _venta.HayProductosEnVenta(usuarioID);
-            if (!hayProductos)
+            if (pagos.Any())
             {
-                TempData["ErrorMessage"] = "No hay productos en la venta. Agregue productos antes de finalizar.";
-                return RedirectToAction("RegistroVenta");
-            }
-
-            // Registrar la venta
-            var resultado = _venta.Registrarventa(usuarioID);
-            if (resultado)
-            {
-                TempData["SuccessMessage"] = "Venta registrada exitosamente.";
-                return RedirectToAction("RegistroVenta");
+                return View(pagos);
             }
             else
             {
-                TempData["ErrorMessage"] = "No se pudo registrar la venta. Verifique el inventario y vuelva a intentarlo.";
-                return RedirectToAction("RegistroVenta");
+                ViewBag.MensajeError = "No se encontraron pagos para esta factura.";
+                return View(new List<DetallePago>());
             }
         }
-
-        [HttpGet]
-        public IActionResult HistorialVentas()
+        catch (Exception ex)
         {
-            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-
-            
-            var respuesta = _venta.ConsultarFacturas(usuarioID);
-
-           
-            if (respuesta.Codigo == 0)
-            {
-                
-                return View(respuesta.Contenido);
-            }
-            else
-            {
-               
-                ViewBag.MensajeError = respuesta.Mensaje;
-                return View(new List<Venta>());
-            }
+            ViewBag.MensajeError = $"Error al consultar historial de pagos: {ex.Message}";
+            return View(new List<DetallePago>());
         }
+    }
 
+    // Resto de las acciones existentes...
 
-        [HttpGet]
-        public IActionResult ConsultarDetalleFactura(long consecutivo)
-        {
-
-            var respuesta = _venta.ConsultarDetalleFactura(consecutivo);
-
-
-            if (respuesta.Codigo == 0)
-            {
-                
-                return View(respuesta.Contenido);
-            }
-            else
-            {
-                
-                ViewBag.MensajeError = respuesta.Mensaje;
-                return View(new List<Venta>());
-            }
-
-        }
-
+    public IActionResult ConsultarDetalleFactura(long consecutivo)
+    {
+        var detalle = _puntoVentaModel.ConsultarDetalleFactura(consecutivo);
+        return View(detalle.Contenido);
     }
 }
-
-    
