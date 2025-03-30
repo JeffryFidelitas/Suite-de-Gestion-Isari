@@ -624,13 +624,17 @@ BEGIN
         RETURN;
     END
 
-  
-    INSERT INTO SuiteGestionIsari.dbo.T_HORARIOS 
-        (ID_EMPLEADO, DIA_SEMANA, HORA_ENTRADA, HORA_SALIDA)
-    VALUES 
-        (@ID_EMPLEADO, @DIA_SEMANA, @HORA_ENTRADA, @HORA_SALIDA);
+    BEGIN TRY
+        INSERT INTO SuiteGestionIsari.dbo.T_HORARIOS 
+            (ID_EMPLEADO, DIA_SEMANA, HORA_ENTRADA, HORA_SALIDA)
+        VALUES 
+            (@ID_EMPLEADO, @DIA_SEMANA, @HORA_ENTRADA, @HORA_SALIDA);
 
-    SELECT 1 AS Success;  
+        SELECT 1 AS Success; 
+    END TRY
+    BEGIN CATCH
+        SELECT ERROR_MESSAGE() AS ErrorMessage;  -
+    END CATCH
 END;
 
 ---Actualizar Horario----
