@@ -23,9 +23,12 @@
     }
 
     <form asp-action="RegistrarTardia" method="post">
+        <!-- Select en lugar de input manual -->
         <div class="mb-3">
-            <label for="ID_EMPLEADO" class="form-label">ID Empleado</label>
-            <input type="number" class="form-control" asp-for="ID_EMPLEADO" required>
+            <label for="ID_EMPLEADO" class="form-label">Seleccionar Empleado</label>
+            <select id="ID_EMPLEADO" name="ID_EMPLEADO" class="form-control" required>
+                <option value="">Cargando empleados...</option>
+            </select>
         </div>
 
         <div class="mb-3">
@@ -51,3 +54,18 @@
         </div>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/Usuario/ObtenerEmpleados')
+            .then(response => response.json())
+            .then(data => {
+                let select = document.getElementById("ID_EMPLEADO");
+                select.innerHTML = '<option value="">Seleccione un empleado</option>';
+                data.forEach(empleado => {
+                    select.innerHTML += `<option value="${empleado.id}">${empleado.nombre}</option>`;
+                });
+            })
+            .catch(error => console.error("Error al cargar empleados:", error));
+    });
+</script>
