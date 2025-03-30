@@ -211,31 +211,50 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
 
-        [HttpGet]
-        public IActionResult RegistrarTardia()
-        {
-            return View();
-        }
+         [HttpGet]
+         public IActionResult RegistrarTardia()
+         {
+             return View();
+         }
         
-        [HttpPost]
-        public IActionResult RegistrarTardia(Horario model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+         [HttpPost]
+         public IActionResult RegistrarTardia(Horario model)
+         {
+             if (!ModelState.IsValid)
+             {
+                 return View(model);
+             }
         
-            var respuesta = _usuario.AgregarHorario(model);
+             try
+             {
+                 var respuesta = _usuario.AgregarHorario(model);
         
-            if (respuesta.Codigo == 0)  
-            {
-                return RedirectToAction("VerHorarios"); 
-            }
-            else
-            {
-                return RedirectToAction("VerHorarios");  
-            }
-        }
+                 if (respuesta.Codigo == 0)
+                 {
+                     TempData["SuccessMessage"] = "Horario registrado correctamente.";
+                     return RedirectToAction("VerHorarios");
+                 }
+                 else
+                 {
+                     ViewBag.ErrorMessage = "Hubo un problema al registrar el horario: " + respuesta.Mensaje;
+                     return View(model);
+                 }
+             }
+             catch (Exception ex)
+             {
+                 ViewBag.ErrorMessage = "Error al procesar la solicitud: " + ex.Message;
+                 return View(model);
+             }
+         }
+        
+        
+        
+         [HttpGet]
+         public IActionResult ObtenerEmpleados()
+         {
+             var empleados = _usuario.ObtenerListaEmpleados();
+             return Json(empleados);
+         }
         
         [HttpPost]
         public IActionResult CambiarEstadoHorario(int idHorario, string estado)
@@ -261,6 +280,8 @@ namespace Suite_de_Gestion_Isari.Controllers
                 return RedirectToAction("VerHorarios");
             }
         }
+
+        
 
         [HttpGet]
         public IActionResult VerHorarios()
