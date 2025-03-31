@@ -138,18 +138,173 @@ public class PuntoVentaController : Controller
 
     // Resto de las acciones existentes...
 
-    public IActionResult ConsultarDetalleFactura(long consecutivo)
-    {
-        var detalle = _puntoVentaModel.ConsultarDetalleFactura(consecutivo);
-        return View(detalle.Contenido);
+    [HttpPost]
+        public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null)
+        {
+            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+            var enviarFactura = !string.IsNullOrWhiteSpace(correoCliente) || !string.IsNullOrWhiteSpace(nombreCliente);
+
+
+            // Verificar si hay productos en la venta temporal para el usuario
+            var hayProductos = _venta.HayProductosEnVenta(usuarioID);
+            if (!hayProductos)
+            {
+                TempData["ErrorMessage"] = "No hay productos en la venta. Agregue productos antes de finalizar.";
+                return RedirectToAction("RegistroVenta");
+            }
+
+            // Registrar la venta
+            var resultado = _venta.Registrarventa(usuarioID);
+            if (resultado)
+            {
+                // Si se solicita el envío de la factura
+                if (enviarFactura)
+                {
+                    var idFactura = _venta.ObtenerIdUltimaVenta(usuarioID); // Método para obtener el ID de la última factura
+                    var detallesFactura = _venta.ObtenerDetallesFactura(idFactura);
+
+                    var resultadoEnvio = _venta.EnvioFactura(correoCliente, nombreCliente, detallesFactura);
+
+                    if (resultadoEnvio.Codigo == 0)
+                    {
+                        TempData["SuccessMessage"] = "Venta registrada y factura enviada exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = $"La venta se registró, pero hubo un problema al enviar la factura: {resultadoEnvio.Mensaje}";
+                    }
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Venta registrada exitosamente.";
+                }
+
+                return RedirectToAction("RegistroVenta");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "No se pudo registrar la venta. Verifique el inventario y vuelva a intentarlo.";
+                return RedirectToAction("RegistroVenta");
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult HistorialVentas()
+        {
+            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+
+            
+            var respuesta = _venta.ConsultarFacturas(usuarioID);
+
+           
+            if (respuesta.Codigo == 0)
+            {
+                
+                return View(respuesta.Contenido);
+            }
+            else
+            {
+               
+                ViewBag.MensajeError = respuesta.Mensaje;
+                return View(new List<Venta>());
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult ConsultarDetalleFactura(long consecutivo)
+        {
+
+            var respuesta = _venta.ConsultarDetalleFactura(consecutivo);
+
+
+            if (respuesta.Codigo == 0)
+            {
+                
+                return View(respuesta.Contenido);
+            }
+            else
+            {
+                
+                ViewBag.MensajeError = respuesta.Mensaje;
+                return View(new List<Venta>());
+            }
+
+        }
+
+            public IActionResult EliminarArticulo(long ID_VentaTemporal)
+        {
+            try
+            {
+                var resultado = _venta.EliminarArticuloTemporal(ID_VentaTemporal);
+
+                if (resultado)
+                {
+                    
+
+                    TempData["SuccessMessage"] = "Artículo eliminado correctamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No se pudo eliminar el artículo.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error: " + ex.Message;
+            }
+
+            
+            return RedirectToAction("RegistroVenta");
+        }
+
+        
+        [HttpGet]
+        public IActionResult HistorialVentaDia()
+        {
+            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+
+
+            var respuesta = _venta.ConsultarFacturasHoy(usuarioID);
+
+
+            if (respuesta.Codigo == 0)
+            {
+
+                return View(respuesta.Contenido);
+            }
+            else
+            {
+
+                ViewBag.MensajeError = respuesta.Mensaje;
+                return View(new List<Venta>());
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult HistorialVentaDiaAdmin()
+        {
+            
+
+
+            var respuesta = _venta.ConsultarFacturasHoyAdmin();
+
+
+            if (respuesta.Codigo == 0)
+            {
+
+                return View(respuesta.Contenido);
+            }
+            else
+            {
+
+                ViewBag.MensajeError = respuesta.Mensaje;
+                return View(new List<Venta>());
+            }
+        }
+        
     }
 
-    public IActionResult HistorialVentas()
-    {
-        if (HttpContext.Session.GetString("UsuarioID") == null)
-            return View();
-        var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-        var results = _puntoVentaModel.ConsultarFacturas(usuarioID);
-        return View(results.Contenido);
-    }
 }
