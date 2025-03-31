@@ -624,13 +624,17 @@ BEGIN
         RETURN;
     END
 
-  
-    INSERT INTO SuiteGestionIsari.dbo.T_HORARIOS 
-        (ID_EMPLEADO, DIA_SEMANA, HORA_ENTRADA, HORA_SALIDA)
-    VALUES 
-        (@ID_EMPLEADO, @DIA_SEMANA, @HORA_ENTRADA, @HORA_SALIDA);
+    BEGIN TRY
+        INSERT INTO SuiteGestionIsari.dbo.T_HORARIOS 
+            (ID_EMPLEADO, DIA_SEMANA, HORA_ENTRADA, HORA_SALIDA)
+        VALUES 
+            (@ID_EMPLEADO, @DIA_SEMANA, @HORA_ENTRADA, @HORA_SALIDA);
 
-    SELECT 1 AS Success;  
+        SELECT 1 AS Success; 
+    END TRY
+    BEGIN CATCH
+        SELECT ERROR_MESSAGE() AS ErrorMessage;  -
+    END CATCH
 END;
 
 ---Actualizar Horario----
@@ -674,4 +678,100 @@ BEGIN
 	    RETURN 1;
 	END;
 	RETURN 0;
+END;
+----------------------cambio para mostrar el codigo----------------------------
+ALTER PROCEDURE [dbo].[ObtenerProductos]
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA,CODIGO_PRODUCTO
+    FROM T_PRODUCTOS;
+END;
+------------------------------------------------------------------------------
+
+
+
+CREATE PROCEDURE ObtenerIdUltimaFactura
+    @UsuarioID INT,
+    @IdFactura BIGINT OUTPUT
+AS
+BEGIN
+    SELECT TOP 1 @IdFactura = ConsecutivoFactura
+    FROM tFactura
+    WHERE ConsecutivoUsuario = @UsuarioID
+    ORDER BY Fecha DESC
+END
+
+
+
+---------------DetalleEnvioFacturaporcorreo-----------------------
+
+Create PROCEDURE DetalleEnvioFactura
+    @Consecutivo BIGINT
+AS
+BEGIN
+    -- Información de la factura
+    SELECT 
+        F.ConsecutivoFactura AS 'Consecutivo',
+        D.ConsecutivoProducto,
+        P.Nombre,
+        D.Precio,
+        D.Cantidad AS 'Unidades',
+        D.Total,
+        F.Total AS 'TOTALFACTURA' 
+    FROM tDetalle D
+    INNER JOIN T_PRODUCTOS P ON D.ConsecutivoProducto = P.ID_PRODUCTO
+    INNER JOIN tFactura F ON D.ConsecutivoFactura = F.ConsecutivoFactura  -- Agregar INNER JOIN con tFactura
+    WHERE D.ConsecutivoFactura = @Consecutivo
+END
+
+
+-------------modicion para agregar producto----------------
+
+ALTER PROCEDURE [dbo].[AgregarProducto]
+    @CODIGO_PRODUCTO NVARCHAR(255),
+    @NOMBRE NVARCHAR(255),
+    @DESCRIPCION NVARCHAR(500) = NULL,
+    @PROVEEDOR NVARCHAR(255),
+    @PRECIO DECIMAL(18,2),
+    @CANTIDAD_DISPONIBLE INT,
+    @ID_CATEGORIA INT
+AS
+BEGIN   
+    SET NOCOUNT ON;
+
+    -- Verificar si ya existe un producto con el mismo nombre o código
+    IF NOT EXISTS (SELECT 1 FROM T_PRODUCTOS WHERE NOMBRE = @NOMBRE OR CODIGO_PRODUCTO = @CODIGO_PRODUCTO)
+    BEGIN
+        BEGIN TRANSACTION;
+        -- Insertar nuevo producto
+        INSERT INTO T_PRODUCTOS (CODIGO_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA)
+        VALUES (@CODIGO_PRODUCTO, @NOMBRE, @DESCRIPCION, @PROVEEDOR, @PRECIO, @CANTIDAD_DISPONIBLE, @ID_CATEGORIA);
+        COMMIT;
+        RETURN 1;
+    END
+    ELSE
+    BEGIN
+        -- Si el nombre o el código ya existen, retornar 0
+        RETURN 0;
+    END
+END;
+
+------------------EliminarArticuloTemporal-------------------------
+create PROCEDURE [dbo].[EliminarArticuloTemporal]
+    @ID_VentaTemporal INT
+AS
+BEGIN
+    -- Verificar si el artículo existe en la tabla temporal
+    IF EXISTS (SELECT 1 FROM VentaTemporal WHERE ID_VentaTemporal = @ID_VentaTemporal)
+    BEGIN
+        DELETE FROM VentaTemporal
+        WHERE ID_VentaTemporal = @ID_VentaTemporal;
+
+        PRINT 'Artículo eliminado correctamente.';
+    END
+    ELSE
+    BEGIN
+        PRINT 'El artículo no existe en la tabla temporal.';
+    END
 END;
