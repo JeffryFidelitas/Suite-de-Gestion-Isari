@@ -1,28 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using static System.Net.WebRequestMethods;
+﻿using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Entidades;
-using System.Net.Http.Headers;
 using Suite_de_Gestion_Isari.Models;
 using System.Reflection;
 using System.Text.Json;
 using System;
 
-namespace Suite_de_Gestion_Isari.Controllers
+public class PuntoVentaController : Controller
 {
-    public class PuntoVentaController : Controller
-    {
-
-        private readonly PuntoVentaModel _venta;
-        private readonly PuntoVentaModel _productosService;
+        private readonly PuntoVentaModel _puntoVentaModel;
+        private readonly DevolucionModel _devolucion;
 
 
         public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
         {
-            _venta = new PuntoVentaModel(configuration, environment);
-            _productosService = new PuntoVentaModel(configuration, environment);
-
-
+            _devolucion = new DevolucionModel(configuration);
+            _puntoVentaModel = new PuntoVentaModel(configuration);
         }
 
         public ActionResult RegistroDevolucion()
@@ -30,8 +22,28 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult RegistroDevolucion(Devolucion devolucion)
+        {
+            //if (devolucion == null)
+            var res = _devolucion.AgregarDevolucion(devolucion);
+            if (res.Codigo > 0)
+            {
+                ViewBag.ErrorMessage = res.Mensaje;
+                return View(); // TODO: ListarDevoluycionsesadas
+            }
+            else
+            {
+                ViewBag.ErrorMessage = res.Mensaje;
+                return View(devolucion);
+            }
+        }
 
-
+        public ActionResult ConsultaDevoluciones()
+        {
+            return View(_devolucion.ObtenerDevoluciones().ToList());
+        }
+        
         [HttpGet]
         public ActionResult RegistroVenta()
         {
@@ -39,10 +51,10 @@ namespace Suite_de_Gestion_Isari.Controllers
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
 
             
-            var detallesVenta = _venta.ObtenerDetalleVentaTemporal(usuarioID);
+            var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(usuarioID);
             var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
 
-            var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(usuarioID);
+            var montoTotal = _puntoVentaModel.ObtenerMontoTotalVentaTemporal(usuarioID);
 
             ViewBag.MontoTotal = montoTotal;
             ViewBag.MontoCantidadArticulos = cantidadArticulos;
@@ -54,7 +66,7 @@ namespace Suite_de_Gestion_Isari.Controllers
         public IActionResult RegistroVenta(string codigoBarras)
         {
             // Obtener el producto por código de barras
-            var producto = _productosService.ObtenerProductoPorCodigoBarras(codigoBarras);
+            var producto = _puntoVentaModel.ObtenerProductoPorCodigoBarras(codigoBarras);
 
             if (producto.ID_PRODUCTO != 0)
             {
@@ -71,13 +83,13 @@ namespace Suite_de_Gestion_Isari.Controllers
                 };
 
                 // Agregar a la tabla temporal
-                var resultado = _venta.AgregarVentaTemporal(venta);
+                var resultado = _puntoVentaModel.AgregarVentaTemporal(venta);
                 
 
                 if (resultado)
                 {
-                    var detallesVenta = _venta.ObtenerDetalleVentaTemporal(venta.Consecutivo);
-                    var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(venta.Consecutivo);
+                    var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(venta.Consecutivo);
+                    var montoTotal = _puntoVentaModel.ObtenerMontoTotalVentaTemporal(venta.Consecutivo);
                     var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
                     ViewBag.MontoTotal = montoTotal;
                     ViewBag.MontoCantidadArticulos = cantidadArticulos;
@@ -91,17 +103,41 @@ namespace Suite_de_Gestion_Isari.Controllers
 
                 ViewBag.MensajeError = "Producto no encontrado. Por favor, verifique el código de barras.";
                 var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
-                var detallesVenta = _venta.ObtenerDetalleVentaTemporal(usuarioID);
+                var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(usuarioID);
                 var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
-                var montoTotal = _venta.ObtenerMontoTotalVentaTemporal(usuarioID);
+                var montoTotal = _puntoVentaModel.ObtenerMontoTotalVentaTemporal(usuarioID);
                 ViewBag.MontoTotal = montoTotal;
                 ViewBag.MontoCantidadArticulos = cantidadArticulos;
                 return PartialView("_DetalleVenta", detallesVenta); 
 
             }
+        return View();
+      }
 
-            return Json(new { exito = false, mensaje = "Producto no encontrado o no se pudo agregar." });
+    // Acción para consultar el historial de pagos
+    public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
+    {
+        try
+        {
+            // Consultamos el historial de pagos para la factura específica
+            var pagos = _puntoVentaModel.ObtenerHistorialPagos(consecutivoFactura);
+
+            if (pagos.Any())
+            {
+                return View(pagos);
+            }
+            else
+            {
+                ViewBag.MensajeError = "No se encontraron pagos para esta factura.";
+                return View(new List<DetallePago>());
+            }
         }
+        catch (Exception ex)
+        {
+            ViewBag.MensajeError = $"Error al consultar historial de pagos: {ex.Message}";
+            return View(new List<DetallePago>());
+        }
+    }
 
         //// Acción para consultar el historial de pagos
         //public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
@@ -297,8 +333,4 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
         
     }
-
 }
-
-
-    

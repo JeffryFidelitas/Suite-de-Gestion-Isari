@@ -239,8 +239,8 @@ namespace Suite_de_Gestion_Isari.Models
                 {
                     context.Open();
         
-                    var result = context.Execute(
-                        "dbo.RegistrarHorario", 
+                    var result = context.QueryFirstOrDefault<string>(
+                        "dbo.RegistrarHorario",
                         new
                         {
                             model.ID_EMPLEADO,
@@ -251,13 +251,13 @@ namespace Suite_de_Gestion_Isari.Models
                         commandType: CommandType.StoredProcedure
                     );
         
-                    if (result > 0)
+                    if (result == "1")
                     {
-                        return new Respuesta { Codigo = 0 };
+                        return new Respuesta { Codigo = 0 }; 
                     }
                     else
                     {
-                        return new Respuesta { Codigo = -1 };
+                        return new Respuesta { Codigo = -1, Mensaje = result }; 
                     }
                 }
             }
@@ -266,11 +266,11 @@ namespace Suite_de_Gestion_Isari.Models
                 return new Respuesta
                 {
                     Codigo = -1,
-                    Mensaje = "Error al registrar la solicitud: " + ex.Message  
+                    Mensaje = "Error al registrar la solicitud: " + ex.Message
                 };
             }
         }
-        
+                
         
         public Respuesta ActualizarEstadoHorario(int idHorario, string estado)
         {
@@ -313,6 +313,33 @@ namespace Suite_de_Gestion_Isari.Models
                     Codigo = -1,
                     Mensaje = "Error al actualizar el estado: " + ex.Message
                 };
+            }
+        }
+
+        public List<object> ObtenerListaEmpleados()
+        {
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                context.Open();
+                var empleados = context.Query("SELECT ID_EMPLEADO, NOMBRE FROM SuiteGestionIsari.dbo.T_EMPLEADOS WHERE ESTADO = 1")
+                                       .Select(e => new { id = e.ID_EMPLEADO, nombre = e.NOMBRE })
+                                       .ToList<object>();
+        
+                return empleados;
+            }
+        }
+        
+        public bool ExisteEmpleado(long idEmpleado)
+        {
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                context.Open();
+                var result = context.QueryFirstOrDefault<int>(
+                    "SELECT COUNT(1) FROM SuiteGestionIsari.dbo.T_EMPLEADOS WHERE ID_EMPLEADO = @ID_EMPLEADO",
+                    new { ID_EMPLEADO = idEmpleado }
+                );
+        
+                return result > 0;
             }
         }
 

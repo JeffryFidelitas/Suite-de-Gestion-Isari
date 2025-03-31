@@ -7,7 +7,6 @@
 <div class="container mt-5">
     <h1 class="display-4 text-center mb-4">Historial de Ventas</h1>
 
-    
     @if (ViewBag.MensajeError != null)
     {
         <div class="alert alert-danger">
@@ -24,6 +23,7 @@
                     <th>Vendedor</th>
                     <th>Fecha</th>
                     <th>Total</th>
+                    <th>Historial de Pagos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -36,11 +36,15 @@
                         <td>@factura.Fecha</td>
                         <td>¢ @factura.Total</td>
                         <td>
-                            <a href="@Url.Action("ConsultarDetalleFactura","PuntoVenta", new { consecutivo = factura.ConsecutivoFactura })" class="btn">
+                            <a href="@Url.Action("ConsultarHistorialPagos", "PuntoVenta", new { consecutivoFactura = factura.ConsecutivoFactura })" class="btn">
+                                <i class="bi bi-clock-history" style="font-size: 1.6em;"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("ConsultarDetalleFactura", "PuntoVenta", new { consecutivo = factura.ConsecutivoFactura })" class="btn">
                                 <i class="bi bi-eye" style="font-size: 1.6em;"></i>
                             </a>
                         </td>
-                        
                     </tr>
                 }
             </tbody>
@@ -59,8 +63,9 @@
     $(document).ready(function () {
         $("#tablaFacturas").DataTable({
             language: {
-                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
-            },columnDefs: [
+                url: '//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },
+            columnDefs: [
                 { targets: [0, 1, 2, 3], type: "string" }
             ]
         });

@@ -1,0 +1,43 @@
+﻿@model List<Suite_de_Gestion_Isari.Entidades.DetallePago>
+
+@{
+    ViewData["Title"] = "Historial de Pagos";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Historial de Pagos</h1>
+
+    @if (ViewBag.MensajeError != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.MensajeError
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Fecha de Pago</th>
+                    <th>Monto Pagado</th>
+                    <th>Metodo de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pago in Model)
+                {
+                    <tr>
+                        <td>@pago.FechaPago</td>
+                        <td>@pago.MontoPagado</td>
+                        <td>@pago.MetodoPago</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No se han encontrado pagos para esta factura.</p>
+    }
+</div>
