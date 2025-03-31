@@ -21,6 +21,7 @@
         <thead>
             <tr>
                 <th scope="col">ID</th>
+                <th scope="col">Codigo Barras</th>
                 <th scope="col">Nombre</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Precio</th>
@@ -35,9 +36,10 @@
                 {
                     <tr>
                         <th scope="row">@producto.ID_PRODUCTO</th>
+                        <th scope="row">@producto.CODIGO_PRODUCTO</th>
                         <td>@producto.NOMBRE</td>
                         <td>@producto.PROVEEDOR</td>
-                        <td>@producto.PRECIO</td>
+                        <td>¢ @producto.PRECIO</td>
                         <td>@producto.CANTIDAD_DISPONIBLE</td>
                         <td>
                             <a class="btn btn-warning btn-sm" role="button" asp-controller="Inventario" asp-action="Editar" asp-route-id="@producto.ID_PRODUCTO">Editar</a>
@@ -66,7 +68,7 @@
             language: {
                 url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
             },columnDefs: [
-                { targets: [0, 1, 2, 3,4,5], type: "string" }
+                { targets: [0, 1, 2, 3,4,5,6], type: "string" }
             ]
         });
     })

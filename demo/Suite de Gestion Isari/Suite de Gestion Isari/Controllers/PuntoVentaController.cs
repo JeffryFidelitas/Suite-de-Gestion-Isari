@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using Suite_de_Gestion_Isari.Models;
 using System.Reflection;
 using System.Text.Json;
+using System;
 
 namespace Suite_de_Gestion_Isari.Controllers
 {
@@ -16,21 +17,21 @@ namespace Suite_de_Gestion_Isari.Controllers
         private readonly PuntoVentaModel _productosService;
 
 
-        public PuntoVentaController(IConfiguration configuration)
+        public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
         {
-            _venta = new PuntoVentaModel(configuration);
-            _productosService = new PuntoVentaModel(configuration);
+            _venta = new PuntoVentaModel(configuration, environment);
+            _productosService = new PuntoVentaModel(configuration, environment);
 
 
         }
-       
+
         public ActionResult RegistroDevolucion()
         {
             return View();
         }
 
-     
-        
+
+
         [HttpGet]
         public ActionResult RegistroVenta()
         {
@@ -102,10 +103,38 @@ namespace Suite_de_Gestion_Isari.Controllers
             return Json(new { exito = false, mensaje = "Producto no encontrado o no se pudo agregar." });
         }
 
+        //// Acción para consultar el historial de pagos
+        //public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
+        //{
+        //    try
+        //    {
+        //        // Consultamos el historial de pagos para la factura específica
+        //        var pagos = _puntoVentaModel.ObtenerHistorialPagos(consecutivoFactura);
+
+        //        if (pagos.Any())
+        //        {
+        //            return View(pagos);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.MensajeError = "No se encontraron pagos para esta factura.";
+        //            return View(new List<DetallePago>());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.MensajeError = $"Error al consultar historial de pagos: {ex.Message}";
+        //        return View(new List<DetallePago>());
+        //    }
+        //}
+
+
         [HttpPost]
-        public IActionResult Registrarventa()
+        public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null)
         {
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+            var enviarFactura = !string.IsNullOrWhiteSpace(correoCliente) || !string.IsNullOrWhiteSpace(nombreCliente);
+
 
             // Verificar si hay productos en la venta temporal para el usuario
             var hayProductos = _venta.HayProductosEnVenta(usuarioID);
@@ -119,7 +148,28 @@ namespace Suite_de_Gestion_Isari.Controllers
             var resultado = _venta.Registrarventa(usuarioID);
             if (resultado)
             {
-                TempData["SuccessMessage"] = "Venta registrada exitosamente.";
+                // Si se solicita el envío de la factura
+                if (enviarFactura)
+                {
+                    var idFactura = _venta.ObtenerIdUltimaVenta(usuarioID); // Método para obtener el ID de la última factura
+                    var detallesFactura = _venta.ObtenerDetallesFactura(idFactura);
+
+                    var resultadoEnvio = _venta.EnvioFactura(correoCliente, nombreCliente, detallesFactura);
+
+                    if (resultadoEnvio.Codigo == 0)
+                    {
+                        TempData["SuccessMessage"] = "Venta registrada y factura enviada exitosamente.";
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = $"La venta se registró, pero hubo un problema al enviar la factura: {resultadoEnvio.Mensaje}";
+                    }
+                }
+                else
+                {
+                    TempData["SuccessMessage"] = "Venta registrada exitosamente.";
+                }
+
                 return RedirectToAction("RegistroVenta");
             }
             else
@@ -128,6 +178,7 @@ namespace Suite_de_Gestion_Isari.Controllers
                 return RedirectToAction("RegistroVenta");
             }
         }
+
 
         [HttpGet]
         public IActionResult HistorialVentas()
@@ -173,7 +224,81 @@ namespace Suite_de_Gestion_Isari.Controllers
 
         }
 
+            public IActionResult EliminarArticulo(long ID_VentaTemporal)
+        {
+            try
+            {
+                var resultado = _venta.EliminarArticuloTemporal(ID_VentaTemporal);
+
+                if (resultado)
+                {
+                    
+
+                    TempData["SuccessMessage"] = "Artículo eliminado correctamente.";
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "No se pudo eliminar el artículo.";
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["ErrorMessage"] = "Error: " + ex.Message;
+            }
+
+            
+            return RedirectToAction("RegistroVenta");
+        }
+
+        
+        [HttpGet]
+        public IActionResult HistorialVentaDia()
+        {
+            var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
+
+
+            var respuesta = _venta.ConsultarFacturasHoy(usuarioID);
+
+
+            if (respuesta.Codigo == 0)
+            {
+
+                return View(respuesta.Contenido);
+            }
+            else
+            {
+
+                ViewBag.MensajeError = respuesta.Mensaje;
+                return View(new List<Venta>());
+            }
+        }
+
+
+        [HttpGet]
+        public IActionResult HistorialVentaDiaAdmin()
+        {
+            
+
+
+            var respuesta = _venta.ConsultarFacturasHoyAdmin();
+
+
+            if (respuesta.Codigo == 0)
+            {
+
+                return View(respuesta.Contenido);
+            }
+            else
+            {
+
+                ViewBag.MensajeError = respuesta.Mensaje;
+                return View(new List<Venta>());
+            }
+        }
+        
     }
+
 }
+
 
     

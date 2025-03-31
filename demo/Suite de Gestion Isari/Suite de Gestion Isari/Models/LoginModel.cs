@@ -39,53 +39,6 @@ namespace Suite_de_Gestion_Isari.Models
         }
 
 
-       
-       /* public IActionResult OlvideContrasena(Empleado model)
-        {
-            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
-            {
-                var respuesta = new Respuesta();
-
-                //var parameters = new DynamicParameters();
-                //parameters.Add("CorreoElectronico", model.Correo);
-                //var result = context.QueryFirstOrDefault<Usuario>("ValidarUsuario", parameters);
-
-                var result = context.QueryFirstOrDefault<Empleado>("ValidarUsuario", new { model.EMAIL });
-               // var result = context.QueryFirstOrDefault<Empleado>("ValidarUsuario", new { CorreoElectronico = model.EMAIL });
-
-
-                if (result != null)
-                {
-                    var Codigo = GenerarCodigo();
-                    var Contrasenna = Codigo;
-                    var UsaClaveTemp = true;
-                    var Vigencia = DateTime.Now.AddMinutes(10);
-                    context.Execute("ActualizarContrasenna", new { result.ID_EMPLEADO,Contrasenna, UsaClaveTemp, Vigencia });
-
-                    var ruta = Path.Combine(_env.ContentRootPath, "RecuperarAcceso.html");
-                    var html = System.IO.File.ReadAllText(ruta);
-
-                    html = html.Replace("@@Nombre", result.NOMBRE);
-                    html = html.Replace("@@Contrasenna", Codigo);
-                    html = html.Replace("@@Vencimiento", Vigencia.ToString("dd/MM/yyyy hh:mm tt"));
-
-                    EnviarCorreo(result.EMAIL, "Recuperar Accesos Sistema", html);
-
-                    respuesta.Codigo = 0;
-                    respuesta.Contenido = result;
-                }
-                else
-                {
-                    respuesta.Codigo = -1;
-                    respuesta.Mensaje = "Su información no se encontró en nuestro sistema";
-                }
-
-                return Ok(respuesta);
-            }
-        }
-       */
-
-
         public Respuesta OlvideContrasena(string EMAIL)
         {
             if (string.IsNullOrWhiteSpace(EMAIL))

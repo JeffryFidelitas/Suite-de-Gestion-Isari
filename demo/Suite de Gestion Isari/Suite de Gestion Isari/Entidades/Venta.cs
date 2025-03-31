@@ -43,5 +43,8 @@
         public decimal Total { get; set; }
         public DateTime Fecha { get; set; }
         public int ConsecutivoUsuario { get; set; }
+
+        public int TOTALFACTURA { get; set; }
+        
     }
 }
