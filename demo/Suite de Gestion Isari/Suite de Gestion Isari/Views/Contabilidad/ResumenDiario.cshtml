@@ -26,16 +26,22 @@
                     <tr>
                         <th>ID Factura</th>
                         <th>Monto</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var factura in Model)
                     {
+                        total += @factura.Total;
                         <tr>
-                            <td><a asp-controller="PuntoVenta" asp-action="ConsultarDetalleFactura" asp-route-consecutivo="@factura.ConsecutivoFactura">@factura.ConsecutivoFactura</a></td>
+                            <td>@factura.ConsecutivoFactura</td>
                             <td>¢ @factura.Total</td>
+                            <td>
+                                <a asp-controller="PuntoVenta" asp-action="ConsultarDetalleFactura" asp-route-consecutivo="@factura.ConsecutivoFactura" class="btn">
+                                    <i class="bi bi-eye" style="font-size: 1.6em;"></i>
+                                </a>
+                            </td>
                         </tr>
-                        @(total += @factura.Total)
                     }
                 </tbody>
             </table>
