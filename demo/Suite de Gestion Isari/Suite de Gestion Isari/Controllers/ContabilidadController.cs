@@ -7,10 +7,12 @@ namespace Suite_de_Gestion_Isari.Controllers
     public class ContabilidadController : Controller
     {
         private readonly CuentaModel _cuenta;
+        private readonly PuntoVentaModel _puntoVentaModel;
 
         public ContabilidadController(IConfiguration configuration, IHostEnvironment environment)
         {
             _cuenta = new CuentaModel(configuration);
+            _puntoVentaModel = new PuntoVentaModel(configuration, environment);
         }
 
         // Cuenta por pagar no cuenta de usuario
@@ -60,7 +62,9 @@ namespace Suite_de_Gestion_Isari.Controllers
 
         public IActionResult ResumenDiario()
         {
-            return View();
+            Respuesta res = _puntoVentaModel.ConsultarFacturasHoyAdmin();
+            List<Venta>? ventas = (List<Venta>?) res.Contenido;
+            return View(ventas);
         }
 
         public IActionResult Caja()
