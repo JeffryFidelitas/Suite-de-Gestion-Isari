@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Suite_de_Gestion_Isari.Entidades;
 using Suite_de_Gestion_Isari.Models;
+using System.Reflection;
+using System.Text.Json;
+using System;
 
 public class PuntoVentaController : Controller
 {
@@ -8,12 +11,12 @@ public class PuntoVentaController : Controller
         private readonly DevolucionModel _devolucion;
 
 
-        public PuntoVentaController(IConfiguration configuration)
+        public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
         {
             _devolucion = new DevolucionModel(configuration);
             _puntoVentaModel = new PuntoVentaModel(configuration);
         }
-       
+
         public ActionResult RegistroDevolucion()
         {
             return View();
@@ -136,9 +139,33 @@ public class PuntoVentaController : Controller
         }
     }
 
-    // Resto de las acciones existentes...
+        //// Acción para consultar el historial de pagos
+        //public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
+        //{
+        //    try
+        //    {
+        //        // Consultamos el historial de pagos para la factura específica
+        //        var pagos = _puntoVentaModel.ObtenerHistorialPagos(consecutivoFactura);
 
-    [HttpPost]
+        //        if (pagos.Any())
+        //        {
+        //            return View(pagos);
+        //        }
+        //        else
+        //        {
+        //            ViewBag.MensajeError = "No se encontraron pagos para esta factura.";
+        //            return View(new List<DetallePago>());
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ViewBag.MensajeError = $"Error al consultar historial de pagos: {ex.Message}";
+        //        return View(new List<DetallePago>());
+        //    }
+        //}
+
+
+        [HttpPost]
         public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null)
         {
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
@@ -306,5 +333,4 @@ public class PuntoVentaController : Controller
         }
         
     }
-
 }

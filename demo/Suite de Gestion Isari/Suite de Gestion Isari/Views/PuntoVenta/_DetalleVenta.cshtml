@@ -14,6 +14,7 @@
                     <th>Descripción</th>
                     <th>Cantidad</th>
                     <th>Precio Unitario</th>
+                    <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,15 +24,23 @@
                         <td>@item.NOMBRE</td>
                         <td>@item.DESCRIPCION</td>
                         <td>@item.cantidad</td>
-                        <td>@item.Precio</td>
+                        <td>¢ @item.Precio</td>
+                        <td>
+
+                            <button class="btn btn-danger eliminar-articulo"
+                                    data-url="@Url.Action("EliminarArticulo", "PuntoVenta", new { ID_VentaTemporal = item.ID_VentaTemporal })">
+                                <i class="bi bi-trash" style="font-size: 1.6em;"></i>
+                            </button>
+                        </td>
+                     
                     </tr>
                 }
-                <!-- Fila adicional para totales -->
+                
                 <tr>
                     <td colspan="1">
                         <strong>Cantidad de Artículos:</strong> @ViewBag.MontoCantidadArticulos
                     </td>
-                    <td colspan="2"></td> <!-- Espacio en blanco -->
+                    <td colspan="2"></td> 
                     <td>
                         <strong>Monto Total:</strong> @ViewBag.MontoTotal
                     </td>
@@ -43,4 +52,33 @@
     {
         <p>No hay productos en el carrito.</p> <!-- Mensaje si no hay productos en la lista -->
     }
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).on('click', '.eliminar-articulo', function (e) {
+            e.preventDefault(); // Prevenir la acción por defecto del botón
+            var url = $(this).data('url'); // Obtener la URL del enlace
+
+            // Mostrar el mensaje de confirmación
+            Swal.fire({
+                title: '¿Estás seguro?',
+                text: "No podrás deshacer esta acción",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redirigir a la URL si se confirma
+                    window.location.href = url;
+                }
+            });
+        });
+    </script>
+
+
 </div>
+
