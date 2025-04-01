@@ -16,6 +16,11 @@ public class PuntoVentaController : Controller
             _puntoVentaModel = new PuntoVentaModel(configuration, environment);
         }
 
+        public ActionResult RegistroDevolucion()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult RegistroDevolucion(Devolucion devolucion)
         {
