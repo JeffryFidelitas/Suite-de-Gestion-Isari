@@ -141,6 +141,17 @@ CREATE TABLE SuiteGestionIsari.dbo.T_DEVOLUCIONES (
 	CONSTRAINT PK__T_DEVOLUCIONE__CDBAAE34710360E8 PRIMARY KEY (ID_DEVOLUCION)
 );
 
+CREATE TABLE SuiteGestionIsari.dbo.T_CUENTAS (
+    ID_CUENTA int IDENTITY(1,1) NOT NULL,
+    INDIVIDUO nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    DESCRIPCION nvarchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NOT NULL,
+    DINERO decimal(10,2) NOT NULL,
+    VENCIMIENTO date NOT NULL,
+    ESTADO int NOT NULL,
+    CONSTRAINT PK__T_CUENTAS__CDF4314123E6524 PRIMARY KEY (ID_CUENTA)
+)
+-- Estados: 0 (Por pagar), 1 (Por Cobrar), 2 (Pagada), 3 (Cobrada)
+
 ALTER TABLE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES ADD CONSTRAINT FK__SOLICITUD__ID_EM__619B8048 FOREIGN KEY (ID_EMPLEADO) REFERENCES SuiteGestionIsari.dbo.T_EMPLEADOS(ID_EMPLEADO);
 
 ALTER TABLE SuiteGestionIsari.dbo.T_EMPLEADOS ADD CONSTRAINT FK__T_EMPLEAD__ID_PU__5DCAEF64 FOREIGN KEY (ID_PUESTO) REFERENCES SuiteGestionIsari.dbo.T_POSICIONES(ID_PUESTO);
@@ -775,3 +786,54 @@ BEGIN
         PRINT 'El artículo no existe en la tabla temporal.';
     END
 END;
+
+-- -------------------------- Agregar Cuenta -------------------------
+CREATE PROCEDURE AgregarCuenta
+    @INDIVIDUO NVARCHAR(50),
+    @DESCRIPCION NVARCHAR(50),
+    @DINERO DECIMAL(10,2),
+    @VENCIMIENTO DATE,
+    @ESTADO INT
+AS
+BEGIN   
+    SET NOCOUNT ON;
+    
+    BEGIN TRANSACTION;
+    INSERT INTO SuiteGestionIsari.dbo.T_CUENTAS (INDIVIDUO, DESCRIPCION, DINERO, VENCIMIENTO, ESTADO)
+    VALUES (@INDIVIDUO, @DESCRIPCION, @DINERO, @VENCIMIENTO, @ESTADO);
+    COMMIT;
+    RETURN 1;
+END;
+
+-- -------------------------- Obtener Cuentas -------------------------
+CREATE PROCEDURE ObtenerCuentas
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ID_CUENTA, INDIVIDUO, DESCRIPCION, DINERO, VENCIMIENTO, ESTADO
+    FROM SuiteGestionIsari.dbo.T_CUENTAS;
+END;
+
+-- -------------------------- Consulta Cuenta Individual -------------------------
+CREATE PROCEDURE ConsultaCuenta
+    @ID_CUENTA INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ID_CUENTA, INDIVIDUO, DESCRIPCION, DINERO, VENCIMIENTO, ESTADO
+    FROM SuiteGestionIsari.dbo.T_CUENTAS
+    WHERE ID_CUENTA = @ID_CUENTA;
+END;
+
+-- -------------------------- Cambiar Estado ------------------------
+CREATE PROCEDURE CambiarEstado
+	@ID_CUENTA INT,
+	@ESTADO INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	UPDATE SuiteGestionIsari.dbo.T_CUENTAS
+	SET ESTADO = @ESTADO
+	WHERE ID_CUENTA = @ID_CUENTA
+END

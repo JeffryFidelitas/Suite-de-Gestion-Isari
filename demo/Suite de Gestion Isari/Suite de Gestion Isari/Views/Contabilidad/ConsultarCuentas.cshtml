@@ -1,0 +1,74 @@
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Cuenta>
+@{
+    ViewData["Title"] = "Cuentas";
+}
+
+<div class="container mt-5">
+    <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
+        <h1 class="display-4 flex-grow-1 text-center mb-4">Cuentas</h1>
+        <a class="btn btn-primary" role="button" asp-controller="Contabilidad" asp-action="RegistroCuenta">Agregar</a>
+    </div>
+    <table id="TablaCuentas" class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Individuo</th>
+                <th scope="col">Dinero</th>
+                <th scope="col">Vencimiento</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var cuenta in Model)
+                {
+                    <tr>
+                        <td><a asp-action="ConsultarCuenta" asp-route-id="@cuenta.ID_CUENTA">@cuenta.ID_CUENTA</a></td>
+                        <td>@cuenta.INDIVIDUO</td>
+                        <td>₡ @cuenta.DINERO</td>
+                        <td>@cuenta.VENCIMIENTO.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <form asp-action="CambiarEstadoCuenta" method="post">
+                                <input type="hidden" name="ID_CUENTA" id="ID_CUENTA" value="@cuenta.ID_CUENTA"/>
+                                <select class="form-select" name="ESTADO" id="ESTADO" onchange="this.form.submit()">
+                                    @if (cuenta.ESTADO == 0 || cuenta.ESTADO == 2)
+                                    {
+                                        <option value="0" selected="@(cuenta.ESTADO == 0)">Por Pagar</option>
+                                        <option value="2" selected="@(cuenta.ESTADO == 2)">Pagada</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="1" selected="@(cuenta.ESTADO == 1)">Por Cobrar</option>
+                                        <option value="3" selected="@(cuenta.ESTADO == 3)">Cobrada</option>
+                                    }
+                                </select>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" class="text-center">No hay cuentas registradas</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#TablaCuentas").DataTable({
+            language: {
+                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },columnDefs: [
+                { targets: [0, 1, 2, 3, 4], type: "string" }
+            ]
+        });
+    })
+</script>

@@ -1,0 +1,48 @@
+@model Suite_de_Gestion_Isari.Entidades.Cuenta
+@{
+    ViewData["Title"] = "Cuenta";
+}
+
+<div class="container mt-5">
+    <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
+        <h1 class="display-4 flex-grow-1 text-center mb-4">Cuenta</h1>
+    </div>
+
+    <b>ID</b>
+
+    <p>@Model.ID_CUENTA</p>
+
+    <b>Individuo</b>
+
+    <p>@Model.INDIVIDUO</p>
+
+    <b>Descripción</b>
+
+    <p>@Model.DESCRIPCION</p>
+
+    <b>Dinero</b>
+
+    <p>₡ @Model.DINERO</p>
+
+    <b>Vencimiento</b>
+    
+    <p>@Model.VENCIMIENTO.ToString("dd/MM/yyyy")</p>
+
+    <b>Estado</b>
+
+    @switch(@Model.ESTADO)
+    {
+        case 0:
+            <p>Por Pagar</p>
+            break;
+        case 1:
+            <p>Por Cobrar</p>
+            break;
+        case 2:
+            <p>Pagada</p>
+            break;
+        case 3:
+            <p>Cobrada</p>
+            break;
+    }
+</div>

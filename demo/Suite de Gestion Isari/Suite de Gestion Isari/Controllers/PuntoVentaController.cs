@@ -10,16 +10,10 @@ public class PuntoVentaController : Controller
         private readonly PuntoVentaModel _puntoVentaModel;
         private readonly DevolucionModel _devolucion;
 
-
         public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
         {
             _devolucion = new DevolucionModel(configuration);
             _puntoVentaModel = new PuntoVentaModel(configuration, environment);
-        }
-
-        public ActionResult RegistroDevolucion()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -30,7 +24,7 @@ public class PuntoVentaController : Controller
             if (res.Codigo > 0)
             {
                 ViewBag.ErrorMessage = res.Mensaje;
-                return View(); // TODO: ListarDevoluycionsesadas
+                return RedirectToAction("ConsultaDevoluciones");
             }
             else
             {
