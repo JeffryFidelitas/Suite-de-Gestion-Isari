@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Resumen Diario de Transacciones";
+    decimal total = 0;
 }
 
 <div class="container mt-5">
@@ -36,9 +37,11 @@
                             <td>@factura.Fecha</td>
                             <td>¢ @factura.Total</td>
                         </tr>
+                        @(total += @factura.Total)
                     }
                 </tbody>
             </table>
+            <h5><b>Total: </b> @total</h5>
         }
         else
         {
