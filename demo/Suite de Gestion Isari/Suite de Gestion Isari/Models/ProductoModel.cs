@@ -23,6 +23,7 @@ namespace Suite_de_Gestion_Isari.Models
                 var respuesta = new Respuesta();
 
                 var parametros = new DynamicParameters();
+                parametros.Add("@CODIGO_PRODUCTO", model.CODIGO_PRODUCTO);
                 parametros.Add("@NOMBRE", model.NOMBRE);
                 parametros.Add("@DESCRIPCION", model.DESCRIPCION);
                 parametros.Add("@PROVEEDOR", model.PROVEEDOR);
@@ -42,7 +43,7 @@ namespace Suite_de_Gestion_Isari.Models
                 else
                 {
                     respuesta.Codigo = -1;
-                    respuesta.Mensaje = "Ya existe el producto, "+model.NOMBRE+". Vuelva a intentarlo";
+                    respuesta.Mensaje = "Ya existe el producto, "+model.NOMBRE+" o el Codigo, Vuelva a intentarlo";
                 }
                 return respuesta;
             }

@@ -4,6 +4,9 @@ namespace Suite_de_Gestion_Isari.Entidades
 {
     public class Productos
     {
+
+        
+
         public int ID_PRODUCTO { get; set; }
         [Display(Name = "Nombre")]
         public string NOMBRE { get; set; } = string.Empty;
@@ -21,6 +24,9 @@ namespace Suite_de_Gestion_Isari.Entidades
         [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar una categoría valida")]
         public int ID_CATEGORIA { get; set; }
 
+        [Display(Name = "CODIGO PRODUCTO")]
         public string CODIGO_PRODUCTO { get; set; } = string.Empty;
+        
+
     }
 }
