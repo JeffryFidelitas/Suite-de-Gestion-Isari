@@ -11,7 +11,6 @@ public class PuntoVentaController : Controller
         private readonly DevolucionModel _devolucion;
         private readonly PuntoVentaModel _venta;
 
-
     public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
         {
             _devolucion = new DevolucionModel(configuration);
@@ -33,7 +32,7 @@ public class PuntoVentaController : Controller
             if (res.Codigo > 0)
             {
                 ViewBag.ErrorMessage = res.Mensaje;
-                return View(); // TODO: ListarDevoluycionsesadas
+                return RedirectToAction("ConsultaDevoluciones");
             }
             else
             {
@@ -150,7 +149,7 @@ public class PuntoVentaController : Controller
 
 
             // Verificar si hay productos en la venta temporal para el usuario
-            var hayProductos = _venta.HayProductosEnVenta(usuarioID);
+            var hayProductos = _puntoVentaModel.HayProductosEnVenta(usuarioID);
             if (!hayProductos)
             {
                 TempData["ErrorMessage"] = "No hay productos en la venta. Agregue productos antes de finalizar.";
@@ -158,16 +157,16 @@ public class PuntoVentaController : Controller
             }
 
             // Registrar la venta
-            var resultado = _venta.Registrarventa(usuarioID);
+            var resultado = _puntoVentaModel.Registrarventa(usuarioID);
             if (resultado)
             {
                 // Si se solicita el envío de la factura
                 if (enviarFactura)
                 {
-                    var idFactura = _venta.ObtenerIdUltimaVenta(usuarioID); // Método para obtener el ID de la última factura
-                    var detallesFactura = _venta.ObtenerDetallesFactura(idFactura);
+                    var idFactura = _puntoVentaModel.ObtenerIdUltimaVenta(usuarioID); // Método para obtener el ID de la última factura
+                    var detallesFactura = _puntoVentaModel.ObtenerDetallesFactura(idFactura);
 
-                    var resultadoEnvio = _venta.EnvioFactura(correoCliente, nombreCliente, detallesFactura);
+                    var resultadoEnvio = _puntoVentaModel.EnvioFactura(correoCliente, nombreCliente, detallesFactura);
 
                     if (resultadoEnvio.Codigo == 0)
                     {
@@ -199,7 +198,7 @@ public class PuntoVentaController : Controller
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
 
             
-            var respuesta = _venta.ConsultarFacturas(usuarioID);
+            var respuesta = _puntoVentaModel.ConsultarFacturas(usuarioID);
 
            
             if (respuesta.Codigo == 0)
@@ -220,7 +219,7 @@ public class PuntoVentaController : Controller
         public IActionResult ConsultarDetalleFactura(long consecutivo)
         {
 
-            var respuesta = _venta.ConsultarDetalleFactura(consecutivo);
+            var respuesta = _puntoVentaModel.ConsultarDetalleFactura(consecutivo);
 
 
             if (respuesta.Codigo == 0)
@@ -241,7 +240,7 @@ public class PuntoVentaController : Controller
         {
             try
             {
-                var resultado = _venta.EliminarArticuloTemporal(ID_VentaTemporal);
+                var resultado = _puntoVentaModel.EliminarArticuloTemporal(ID_VentaTemporal);
 
                 if (resultado)
                 {
@@ -270,7 +269,7 @@ public class PuntoVentaController : Controller
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
 
 
-            var respuesta = _venta.ConsultarFacturasHoy(usuarioID);
+            var respuesta = _puntoVentaModel.ConsultarFacturasHoy(usuarioID);
 
 
             if (respuesta.Codigo == 0)
@@ -293,7 +292,7 @@ public class PuntoVentaController : Controller
             
 
 
-            var respuesta = _venta.ConsultarFacturasHoyAdmin();
+            var respuesta = _puntoVentaModel.ConsultarFacturasHoyAdmin();
 
 
             if (respuesta.Codigo == 0)

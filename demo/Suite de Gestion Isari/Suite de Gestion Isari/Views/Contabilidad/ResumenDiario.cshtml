@@ -1,5 +1,8 @@
-﻿@{
+﻿@model List<Suite_de_Gestion_Isari.Entidades.Venta>
+
+@{
     ViewData["Title"] = "Resumen Diario de Transacciones";
+    decimal total = 0;
 }
 
 <div class="container mt-5">
@@ -16,66 +19,58 @@
 
     <div class="collapse" id="resumenTransacciones">
         <h4 class="mb-3">Resumen de Transacciones del Día</h4>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>ID Transacción</th>
-                    <th>Método de Pago</th>
-                    <th>Monto</th>
-                    <th>Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>2024-12-09</td>
-                    <td>#1001</td>
-                    <td>Tarjeta</td>
-                    <td>₡2,500.00</td>
-                    <td><span class="badge bg-success">Completado</span></td>
-                </tr>
-                <tr>
-                    <td>2024-12-09</td>
-                    <td>#1002</td>
-                    <td>EFECTIVO</td>
-                    <td>₡1,200.00</td>
-                    <td><span class="badge bg-success">Completado</span></td>
-                </tr>
-                <tr>
-                    <td>2024-12-09</td>
-                    <td>#1003</td>
-                    <td>SINPE Móvil</td>
-                    <td>₡800.00</td>
-                    <td><span class="badge bg-warning">Pendiente</span></td>
-                </tr>
-                <tr>
-                    <td>2024-12-09</td>
-                    <td>#1004</td>
-                    <td>Tarjeta</td>
-                    <td>₡5,000.00</td>
-                    <td><span class="badge bg-success">Completado</span></td>
-                </tr>
-                <tr>
-                    <td>2024-12-09</td>
-                    <td>#1005</td>
-                    <td>EFECTIVO</td>
-                    <td>₡3,200.00</td>
-                    <td><span class="badge bg-danger">Duplicado</span></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="alert alert-warning mt-4" role="alert">
-            <strong>¡Advertencia!</strong> Existen transacciones pendientes de ser registradas. Verifique la transacción #1003.
-        </div>
+        @if (Model != null && Model.Any())
+        {
+            <table class="table table-striped" id="tablaFacturas">
+                <thead>
+                    <tr>
+                        <th>ID Factura</th>
+                        <th>Monto</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var factura in Model)
+                    {
+                        total += @factura.Total;
+                        <tr>
+                            <td>@factura.ConsecutivoFactura</td>
+                            <td>¢ @factura.Total</td>
+                            <td>
+                                <a asp-controller="PuntoVenta" asp-action="ConsultarDetalleFactura" asp-route-consecutivo="@factura.ConsecutivoFactura" class="btn">
+                                    <i class="bi bi-eye" style="font-size: 1.6em;"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <h5><b>Total: </b> @total</h5>
+        }
+        else
+        {
+            <p>No hay facturas en este momento.</p>
+        }
     </div>
 
     <div class="collapse" id="exportarResumen">
         <h4 class="mb-3">Exportar Consolidado Diario</h4>
-        <p>Selecciona el formato en el que deseas exportar el consolidado del día:</p>
+        <p>Selecciona el formato en el que deseas exportar el consolidado del día (PENDIENTE):</p>
         <div class="d-flex justify-content-between">
             <button class="btn btn-info">Exportar a PDF</button>
             <button class="btn btn-info">Exportar a Excel</button>
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $("#tablaFacturas").DataTable({
+            language: {
+                url:'//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },columnDefs: [
+                { targets: [0, 1, 2], type: "string" }
+            ]
+        });
+    })
+</script>

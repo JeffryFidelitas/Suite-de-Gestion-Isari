@@ -1,3 +1,4 @@
+using System.Data;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -22,11 +23,18 @@ namespace Suite_de_Gestion_Isari.Models
             {
                 var respuesta = new Respuesta();
 
-                var result = context.Execute("AgregarDevolucion", new { model.ID_FACTURA, model.DESCRIPCION, model.DINERO });
+                var parametros = new DynamicParameters();
+                parametros.Add("@ID_FACTURA", model.ID_FACTURA);
+                parametros.Add("@DESCRIPCION", model.DESCRIPCION);
+                parametros.Add("@DINERO", model.DINERO);
+                parametros.Add("@Resultado", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+
+                context.Execute("AgregarDevolucion", parametros, commandType: CommandType.StoredProcedure);
+                int result = parametros.Get<int>("@Resultado");
 
                 if (result > 0)
                 {
-                    respuesta.Codigo = 0;
+                    respuesta.Codigo = 1;
                     respuesta.Mensaje = "Devolución procesada exitosamente.";
                 }
                 else
