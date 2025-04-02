@@ -9,12 +9,15 @@ public class PuntoVentaController : Controller
 {
         private readonly PuntoVentaModel _puntoVentaModel;
         private readonly DevolucionModel _devolucion;
+        private readonly PuntoVentaModel _venta;
 
-        public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
+    public PuntoVentaController(IConfiguration configuration, IHostEnvironment environment)
         {
             _devolucion = new DevolucionModel(configuration);
             _puntoVentaModel = new PuntoVentaModel(configuration, environment);
-        }
+           //_productosService = new PuntoVentaModel(configuration, environment);
+           _venta = new PuntoVentaModel(configuration, environment);
+    }
 
         public ActionResult RegistroDevolucion()
         {
@@ -137,32 +140,6 @@ public class PuntoVentaController : Controller
             return View(new List<DetallePago>());
         }
     }
-
-        //// Acción para consultar el historial de pagos
-        //public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
-        //{
-        //    try
-        //    {
-        //        // Consultamos el historial de pagos para la factura específica
-        //        var pagos = _puntoVentaModel.ObtenerHistorialPagos(consecutivoFactura);
-
-        //        if (pagos.Any())
-        //        {
-        //            return View(pagos);
-        //        }
-        //        else
-        //        {
-        //            ViewBag.MensajeError = "No se encontraron pagos para esta factura.";
-        //            return View(new List<DetallePago>());
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.MensajeError = $"Error al consultar historial de pagos: {ex.Message}";
-        //        return View(new List<DetallePago>());
-        //    }
-        //}
-
 
         [HttpPost]
         public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null)
