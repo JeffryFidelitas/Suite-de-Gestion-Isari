@@ -14,8 +14,8 @@
             <th>Correo</th>
             <th>Rol</th>
             <th>Puesto</th>
-            <th>Estado</th>
             <th>Telefono</th>
+            <th>Estado</th>
         </tr>
     </thead>
     <tbody>
@@ -29,10 +29,10 @@
                     <td>@empleado.EMAIL</td>
                     <td>@empleado.DESCRIPCION</td>
                     <td>@empleado.NOMBRE_POSICION</td>
+                    <td>@empleado.TELEFONO</td>
                     <td>
                         @(empleado.ESTADO ? "Activo" : "Inactivo")
                     </td>
-                    <td>@empleado.TELEFONO</td>
                 </tr>
             }
         }
