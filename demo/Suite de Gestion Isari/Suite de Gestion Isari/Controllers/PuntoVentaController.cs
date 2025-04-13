@@ -116,7 +116,7 @@ public class PuntoVentaController : Controller
         return View();
       }
 
-    // Acción para consultar el historial de pagos
+    //// Acción para consultar el historial de pagos
     public IActionResult ConsultarHistorialPagos(long consecutivoFactura)
     {
         try
@@ -141,7 +141,7 @@ public class PuntoVentaController : Controller
         }
     }
 
-        [HttpPost]
+    [HttpPost]
         public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null)
         {
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);

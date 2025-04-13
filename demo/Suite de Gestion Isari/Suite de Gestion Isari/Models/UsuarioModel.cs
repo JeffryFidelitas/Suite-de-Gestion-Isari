@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Suite_de_Gestion_Isari.Entidades;
 using System.Data;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 
@@ -24,27 +25,27 @@ namespace Suite_de_Gestion_Isari.Models
 
 
         [HttpPost]
-       public Respuesta AgregarEmpleado(Empleado model)
+        public Respuesta AgregarEmpleado(Empleado model)
         {
-        using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
-        {
-        var respuesta = new Respuesta();
+            using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+            {
+                var respuesta = new Respuesta();
 
-        var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.TELEFONO, model.ID_ROL, model.ID_PUESTO });
+                var result = context.Execute("CrearEmpleado", new { model.CEDULA, model.NOMBRE, model.EMAIL, model.CONTRASENA, model.TELEFONO, model.ID_ROL, model.ID_PUESTO });
 
-        if (result > 0)
-        {
-            respuesta.Codigo = 0;
-            respuesta.Mensaje = "Empleado agregado exitosamente.";
-        }
-        else
-        {
-            respuesta.Codigo = -1;
-            respuesta.Mensaje = "Ya existe el empleado, " + model.NOMBRE + ". Vuelva a intentarlo";
-        }
+                if (result > 0)
+                {
+                    respuesta.Codigo = 0;
+                    respuesta.Mensaje = "Empleado agregado exitosamente.";
+                }
+                else
+                {
+                    respuesta.Codigo = -1;
+                    respuesta.Mensaje = "Ya existe el empleado, " + model.NOMBRE + ". Vuelva a intentarlo";
+                }
 
-        return respuesta;
-        }
+                return respuesta;
+            }
         }
 
         public List<Empleado> ConsultarEmpleados()
@@ -105,8 +106,9 @@ namespace Suite_de_Gestion_Isari.Models
                         model.EMAIL,
                         model.ID_ROL,
                         model.ID_PUESTO,
-                        model.TELEFONO
-                        
+                        model.TELEFONO,
+                        model.ESTADO
+
                     },
                     commandType: CommandType.StoredProcedure
                 );
@@ -123,7 +125,55 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-      
+
+
+        //public Respuesta AgregarSolicitudVacaciones(SolicitudVacaciones model)
+        //{
+        //    try
+        //    {
+        //        using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+        //        {
+        //            var respuesta = new Respuesta();
+
+        //            var result = context.Execute(
+        //                "CrearSolicitudVacaciones",
+        //                new
+        //                {
+        //                    model.ID_EMPLEADO,
+        //                    model.FECHA_INICIO,
+        //                    model.FECHA_FIN,
+        //                    model.DIAS_SOLICITADOS,
+        //                    model.ESTADO,
+        //                    model.FECHA_SOLICITUD,
+        //                    model.MOTIVO
+        //                },
+        //                commandType: CommandType.StoredProcedure
+        //            );
+
+
+        //            if (result < 0)
+        //            {
+        //                respuesta.Codigo = 0;
+        //                respuesta.Mensaje = "Solicitud de vacaciones registrada exitosamente.";
+        //            }
+        //            else
+        //            {
+        //                respuesta.Codigo = -1;
+        //                respuesta.Mensaje = "No se pudo registrar la solicitud de vacaciones.";
+        //            }
+
+        //            return respuesta;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new Respuesta
+        //        {
+        //            Codigo = -1,
+        //            Mensaje = "Error al registrar la solicitud: " + ex.Message
+        //        };
+        //    }
+        //}
 
         public Respuesta AgregarSolicitudVacaciones(SolicitudVacaciones model)
         {
@@ -143,7 +193,8 @@ namespace Suite_de_Gestion_Isari.Models
                             model.DIAS_SOLICITADOS,
                             model.ESTADO,
                             model.FECHA_SOLICITUD,
-                            model.MOTIVO
+                            model.MOTIVO,
+                            model.DIAS_TOTALES
                         },
                         commandType: CommandType.StoredProcedure
                     );
@@ -172,6 +223,27 @@ namespace Suite_de_Gestion_Isari.Models
                 };
             }
         }
+
+        //public List<SolicitudVacaciones> ObtenerSolicitudesVacaciones()
+        //{
+        //    try
+        //    {
+        //        using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+        //        {
+        //            var solicitudes = context.Query<SolicitudVacaciones>(
+        //                "SELECT * FROM SuiteGestionIsari.dbo.SOLICITUD_VACACIONES",
+        //                commandType: CommandType.Text
+        //            ).ToList();
+
+        //            return solicitudes;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new List<SolicitudVacaciones>();
+        //    }
+        //}
+
         public List<SolicitudVacaciones> ObtenerSolicitudesVacaciones()
         {
             try
@@ -182,43 +254,97 @@ namespace Suite_de_Gestion_Isari.Models
                         "SELECT * FROM SuiteGestionIsari.dbo.SOLICITUD_VACACIONES",
                         commandType: CommandType.Text
                     ).ToList();
-        
+
                     return solicitudes;
                 }
             }
             catch (Exception ex)
             {
                 return new List<SolicitudVacaciones>();
+
             }
         }
-        
-        
+
+
+        //public Respuesta ActualizarEstadoSolicitud(int idSolicitud, string estado)
+        //{
+        //    try
+        //    {
+        //        using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+        //        {
+        //            var respuesta = new Respuesta();
+
+        //            var result = context.Execute(
+        //                "UPDATE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES SET ESTADO = @ESTADO WHERE ID_SOLICITUD = @ID_SOLICITUD",
+        //                new { ESTADO = estado, ID_SOLICITUD = idSolicitud },
+        //                commandType: CommandType.Text
+        //            );
+
+        //            if (result > 0)
+        //            {
+        //                respuesta.Codigo = 0;
+        //                respuesta.Mensaje = "Estado de la solicitud actualizado correctamente.";
+        //            }
+        //            else
+        //            {
+        //                respuesta.Codigo = -1;
+        //                respuesta.Mensaje = "No se pudo actualizar el estado de la solicitud.";
+        //            }
+
+        //            return respuesta;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new Respuesta
+        //        {
+        //            Codigo = -1,
+        //            Mensaje = "Error al actualizar el estado: " + ex.Message
+        //        };
+        //    }
+        //}
+
         public Respuesta ActualizarEstadoSolicitud(int idSolicitud, string estado)
         {
             try
             {
                 using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
                 {
-                    var respuesta = new Respuesta();
-        
+                    var solicitud = context.QueryFirstOrDefault<SolicitudVacaciones>(
+                        "SELECT ID_EMPLEADO, DIAS_SOLICITADOS, ESTADO FROM SOLICITUD_VACACIONES WHERE ID_SOLICITUD = @Id",
+                        new { Id = idSolicitud });
+
+                    if (solicitud == null)
+                        return new Respuesta { Codigo = -1, Mensaje = "Solicitud no encontrada." };
+
+                    if (solicitud.ESTADO != "Aceptada" && estado == "Aceptada")
+                    {
+
+                        context.Execute(
+                            @"UPDATE SOLICITUD_VACACIONES
+                      SET DIAS_TOTALES = DIAS_TOTALES - @Dias
+                      WHERE ID_EMPLEADO = @IdEmpleado",
+                            new
+                            {
+                                Dias = solicitud.DIAS_SOLICITADOS,
+                                IdEmpleado = solicitud.ID_EMPLEADO
+                            });
+                    }
+
                     var result = context.Execute(
-                        "UPDATE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES SET ESTADO = @ESTADO WHERE ID_SOLICITUD = @ID_SOLICITUD",
-                        new { ESTADO = estado, ID_SOLICITUD = idSolicitud },
-                        commandType: CommandType.Text
-                    );
-        
+                        @"UPDATE SOLICITUD_VACACIONES
+                  SET ESTADO = @Estado
+                  WHERE ID_SOLICITUD = @IdSolicitud",
+                        new
+                        {
+                            Estado = estado,
+                            IdSolicitud = idSolicitud
+                        });
+
                     if (result > 0)
-                    {
-                        respuesta.Codigo = 0;
-                        respuesta.Mensaje = "Estado de la solicitud actualizado correctamente.";
-                    }
-                    else
-                    {
-                        respuesta.Codigo = -1;
-                        respuesta.Mensaje = "No se pudo actualizar el estado de la solicitud.";
-                    }
-        
-                    return respuesta;
+                        return new Respuesta { Codigo = 0, Mensaje = "Estado actualizado correctamente." };
+
+                    return new Respuesta { Codigo = -1, Mensaje = "No se pudo actualizar el estado." };
                 }
             }
             catch (Exception ex)
@@ -231,6 +357,9 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
+
+
+
         public Respuesta AgregarHorario(Horario model)
         {
             try
@@ -238,7 +367,7 @@ namespace Suite_de_Gestion_Isari.Models
                 using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
                 {
                     context.Open();
-        
+
                     var result = context.QueryFirstOrDefault<string>(
                         "dbo.RegistrarHorario",
                         new
@@ -246,18 +375,19 @@ namespace Suite_de_Gestion_Isari.Models
                             model.ID_EMPLEADO,
                             model.DIA_SEMANA,
                             model.HORA_ENTRADA,
-                            model.HORA_SALIDA
+                            model.HORA_SALIDA,
+                            model.FECHA_ENTRADA
                         },
                         commandType: CommandType.StoredProcedure
                     );
-        
+
                     if (result == "1")
                     {
-                        return new Respuesta { Codigo = 0 }; 
+                        return new Respuesta { Codigo = 0 };
                     }
                     else
                     {
-                        return new Respuesta { Codigo = -1, Mensaje = result }; 
+                        return new Respuesta { Codigo = -1, Mensaje = result };
                     }
                 }
             }
@@ -270,8 +400,8 @@ namespace Suite_de_Gestion_Isari.Models
                 };
             }
         }
-                
-        
+
+
         public Respuesta ActualizarEstadoHorario(int idHorario, string estado)
         {
             try
@@ -279,9 +409,9 @@ namespace Suite_de_Gestion_Isari.Models
                 using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
                 {
                     var respuesta = new Respuesta();
-        
+
                     context.Open();
-        
+
                     var result = context.Execute(
                         "dbo.ActualizarEstadoHorario",
                         new
@@ -291,7 +421,7 @@ namespace Suite_de_Gestion_Isari.Models
                         },
                         commandType: CommandType.StoredProcedure
                     );
-        
+
                     if (result > 0)
                     {
                         respuesta.Codigo = 0;
@@ -302,7 +432,7 @@ namespace Suite_de_Gestion_Isari.Models
                         respuesta.Codigo = -1;
                         respuesta.Mensaje = "No se pudo actualizar el estado.";
                     }
-        
+
                     return respuesta;
                 }
             }
@@ -324,11 +454,11 @@ namespace Suite_de_Gestion_Isari.Models
                 var empleados = context.Query("SELECT ID_EMPLEADO, NOMBRE FROM SuiteGestionIsari.dbo.T_EMPLEADOS WHERE ESTADO = 1")
                                        .Select(e => new { id = e.ID_EMPLEADO, nombre = e.NOMBRE })
                                        .ToList<object>();
-        
+
                 return empleados;
             }
         }
-        
+
         public bool ExisteEmpleado(long idEmpleado)
         {
             using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
@@ -338,7 +468,7 @@ namespace Suite_de_Gestion_Isari.Models
                     "SELECT COUNT(1) FROM SuiteGestionIsari.dbo.T_EMPLEADOS WHERE ID_EMPLEADO = @ID_EMPLEADO",
                     new { ID_EMPLEADO = idEmpleado }
                 );
-        
+
                 return result > 0;
             }
         }
@@ -350,17 +480,43 @@ namespace Suite_de_Gestion_Isari.Models
                 using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
                 {
                     var horarios = context.Query<Horario>(
-                        "SELECT * FROM SuiteGestionIsari.dbo.T_HORARIOS",
+                        @"SELECT 
+            H.ID_HORARIO, 
+            H.ID_EMPLEADO, 
+            H.DIA_SEMANA, 
+            H.HORA_ENTRADA, 
+            H.HORA_SALIDA, 
+            H.ESTADO, 
+            H.FECHA_ENTRADA,
+            E.NOMBRE AS NombreEmpleado
+          FROM SuiteGestionIsari.dbo.T_HORARIOS H
+          INNER JOIN SuiteGestionIsari.dbo.T_EMPLEADOS E 
+            ON H.ID_EMPLEADO = E.ID_EMPLEADO",
                         commandType: CommandType.Text
                     ).ToList();
 
                     return horarios;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<Horario>();
             }
         }
+
+        public bool CambiarContrasena(string usuarioID, string contrasenanueva)
+        {
+            using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+            {
+                
+                var result = context.Execute("CambiarContrasena",
+                    new { contrasenanueva, usuarioID },
+                    commandType: System.Data.CommandType.StoredProcedure);
+
+                return result > 0;
+            }
+        }
+
+
     }
 }

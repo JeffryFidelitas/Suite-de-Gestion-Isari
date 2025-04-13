@@ -15,6 +15,7 @@
             <th>Correo</th>
             <th>Rol</th>
             <th>Puesto</th>
+            <th>Estado</th>
             <th>Telefono</th>
             <th>Acciones</th>
 
@@ -34,6 +35,9 @@
                     <td>@empleado.EMAIL</td>
                     <td>@empleado.DESCRIPCION</td>
                     <td>@empleado.NOMBRE_POSICION</td>
+                    <td>
+                        @(empleado.ESTADO ? "Activo" : "Inactivo")
+                    </td>
                     <td>@empleado.TELEFONO</td>
                     <td>
                         <a href="@Url.Action("Editar","Usuario", new { ID = empleado.ID_EMPLEADO })" class="btn">

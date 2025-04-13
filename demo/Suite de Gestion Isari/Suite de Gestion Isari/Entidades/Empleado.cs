@@ -8,7 +8,7 @@ namespace Suite_de_Gestion_Isari.Entidades
         public string EMAIL { get; set; } = string.Empty;
         public string CONTRASENA { get; set; } = string.Empty;
         public Boolean ESTADO { get; set; }
-        public string FECHA_CONTRATACION { get; set; } = string.Empty;
+        public DateTime FECHA_CONTRATACION { get; set; }
         public string TELEFONO { get; set; } = string.Empty;
         public string ID_ROL { get; set; } = string.Empty;
         public string ID_PUESTO { get; set; } = string.Empty;

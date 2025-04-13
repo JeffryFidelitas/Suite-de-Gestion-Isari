@@ -62,11 +62,30 @@ namespace Suite_de_Gestion_Isari.Controllers
 
 
 
-
+        [HttpGet]
         public IActionResult CambioContraseña()
         {
             return View();
         }
+
+        [HttpPost]
+        public IActionResult CambioContraseña(string nuevaContraseña, string confirmarNuevaContraseña)
+        {
+            if (nuevaContraseña != confirmarNuevaContraseña)
+            {
+                ViewBag.ErrorMessage = "Las contraseñas no coinciden. Inténtelo de nuevo.";
+                return View();
+            }
+
+            string usuarioID = HttpContext.Session.GetString("UsuarioID");
+            _usuario.CambiarContrasena(usuarioID, nuevaContraseña);
+
+            TempData["SuccessMessage"] = "La contraseña se actualizó correctamente.";
+            return RedirectToAction("CerrarSesion", "Login");
+        }
+
+
+
 
         [HttpGet]
         public IActionResult Editar(int id)
@@ -161,17 +180,64 @@ namespace Suite_de_Gestion_Isari.Controllers
         {
             return View();
         }
-        
-        [HttpPost]
+
+        //[HttpPost]
+        //public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+
+        //    var respuesta = _usuario.AgregarSolicitudVacaciones(model);
+
+        //    if (respuesta.Codigo == 0)
+        //    {
+        //        TempData["SuccessMessage"] = respuesta.Mensaje;
+        //        return RedirectToAction("VerSolicitudesVacaciones");
+        //    }
+        //    else
+        //    {
+        //        ViewBag.ErrorMessage = respuesta.Mensaje;
+        //        return View(model);
+        //    }
+        //}
+
+
         public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
         {
+            // Obtener el usuario (empleado) desde la base de datos
+            var empleado = _usuario.ObtenerUsuarioPorID(model.ID_EMPLEADO);
+
+            if (empleado == null)
+            {
+                // Manejo de error si no se encuentra el empleado
+                return NotFound();
+            }
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-        
-            var respuesta = _usuario.AgregarSolicitudVacaciones(model);
-        
+
+            var fechaContratacion = empleado.FECHA_CONTRATACION;
+            var diasTrabajados = (DateTime.Now - fechaContratacion).Days;
+            var diasDisponibles = diasTrabajados / 30; // Un día de vacaciones por cada 30 días trabajados
+
+            // Crear el modelo de SolicitudVacaciones y asignar los días disponibles
+            var modelo = new SolicitudVacaciones
+            {
+                ID_EMPLEADO = model.ID_EMPLEADO,
+                DIAS_SOLICITADOS = model.DIAS_SOLICITADOS,
+                ESTADO = model.ESTADO,
+                FECHA_FIN = model.FECHA_FIN,
+                FECHA_INICIO = model.FECHA_INICIO,
+                DIAS_TOTALES = diasDisponibles,
+                MOTIVO = model.MOTIVO
+            };
+
+            var respuesta = _usuario.AgregarSolicitudVacaciones(modelo);
+
             if (respuesta.Codigo == 0)
             {
                 TempData["SuccessMessage"] = respuesta.Mensaje;
@@ -183,7 +249,8 @@ namespace Suite_de_Gestion_Isari.Controllers
                 return View(model);
             }
         }
-        
+
+
         [HttpGet]
         public IActionResult VerSolicitudesVacaciones()
         {

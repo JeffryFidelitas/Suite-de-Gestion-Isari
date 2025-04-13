@@ -262,14 +262,6 @@ public class PuntoVentaModel
             }
         }
 
-    // Obtener historial de pagos
-    public List<DetallePago> ObtenerHistorialPagos(long consecutivoFactura)
-    {
-        using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
-        {
-            return context.Query<DetallePago>("ObtenerHistorialPagos", new { ConsecutivoFactura = consecutivoFactura }, commandType: CommandType.StoredProcedure).ToList();
-        }
-    }
 
 
         ///CODIGO PARA ENVIO DE FACTURA POR CORREO
@@ -341,31 +333,6 @@ public class PuntoVentaModel
                     Codigo = -1,
                     Mensaje = $"Error al enviar la factura: {ex.Message}"
                 };
-            }
-        }
-
-
-        private void EnviarCorreo(string destino, string asunto, string contenido)
-        {
-            string cuenta = _conf.GetSection("Variables:CorreoEmail").Value!;
-            string contrasenna = _conf.GetSection("Variables:ClaveEmail").Value!;
-
-            MailMessage message = new MailMessage();
-            message.From = new MailAddress(cuenta);
-            message.To.Add(new MailAddress(destino));
-            message.Subject = asunto;
-            message.Body = contenido;
-            message.Priority = MailPriority.Normal;
-            message.IsBodyHtml = true;
-
-            SmtpClient client = new SmtpClient("smtp.office365.com", 587);
-            client.Credentials = new System.Net.NetworkCredential(cuenta, contrasenna);
-            client.EnableSsl = true;
-
-            //Esto es para que no se intente enviar el correo si no hay una contraseña
-            if (!string.IsNullOrEmpty(contrasenna))
-            {
-                client.Send(message);
             }
         }
 
