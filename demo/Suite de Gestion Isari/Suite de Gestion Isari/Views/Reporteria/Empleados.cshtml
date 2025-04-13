@@ -1,0 +1,46 @@
+@model List<Suite_de_Gestion_Isari.Entidades.Empleado>
+@{
+    ViewData["Title"] = "Reporte de Empleados";
+    Layout = "_Reporte";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-striped" style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Cedula</th>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Rol</th>
+            <th>Puesto</th>
+            <th>Estado</th>
+            <th>Telefono</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var empleado in Model)
+            {
+                <tr>
+                    <td>@empleado.CEDULA</td>
+                    <td>@empleado.NOMBRE</td>
+                    <td>@empleado.EMAIL</td>
+                    <td>@empleado.DESCRIPCION</td>
+                    <td>@empleado.NOMBRE_POSICION</td>
+                    <td>
+                        @(empleado.ESTADO ? "Activo" : "Inactivo")
+                    </td>
+                    <td>@empleado.TELEFONO</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No hay puestos registrados.</td>
+            </tr>
+        }
+    </tbody>
+</table>
