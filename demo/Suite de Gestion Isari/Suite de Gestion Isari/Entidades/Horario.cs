@@ -10,5 +10,9 @@ namespace Suite_de_Gestion_Isari.Entidades
         public TimeSpan HORA_SALIDA { get; set; }
 
         public string? Estado { get; set; }
+
+        public string? NombreEmpleado { get; set; }
+
+        public DateTime FECHA_ENTRADA { get; set; }
     }
 }

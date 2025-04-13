@@ -22,15 +22,21 @@ body {
 }
 
 .navbar-brand img {
-  max-height: 40px;
+  max-height: 65px;
 }
 
 .navbar-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+    display: flex;
+    font-size: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
+
+.navbar-nav .nav-link {
+    font-size: 1.2rem; /* Aumenta el tamaño del texto de los enlaces */
+}
+
 
 
 .navbar-brand {

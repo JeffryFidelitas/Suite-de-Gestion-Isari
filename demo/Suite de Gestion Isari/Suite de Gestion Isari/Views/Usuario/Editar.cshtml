@@ -45,6 +45,16 @@
                 <option value="">Seleccione un puesto</option>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-control" id="estado" asp-for="ESTADO">
+                <option value="true" selected="@(Model.ESTADO ? "selected" : null)">Activo</option>
+                <option value="false" selected="@(Model.ESTADO ? null : "selected")">Inactivo</option>
+            </select>
+        </div>
+
+
      
 
         <div class="d-flex justify-content-between">

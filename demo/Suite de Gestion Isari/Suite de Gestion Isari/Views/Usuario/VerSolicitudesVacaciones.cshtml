@@ -39,6 +39,7 @@
                 <th>Días Solicitados</th>
                 <th>Motivo</th>
                 <th>Estado</th>
+                <th>Dias Totales</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -52,6 +53,7 @@
                     <td>@solicitud.DIAS_SOLICITADOS</td>
                     <td>@solicitud.MOTIVO</td>
                     <td>@solicitud.ESTADO</td>
+                    <td>@solicitud.DIAS_TOTALES</td>
                     <td>
                         <form method="post" asp-action="CambiarEstadoSolicitud">
                             <input type="hidden" name="idSolicitud" value="@solicitud.ID_SOLICITUD" />

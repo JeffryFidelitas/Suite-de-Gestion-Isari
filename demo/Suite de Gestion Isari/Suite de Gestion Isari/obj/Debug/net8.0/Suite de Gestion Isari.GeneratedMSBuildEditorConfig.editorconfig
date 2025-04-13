@@ -40,8 +40,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXENhamEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/RegistroCuentas.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXFJlZ2lzdHJvQ3VlbnRhcy5jc2h0bWw=
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ConsultarCuenta.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXENvbnN1bHRhckN1ZW50YS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ConsultarCuentas.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXENvbnN1bHRhckN1ZW50YXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/RegistroCuenta.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29udGFiaWxpZGFkXFJlZ2lzdHJvQ3VlbnRhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Andy Madrigal/source/repos/Suite-de-Gestion-Isari/demo/Suite de Gestion Isari/Suite de Gestion Isari/Views/Contabilidad/ReportesFinancieros.cshtml]

@@ -23,7 +23,6 @@
     }
 
     <form asp-action="RegistrarTardia" method="post">
-        <!-- Select en lugar de input manual -->
         <div class="mb-3">
             <label for="ID_EMPLEADO" class="form-label">Seleccionar Empleado</label>
             <select id="ID_EMPLEADO" name="ID_EMPLEADO" class="form-control" required>
@@ -34,6 +33,11 @@
         <div class="mb-3">
             <label for="DIA_SEMANA" class="form-label">Día de la Semana</label>
             <input type="text" class="form-control" asp-for="DIA_SEMANA" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="FECHA_ENTRADA" class="form-label">Fecha de Entrada</label>
+            <input type="date" class="form-control" asp-for="FECHA_ENTRADA" required />
         </div>
 
         <div class="d-flex flex-row mb-3 gap-3">
@@ -53,6 +57,7 @@
             <button type="submit" class="btn btn-primary">Registrar</button>
         </div>
     </form>
+
 </div>
 
 <script>
@@ -61,8 +66,9 @@
             .then(response => response.json())
             .then(data => {
                 let select = document.getElementById("ID_EMPLEADO");
-                select.innerHTML = '<option value="">Seleccione un empleado</option>';
+                select.innerHTML = '<option value="">Seleccione un empleado</option>'; // Reset inicial
                 data.forEach(empleado => {
+                    
                     select.innerHTML += `<option value="${empleado.id}">${empleado.nombre}</option>`;
                 });
             })
