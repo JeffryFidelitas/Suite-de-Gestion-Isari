@@ -4,37 +4,53 @@
 }
 
 <div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Registro de Cuentas por Cobrar y por Pagar</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded">
+                <div class="card-header  bg-success text-white text-center">
+                    <h1 class="display-6 mb-0">Registro de Cuentas</h1>
+                </div>
+                <div class="card-body">
+                    <form asp-action="RegistroCuenta" method="post">
+                        <div class="mb-3">
+                            <label asp-for="INDIVIDUO" class="form-label fw-bold">Cliente</label>
+                            <input asp-for="INDIVIDUO" class="form-control" placeholder="Ingrese el nombre del cliente" />
+                            <span asp-validation-for="INDIVIDUO" class="text-danger"></span>
+                        </div>
 
-    <form asp-action="RegistroCuenta" method="post">
-        <div class="form-group mb-3">
-            <label asp-for="INDIVIDUO"></label>
-            <input asp-for="INDIVIDUO" class="form-control" />
-            <span asp-validation-for="INDIVIDUO" class="text-danger"></span>
+                        <div class="mb-3">
+                            <label asp-for="DESCRIPCION" class="form-label fw-bold">Descripción</label>
+                            <textarea asp-for="DESCRIPCION" class="form-control" rows="3" placeholder="Describa la cuenta"></textarea>
+                            <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="DINERO" class="form-label fw-bold">Monto</label>
+                            <input type="number" asp-for="DINERO" class="form-control" placeholder="Ingrese el monto" min="0" step="0.01" />
+                            <span asp-validation-for="DINERO" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VENCIMIENTO" class="form-label fw-bold">Fecha de Vencimiento</label>
+                            <input type="date" asp-for="VENCIMIENTO" class="form-control" />
+                            <span asp-validation-for="VENCIMIENTO" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="ESTADO" class="form-label fw-bold">Estado</label>
+                            <select asp-for="ESTADO" class="form-control">
+                                <option value="0">Por Pagar</option>
+                                <option value="1">Por Cobrar</option>
+                            </select>
+                            <span asp-validation-for="ESTADO" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary px-4">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        <div class="form-group mb-3">
-            <label asp-for="DESCRIPCION"></label>
-            <input asp-for="DESCRIPCION" class="form-control" />
-            <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="DINERO"></label>
-            <input type="number" asp-for="DINERO" class="form-control" />
-            <span asp-validation-for="DINERO" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="VENCIMIENTO"></label>
-            <input type="date" asp-for="VENCIMIENTO" class="form-control" />
-            <span asp-validation-for="VENCIMIENTO" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="ESTADO"></label>
-            <select asp-for="ESTADO" class="form-control">
-                <option value="0">Por Pagar</option>
-                <option value="1">Por Cobrar</option>
-            </select>
-            <span asp-validation-for="ESTADO" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+    </div>
 </div>

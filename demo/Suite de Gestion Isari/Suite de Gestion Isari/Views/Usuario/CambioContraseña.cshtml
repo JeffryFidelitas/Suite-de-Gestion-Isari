@@ -3,36 +3,36 @@
 }
 
 <div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Cambio de Contraseña</h1>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-10">
+            <h1 class="display-4 text-center mb-5">Cambio de Contraseña</h1>
 
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+            }
 
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger text-center">@ViewBag.ErrorMessage</div>
+            }
+
+            <form asp-action="CambioContraseña" asp-controller="Usuario" method="post" class="bg-light p-5 rounded shadow-lg">
+                <div class="mb-4">
+                    <label for="nuevaContraseña" class="form-label fw-bold fs-5">Nueva Contraseña</label>
+                    <input type="password" class="form-control form-control-lg" id="nuevaContraseña" name="nuevaContraseña" placeholder="Ingrese la nueva contraseña" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="confirmarNuevaContraseña" class="form-label fw-bold fs-5">Confirmar Nueva Contraseña</label>
+                    <input type="password" class="form-control form-control-lg" id="confirmarNuevaContraseña" name="confirmarNuevaContraseña" placeholder="Confirme la nueva contraseña" required>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a class="btn btn-secondary btn-lg px-5" role="button" asp-controller="Home" asp-action="Index">Volver</a>
+                    <input type="submit" class="btn btn-primary btn-lg px-5" value="Actualizar Contraseña">
+                </div>
+            </form>
         </div>
-    }
-
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="alert alert-danger">
-            @ViewBag.ErrorMessage
-        </div>
-    }
-
-
-        <form asp-action="CambioContraseña" asp-controller="Usuario" method="post">
-
-            <div class="mb-3">
-                <label for="nuevaContraseña" class="form-label">Nueva Contraseña</label>
-                <input type="password" class="form-control" id="nuevaContraseña" name="nuevaContraseña" placeholder="Ingrese la nueva contraseña" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="confirmarNuevaContraseña" class="form-label">Confirmar Nueva Contraseña</label>
-                <input type="password" class="form-control" id="confirmarNuevaContraseña" name="confirmarNuevaContraseña" placeholder="Confirme la nueva contraseña" required>
-            </div>
-
-            <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Actualizar Contraseña">
-        </form>
     </div>
+</div>

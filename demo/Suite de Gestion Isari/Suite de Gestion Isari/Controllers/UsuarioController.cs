@@ -145,7 +145,11 @@ namespace Suite_de_Gestion_Isari.Controllers
                 {
                     model.ID_EMPLEADO = usuarioID;                   
                     _usuario.ActualizarUsuario(model);
-                    ViewBag.Mensaje = "Perfil actualizado correctamente";
+
+                    TempData["Mensaje"] = "Perfil actualizado correctamente"; // Usar TempData para persistir datos entre redirecciones
+                    return RedirectToAction(nameof(ActualizarPerfil)); // Redirigir a la misma acción
+                    //ViewBag.Mensaje = "Perfil actualizado correctamente";
+
                 }
                 else
                 {
@@ -206,18 +210,20 @@ namespace Suite_de_Gestion_Isari.Controllers
 
         public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
         {
+            string  usuario = HttpContext.Session.GetString("UsuarioID");
+
+            int usuarioID = 0; // Valor por defecto en caso de error o si la sesión no existe
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                usuarioID = int.Parse(usuario); // Convertir el string a int
+            }
             // Obtener el usuario (empleado) desde la base de datos
-            var empleado = _usuario.ObtenerUsuarioPorID(model.ID_EMPLEADO);
+            var empleado = _usuario.ObtenerUsuarioPorID(usuarioID);
 
             if (empleado == null)
             {
                 // Manejo de error si no se encuentra el empleado
                 return NotFound();
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
             }
 
             var fechaContratacion = empleado.FECHA_CONTRATACION;
@@ -227,7 +233,7 @@ namespace Suite_de_Gestion_Isari.Controllers
             // Crear el modelo de SolicitudVacaciones y asignar los días disponibles
             var modelo = new SolicitudVacaciones
             {
-                ID_EMPLEADO = model.ID_EMPLEADO,
+                ID_EMPLEADO = usuarioID,
                 DIAS_SOLICITADOS = model.DIAS_SOLICITADOS,
                 ESTADO = model.ESTADO,
                 FECHA_FIN = model.FECHA_FIN,
@@ -241,7 +247,8 @@ namespace Suite_de_Gestion_Isari.Controllers
             if (respuesta.Codigo == 0)
             {
                 TempData["SuccessMessage"] = respuesta.Mensaje;
-                return RedirectToAction("VerSolicitudesVacaciones");
+
+                return RedirectToAction("VerSolicitudesVacacionesUsuario");
             }
             else
             {
@@ -258,8 +265,26 @@ namespace Suite_de_Gestion_Isari.Controllers
             var solicitudesOrdenadas = solicitudes.OrderByDescending(s => s.ESTADO == "Pendiente").ToList();
             return View(solicitudesOrdenadas); 
         }
-        
-        
+
+
+        [HttpGet]
+        public IActionResult VerSolicitudesVacacionesUsuario()
+        {
+
+            string usuario = HttpContext.Session.GetString("UsuarioID");
+
+            int ID_EMPLEADO = 0; // Valor por defecto en caso de error o si la sesión no existe
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                ID_EMPLEADO = int.Parse(usuario); // Convertir el string a int
+            }
+
+            var solicitudes = _usuario.ObtenerSolicitudesVacacionesUsuario(ID_EMPLEADO);
+            var solicitudesOrdenadas = solicitudes.OrderByDescending(s => s.ESTADO == "Pendiente").ToList();
+            return View(solicitudesOrdenadas);
+        }
+
+
         [HttpPost]
         public IActionResult CambiarEstadoSolicitud(int idSolicitud, string estado)
         {

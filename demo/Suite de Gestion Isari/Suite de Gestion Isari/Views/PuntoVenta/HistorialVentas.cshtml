@@ -23,7 +23,6 @@
                     <th>Vendedor</th>
                     <th>Fecha</th>
                     <th>Total</th>
-                    <th>Historial de Pagos</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -35,11 +34,6 @@
                         <td>@factura.Nombre</td>
                         <td>@factura.Fecha</td>
                         <td>¢ @factura.Total</td>
-                        <td>
-                            <a href="@Url.Action("ConsultarHistorialPagos", "PuntoVenta", new { consecutivoFactura = factura.ConsecutivoFactura })" class="btn">
-                                <i class="bi bi-clock-history" style="font-size: 1.6em;"></i>
-                            </a>
-                        </td>
                         <td>
                             <a href="@Url.Action("ConsultarDetalleFactura", "PuntoVenta", new { consecutivo = factura.ConsecutivoFactura })" class="btn">
                                 <i class="bi bi-eye" style="font-size: 1.6em;"></i>

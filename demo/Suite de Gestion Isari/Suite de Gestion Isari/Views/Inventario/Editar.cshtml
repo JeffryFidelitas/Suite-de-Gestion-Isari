@@ -1,63 +1,72 @@
 @model Suite_de_Gestion_Isari.Entidades.Productos
 @{
-    ViewData["Title"] = "Editar Item";
+    ViewData["Title"] = "Editar Producto";
     var categorias = ViewData["categorias"] as List<Suite_de_Gestion_Isari.Entidades.Categorias>;
 }
 
-<div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Editar Item</h1>
-    
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="d-flex justify-content-center">
-            <div class="alert alert-danger text-center w-50">
-                @ViewBag.ErrorMessage
-            </div>
-        </div>
-    }
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-10">
+            <div class="shadow rounded bg-light p-5">
+                <h1 class="display-5 text-center mb-4">Editar Producto</h1>
 
-    <form asp-action="Editar" method="post">
-        @Html.HiddenFor(model => model.ID_PRODUCTO)
-        <div class="form-group mb-3">
-            <label asp-for="NOMBRE"></label>
-            <input asp-for="NOMBRE" class="form-control" />
-            <span asp-validation-for="NOMBRE" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="DESCRIPCION"></label>
-            <input asp-for="DESCRIPCION" class="form-control" />
-            <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="PROVEEDOR"></label>
-            <input asp-for="PROVEEDOR" class="form-control" />
-            <span asp-validation-for="PROVEEDOR" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="PRECIO"></label>
-            <input asp-for="PRECIO" class="form-control" />
-            <span asp-validation-for="PRECIO" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="ID_CATEGORIA"></label>
-            <select asp-for="ID_CATEGORIA" class="form-control">
-                @if (categorias != null && categorias.Count() > 0)
+                @if (ViewBag.ErrorMessage != null)
                 {
-                    @foreach(var categoria in categorias)
-                    {
-                        <option value="@categoria.ID_CATEGORIA">
-                            @categoria.DESCRIPCION
-                        </option>
-                    }
+                    <div class="alert alert-danger text-center">
+                        @ViewBag.ErrorMessage
+                    </div>
                 }
-            </select>
-            <span asp-validation-for="ID_CATEGORIA" class="text-danger"></span>
-        </div>
-        <div class="form-group mb-3">
-            <label asp-for="CANTIDAD_DISPONIBLE"></label>
-            <input asp-for="CANTIDAD_DISPONIBLE" class="form-control" />
-            <span asp-validation-for="CANTIDAD_DISPONIBLE" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
-</div>
+
+                <form asp-action="Editar" method="post">
+                    @Html.HiddenFor(model => model.ID_PRODUCTO)
+
+                    <div class="mb-4">
+                        <label asp-for="NOMBRE" class="form-label fw-bold fs-5">Nombre</label>
+                        <input asp-for="NOMBRE" class="form-control form-control-lg" placeholder="Ingrese el nombre del producto" required />
+                        <span asp-validation-for="NOMBRE" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="DESCRIPCION" class="form-label fw-bold fs-5">Descripción</label>
+                        <textarea asp-for="DESCRIPCION" class="form-control form-control-lg" placeholder="Ingrese una descripción del producto" rows="3" required></textarea>
+                        <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="PROVEEDOR" class="form-label fw-bold fs-5">Proveedor</label>
+                        <input asp-for="PROVEEDOR" class="form-control form-control-lg" placeholder="Ingrese el proveedor" required />
+                        <span asp-validation-for="PROVEEDOR" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="PRECIO" class="form-label fw-bold fs-5">Precio</label>
+                        <input asp-for="PRECIO" class="form-control form-control-lg" placeholder="Ingrese el precio del producto" type="number" min="0" step="0.01" required />
+                        <span asp-validation-for="PRECIO" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ID_CATEGORIA"></label>
+                        <select asp-for="ID_CATEGORIA" class="form-control">
+                            @if (categorias != null && categorias.Count() > 0)
+                            {
+                                @foreach (var categoria in categorias)
+                                {
+                                    <option value="@categoria.ID_CATEGORIA">
+                                        @categoria.DESCRIPCION
+                                    </option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="ID_CATEGORIA" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="CANTIDAD_DISPONIBLE" class="form-label fw-bold fs-5">Cantidad Disponible</label>
+                        <input asp-for="CANTIDAD_DISPONIBLE" class="form-control form-control-lg" placeholder="Ingrese la cantidad disponible" type="number" min="0" required />
+                        <span asp-validation-for="CANTIDAD_DISPONIBLE" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 fs-5">Guardar Cambios</button>
+                </form>
+            </div>
+        </
