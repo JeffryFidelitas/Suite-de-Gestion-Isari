@@ -1,70 +1,71 @@
-@model Suite_de_Gestion_Isari.Entidades.Empleado
+ @model Suite_de_Gestion_Isari.Entidades.Empleado
 
 @{
     ViewData["Title"] = "Actualizar Perfil";
 }
 
-
-
 <div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Actualizar Perfil</h1>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-10">
+            <h1 class="display-4 text-center mb-5">Actualizar Perfil</h1>
 
+            @if (TempData["Mensaje"] != null)
+            {
+                <div class="alert alert-success text-center">@TempData["Mensaje"]</div>
+            }
 
-    @if (ViewBag.Mensaje != null)
-    {
-        <div class="alert alert-success">@ViewBag.Mensaje</div>
-    }
-    @if (ViewBag.Error != null)
-    {
-        <div class="alert alert-danger">@ViewBag.Error</div>
-    }
+            <form asp-controller="Usuario" asp-action="ActualizarPerfil" class="bg-light p-5 rounded shadow-lg">
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <label for="nombre" class="form-label fw-bold fs-5">Nombre</label>
+                        <input type="text" class="form-control form-control-lg" id="nombre" asp-for="NOMBRE" readonly
+                               style="background-color:#d6d8db; cursor: not-allowed;">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="cedula" class="form-label fw-bold fs-5">Cédula</label>
+                        <input type="text" class="form-control form-control-lg" id="cedula" asp-for="CEDULA" readonly
+                               style="background-color:#d6d8db; cursor: not-allowed;">
+                    </div>
+                </div>
 
-    <form asp-controller="Usuario" asp-action="ActualizarPerfil">
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <label for="correo" class="form-label fw-bold fs-5">Correo Electrónico</label>
+                        <input type="email" class="form-control form-control-lg" id="correo" asp-for="EMAIL" placeholder="Ingrese el nuevo correo electrónico" required>
+                        <span asp-validation-for="EMAIL" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="telefono" class="form-label fw-bold fs-5">Teléfono</label>
+                        <input type="text" class="form-control form-control-lg" id="telefono" asp-for="TELEFONO" placeholder="Ingrese el nuevo número de teléfono" required>
+                        <span asp-validation-for="TELEFONO" class="text-danger"></span>
+                    </div>
+                </div>
 
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nombre" asp-for="NOMBRE" readonly>
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <label for="puesto" class="form-label fw-bold fs-5">Puesto</label>
+                        <input type="text" class="form-control form-control-lg" asp-for="NOMBRE_POSICION" readonly
+                               style="background-color:#d6d8db; cursor: not-allowed;">
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="salario" class="form-label fw-bold fs-5">Salario</label>
+                        <input type="text" class="form-control form-control-lg" id="salario" asp-for="Salario" readonly
+                               style="background-color:#d6d8db; cursor: not-allowed;">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="fechaNacimiento" class="form-label fw-bold fs-5">Fecha de Contratación</label>
+                    <input type="text" class="form-control form-control-lg" id="fechaNacimiento"
+                           value="@Model.FECHA_CONTRATACION.ToString("yyyy-MM-dd")"
+                           readonly style="background-color:#d6d8db; cursor: not-allowed;">
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a class="btn btn-secondary btn-lg px-5" role="button" asp-controller="Home" asp-action="Index">Volver</a>
+                    <input type="submit" class="btn btn-primary btn-lg px-5" value="Guardar Información">
+                </div>
+            </form>
         </div>
-
-
-        <div class="mb-3">
-            <label for="cedula" class="form-label">Cédula</label>
-            <input type="text" class="form-control" id="cedula" asp-for="CEDULA" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label for="correo" class="form-label">Correo Electrónico</label>
-            <input type="email" class="form-control" id="correo" asp-for="EMAIL" placeholder="Ingrese el nuevo correo electrónico" required>
-            <span asp-validation-for="EMAIL" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label for="telefono" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefono" asp-for="TELEFONO" placeholder="Ingrese el nuevo número de teléfono" required>
-            <span asp-validation-for="TELEFONO" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label for="puesto" class="form-label">Puesto</label>
-            <input type="text" class="form-control" asp-for="NOMBRE_POSICION" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label for="salario" class="form-label">Salario</label>
-            <input type="text" class="form-control" id="salario" asp-for="Salario" readonly>
-        </div>
-
-        <div class="mb-3">
-            <label for="fechaNacimiento" class="form-label">Fecha de Contratacion</label>
-            <input type="text" class="form-control" id="fechaNacimiento" asp-for="FECHA_CONTRATACION" readonly>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" role="button" asp-controller="Usuario" asp-action="Index">Volver</a>
-
-           
-        </div>
-        <input type="submit" class="btn btn-primary w-100 py-8 fs-4 mb-4" value="Guardar Informacion">
-    </form>
+    </div>
 </div>
-

@@ -126,55 +126,6 @@ namespace Suite_de_Gestion_Isari.Models
         }
 
 
-
-        //public Respuesta AgregarSolicitudVacaciones(SolicitudVacaciones model)
-        //{
-        //    try
-        //    {
-        //        using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
-        //        {
-        //            var respuesta = new Respuesta();
-
-        //            var result = context.Execute(
-        //                "CrearSolicitudVacaciones",
-        //                new
-        //                {
-        //                    model.ID_EMPLEADO,
-        //                    model.FECHA_INICIO,
-        //                    model.FECHA_FIN,
-        //                    model.DIAS_SOLICITADOS,
-        //                    model.ESTADO,
-        //                    model.FECHA_SOLICITUD,
-        //                    model.MOTIVO
-        //                },
-        //                commandType: CommandType.StoredProcedure
-        //            );
-
-
-        //            if (result < 0)
-        //            {
-        //                respuesta.Codigo = 0;
-        //                respuesta.Mensaje = "Solicitud de vacaciones registrada exitosamente.";
-        //            }
-        //            else
-        //            {
-        //                respuesta.Codigo = -1;
-        //                respuesta.Mensaje = "No se pudo registrar la solicitud de vacaciones.";
-        //            }
-
-        //            return respuesta;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new Respuesta
-        //        {
-        //            Codigo = -1,
-        //            Mensaje = "Error al registrar la solicitud: " + ex.Message
-        //        };
-        //    }
-        //}
-
         public Respuesta AgregarSolicitudVacaciones(SolicitudVacaciones model)
         {
             try
@@ -224,25 +175,7 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
-        //public List<SolicitudVacaciones> ObtenerSolicitudesVacaciones()
-        //{
-        //    try
-        //    {
-        //        using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
-        //        {
-        //            var solicitudes = context.Query<SolicitudVacaciones>(
-        //                "SELECT * FROM SuiteGestionIsari.dbo.SOLICITUD_VACACIONES",
-        //                commandType: CommandType.Text
-        //            ).ToList();
 
-        //            return solicitudes;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new List<SolicitudVacaciones>();
-        //    }
-        //}
 
         public List<SolicitudVacaciones> ObtenerSolicitudesVacaciones()
         {
@@ -250,11 +183,9 @@ namespace Suite_de_Gestion_Isari.Models
             {
                 using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
                 {
-                    var solicitudes = context.Query<SolicitudVacaciones>(
-                        "SELECT * FROM SuiteGestionIsari.dbo.SOLICITUD_VACACIONES",
-                        commandType: CommandType.Text
-                    ).ToList();
+                    var solicitudes = context.Query<SolicitudVacaciones>("VerSolicitudesVacaciones").ToList();
 
+                    
                     return solicitudes;
                 }
             }
@@ -265,44 +196,25 @@ namespace Suite_de_Gestion_Isari.Models
             }
         }
 
+        
+        public List<SolicitudVacaciones> ObtenerSolicitudesVacacionesUsuario(int ID_EMPLEADO)
+        {
+            try
+            {
+                using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
+                {
 
-        //public Respuesta ActualizarEstadoSolicitud(int idSolicitud, string estado)
-        //{
-        //    try
-        //    {
-        //        using (var context = new SqlConnection(_conf.GetConnectionString("DefaultConnection")))
-        //        {
-        //            var respuesta = new Respuesta();
+                    var solicitudes = context.Query<SolicitudVacaciones>("VacacionesPorEmpleado", new { ID_EMPLEADO }).ToList();
 
-        //            var result = context.Execute(
-        //                "UPDATE SuiteGestionIsari.dbo.SOLICITUD_VACACIONES SET ESTADO = @ESTADO WHERE ID_SOLICITUD = @ID_SOLICITUD",
-        //                new { ESTADO = estado, ID_SOLICITUD = idSolicitud },
-        //                commandType: CommandType.Text
-        //            );
+                    return solicitudes;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new List<SolicitudVacaciones>();
 
-        //            if (result > 0)
-        //            {
-        //                respuesta.Codigo = 0;
-        //                respuesta.Mensaje = "Estado de la solicitud actualizado correctamente.";
-        //            }
-        //            else
-        //            {
-        //                respuesta.Codigo = -1;
-        //                respuesta.Mensaje = "No se pudo actualizar el estado de la solicitud.";
-        //            }
-
-        //            return respuesta;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new Respuesta
-        //        {
-        //            Codigo = -1,
-        //            Mensaje = "Error al actualizar el estado: " + ex.Message
-        //        };
-        //    }
-        //}
+            }
+        }
 
         public Respuesta ActualizarEstadoSolicitud(int idSolicitud, string estado)
         {

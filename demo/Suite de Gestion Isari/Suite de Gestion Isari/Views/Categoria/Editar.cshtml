@@ -3,25 +3,32 @@
     ViewData["Title"] = "Editar Categoría";
 }
 
-<div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Editar Categoría</h1>
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="shadow rounded bg-light p-5">
+                <h1 class="display-5 text-center mb-4">Editar Categoría</h1>
 
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="d-flex justify-content-center">
-            <div class="alert alert-danger text-center w-50">
-                @ViewBag.ErrorMessage
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger text-center">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+
+                <form asp-action="Editar" method="post">
+                    @Html.HiddenFor(model => model.ID_CATEGORIA)
+
+                    <div class="mb-4">
+                        <label asp-for="DESCRIPCION" class="form-label fw-bold fs-5">Descripción</label>
+                        <input asp-for="DESCRIPCION" class="form-control form-control-lg" placeholder="Ingrese la descripción de la categoría" required />
+                        <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-3 fs-5">Guardar Cambios</button>
+                </form>
             </div>
         </div>
-    }
-
-    <form asp-action="Editar" method="post">
-        @Html.HiddenFor(model => model.ID_CATEGORIA)
-        <div class="form-group mb-3">
-            <label asp-for="DESCRIPCION"></label>
-            <input asp-for="DESCRIPCION" class="form-control" />
-            <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
-        </div>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-    </form>
+    </div>
 </div>
+

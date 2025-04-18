@@ -70,7 +70,7 @@ public class PuntoVentaController : Controller
             // Obtener el producto por código de barras
             var producto = _puntoVentaModel.ObtenerProductoPorCodigoBarras(codigoBarras);
 
-            if (producto.ID_PRODUCTO != 0)
+            if (producto.ID_PRODUCTO != 0 && producto.CANTIDAD_DISPONIBLE!=0 )
             {
                 // Crear objeto para insertar en la tabla temporal
                 var venta = new Venta
@@ -103,7 +103,7 @@ public class PuntoVentaController : Controller
             else
             {
 
-                ViewBag.MensajeError = "Producto no encontrado. Por favor, verifique el código de barras.";
+                ViewBag.MensajeError = "Producto no encontrado o inventario en 0.";
                 var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
                 var detallesVenta = _puntoVentaModel.ObtenerDetalleVentaTemporal(usuarioID);
                 var cantidadArticulos = detallesVenta.Sum(d => d.cantidad);
@@ -142,7 +142,7 @@ public class PuntoVentaController : Controller
     }
 
     [HttpPost]
-        public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null)
+        public IActionResult Registrarventa( string? correoCliente = null, string? nombreCliente = null, string? cedulacliente = null, string? formapago = null)
         {
             var usuarioID = int.Parse(HttpContext.Session.GetString("UsuarioID")!);
             var enviarFactura = !string.IsNullOrWhiteSpace(correoCliente) || !string.IsNullOrWhiteSpace(nombreCliente);
@@ -166,7 +166,7 @@ public class PuntoVentaController : Controller
                     var idFactura = _puntoVentaModel.ObtenerIdUltimaVenta(usuarioID); // Método para obtener el ID de la última factura
                     var detallesFactura = _puntoVentaModel.ObtenerDetallesFactura(idFactura);
 
-                    var resultadoEnvio = _puntoVentaModel.EnvioFactura(correoCliente, nombreCliente, detallesFactura);
+                    var resultadoEnvio = _puntoVentaModel.EnvioFactura(correoCliente, nombreCliente, cedulacliente, formapago,detallesFactura);
 
                     if (resultadoEnvio.Codigo == 0)
                     {
