@@ -12,27 +12,27 @@
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
-                        <h5 class="fw-bold">ID</h5>
+                        <h5 class="fw-bold">Número de Cuenta</h5>
                         <p>@Model.ID_CUENTA</p>
                     </div>
 
                     <div class="mb-3">
-                        <h5 class="fw-bold">Individuo</h5>
+                        <h5 class="fw-bold">Cliente</h5>
                         <p>@Model.INDIVIDUO</p>
                     </div>
 
                     <div class="mb-3">
-                        <h5 class="fw-bold">Descripción</h5>
+                        <h5 class="fw-bold">Descripción de la cuenta</h5>
                         <p>@Model.DESCRIPCION</p>
                     </div>
 
                     <div class="mb-3">
-                        <h5 class="fw-bold">Dinero</h5>
+                        <h5 class="fw-bold">Cantidad de Dinero</h5>
                         <p>₡ @Model.DINERO.ToString("N2")</p>
                     </div>
 
                     <div class="mb-3">
-                        <h5 class="fw-bold">Vencimiento</h5>
+                        <h5 class="fw-bold">Fecha de Vencimiento</h5>
                         <p>@Model.VENCIMIENTO.ToString("dd/MM/yyyy")</p>
                     </div>
 
@@ -55,6 +55,11 @@
                                     ; break;
                             }
                         </p>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="@Url.Action("ConsultarCuentas", "Contabilidad")" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left"></i> Volver
+                        </a>
                     </div>
                 </div>
             </div>

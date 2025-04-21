@@ -6,10 +6,10 @@
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow rounded">
-                <div class="card-header  bg-success text-white text-center">
-                    <h1 class="display-6 mb-0">Registro de Cuentas</h1>
-                </div>
+            <div class="card shadow rounded bg-light p-5">
+
+                <h1 class="display-6  text-center mb-5">Registro de Cuentas</h1>
+                
                 <div class="card-body">
                     <form asp-action="RegistroCuenta" method="post">
                         <div class="mb-3">
@@ -37,7 +37,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label asp-for="ESTADO" class="form-label fw-bold">Estado</label>
+                            <label asp-for="ESTADO" class="form-label fw-bold">Tipo de cuenta</label>
                             <select asp-for="ESTADO" class="form-control">
                                 <option value="0">Por Pagar</option>
                                 <option value="1">Por Cobrar</option>
