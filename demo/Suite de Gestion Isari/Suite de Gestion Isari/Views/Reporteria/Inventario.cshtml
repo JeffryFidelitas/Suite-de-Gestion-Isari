@@ -1,0 +1,39 @@
+@model List<Suite_de_Gestion_Isari.Entidades.Productos>
+@{
+    ViewData["Title"] = "Reporte de Inventario";
+    Layout = "_Reporte";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table table-striped" style="width: 100%;">
+    <thead>
+        <tr>
+            <th>Código Barras</th>
+            <th>Nombre</th>
+            <th>Proveedor</th>
+            <th>Precio</th>
+            <th>Unidades</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var producto in Model)
+            {
+                <tr>
+                    <th scope="row">@producto.CODIGO_PRODUCTO</th>
+                    <td>@producto.NOMBRE</td>
+                    <td>@producto.PROVEEDOR</td>
+                    <td>₡ @producto.PRECIO</td>
+                    <td>@producto.CANTIDAD_DISPONIBLE</td>                    
+                </tr>
+            }
+        }
+        else {
+            <tr>
+                <td colspan="5" class="text-center">No hay productos registrados</td>
+            </tr>
+        }
+    </tbody>
+</table>
