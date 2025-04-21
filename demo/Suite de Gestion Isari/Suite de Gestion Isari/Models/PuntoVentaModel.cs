@@ -202,7 +202,7 @@ public class PuntoVentaModel
             }
 
         }
-         /// Codigo de prueba para envio de facturas
+        
        
 
         public long ObtenerIdUltimaVenta(int usuarioID)
@@ -264,9 +264,9 @@ public class PuntoVentaModel
 
 
 
-        ///CODIGO PARA ENVIO DE FACTURA POR CORREO
+        
 
-        public Respuesta EnvioFactura(string email,string nombreCliente, List<Venta> detallesFactura)
+        public Respuesta EnvioFactura(string email,string nombreCliente, string formapago, string cedulacliente, List<Venta> detallesFactura)
         {
             if (string.IsNullOrWhiteSpace(email))
             {
@@ -304,6 +304,8 @@ public class PuntoVentaModel
                 }
                 html = html.Replace("@@Consecutivo", factura.Consecutivo.ToString());
                 html = html.Replace("@@Nombre", nombreCliente);
+                html = html.Replace("@@FormaPago", formapago);
+                html = html.Replace("@@CedulaCliente", cedulacliente);
                 html = html.Replace("@@Fecha", DateTime.Now.ToString("dd/MM/yyyy"));
                 html = html.Replace("@@Total", factura.TOTALFACTURA.ToString("C"));
 

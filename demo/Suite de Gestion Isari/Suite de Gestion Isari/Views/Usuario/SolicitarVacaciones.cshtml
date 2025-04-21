@@ -1,63 +1,55 @@
 @model Suite_de_Gestion_Isari.Entidades.SolicitudVacaciones
+
 @{
     ViewData["Title"] = "Solicitar Vacaciones";
 }
 
 <div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Solicitar Vacaciones</h1>
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-8 col-md-10">
+            @* <h1 class="display-4 text-center mb-5">Solicitar Vacaciones</h1> *@
 
-    @if (TempData["SuccessMessage"] != null)
-
-    {
-        <div class="alert alert-success">
-            @TempData["SuccessMessage"]
-        </div>
-    }
-
-    @if (ViewBag.ErrorMessage != null)
-
-    {
-        <div class="alert alert-danger">
-            @ViewBag.ErrorMessage
-        </div>
-    }
-
-    <form asp-action="SolicitarVacaciones" method="post">
-        <div class="mb-3">
-            <label for="ID_EMPLEADO" class="form-label">ID Empleado</label>
-            <input type="number" class="form-control" asp-for="ID_EMPLEADO" required>
-        </div>
-
-        <div class="d-flex flex-row mb-3 gap-3">
-            <div class="mb-3">
-                <label for="FECHA_INICIO" class="form-label">Fecha Inicial</label>
-                <input type="date" class="form-control" asp-for="FECHA_INICIO" required>
+            <div class="card-header  bg-success text-white text-center">
+                <h1 class="display-6 mb-0">Solicitar Vacaciones</h1>
             </div>
 
-            <div class="mb-3">
-                <label for="FECHA_FIN" class="form-label">Fecha Final</label>
-                <input type="date" class="form-control" asp-for="FECHA_FIN" required>
-            </div>
-        </div>
-         
-       @*  <div class="mb-3">
-            <label for="DIAS_TOTALES" class="form-label">Días disponibles</label>
-            <input type="number" class="form-control" asp-for="DIAS_TOTALES" value="@Model.DIAS_TOTALES" readonly>
-        </div>  *@
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success text-center">@TempData["SuccessMessage"]</div>
+            }
 
-        <div class="mb-3">
-            <label for="DIAS_SOLICITADOS" class="form-label">Días Solicitados</label>
-            <input type="number" class="form-control" asp-for="DIAS_SOLICITADOS" required>
-        </div>
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger text-center">@ViewBag.ErrorMessage</div>
+            }
 
-        <div class="mb-3">
-            <label for="MOTIVO" class="form-label">Motivo de las Vacaciones</label>
-            <input type="text" class="form-control" asp-for="MOTIVO" required>
-        </div>
+            <form asp-action="SolicitarVacaciones" method="post" class="bg-light p-5 rounded shadow-lg">
+                <div class="row mb-4">
+                    <div class="col-lg-6">
+                        <label for="FECHA_INICIO" class="form-label fw-bold fs-5">Fecha Inicial</label>
+                        <input type="date" class="form-control form-control-lg" asp-for="FECHA_INICIO" required>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="FECHA_FIN" class="form-label fw-bold fs-5">Fecha Final</label>
+                        <input type="date" class="form-control form-control-lg" asp-for="FECHA_FIN" required>
+                    </div>
+                </div>
 
-        <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" role="button" asp-controller="Usuario" asp-action="Index">Volver</a>
-            <button type="submit" class="btn btn-primary">Solicitar</button>
+                <div class="mb-4">
+                    <label for="DIAS_SOLICITADOS" class="form-label fw-bold fs-5">Días Solicitados</label>
+                    <input type="number" class="form-control form-control-lg" asp-for="DIAS_SOLICITADOS" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="MOTIVO" class="form-label fw-bold fs-5">Motivo de las Vacaciones</label>
+                    <textarea class="form-control form-control-lg" asp-for="MOTIVO" rows="4" required></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <a class="btn btn-secondary btn-lg px-5" role="button" asp-controller="Home" asp-action="Index">Volver</a>
+                    <button type="submit" class="btn btn-primary btn-lg px-5">Solicitar</button>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>

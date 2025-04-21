@@ -4,45 +4,60 @@
 }
 
 <div class="container mt-5">
-    <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
-        <h1 class="display-4 flex-grow-1 text-center mb-4">Cuenta</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow rounded">
+                <div class="card-header  bg-success text-white text-center">
+                    <h1 class="display-6 mb-0">Detalles de la Cuenta</h1>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5 class="fw-bold">ID</h5>
+                        <p>@Model.ID_CUENTA</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Individuo</h5>
+                        <p>@Model.INDIVIDUO</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Descripción</h5>
+                        <p>@Model.DESCRIPCION</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Dinero</h5>
+                        <p>₡ @Model.DINERO.ToString("N2")</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Vencimiento</h5>
+                        <p>@Model.VENCIMIENTO.ToString("dd/MM/yyyy")</p>
+                    </div>
+
+                    <div class="mb-3">
+                        <h5 class="fw-bold">Estado</h5>
+                        <p>
+                            @switch (@Model.ESTADO)
+                            {
+                                case 0:
+                                    <span class="badge bg-warning text-dark">Por Pagar</span>
+                                    ; break;
+                                case 1:
+                                    <span class="badge bg-info text-dark">Por Cobrar</span>
+                                    ; break;
+                                case 2:
+                                    <span class="badge bg-success">Pagada</span>
+                                    ; break;
+                                case 3:
+                                    <span class="badge bg-primary">Cobrada</span>
+                                    ; break;
+                            }
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <b>ID</b>
-
-    <p>@Model.ID_CUENTA</p>
-
-    <b>Individuo</b>
-
-    <p>@Model.INDIVIDUO</p>
-
-    <b>Descripción</b>
-
-    <p>@Model.DESCRIPCION</p>
-
-    <b>Dinero</b>
-
-    <p>₡ @Model.DINERO</p>
-
-    <b>Vencimiento</b>
-    
-    <p>@Model.VENCIMIENTO.ToString("dd/MM/yyyy")</p>
-
-    <b>Estado</b>
-
-    @switch(@Model.ESTADO)
-    {
-        case 0:
-            <p>Por Pagar</p>
-            break;
-        case 1:
-            <p>Por Cobrar</p>
-            break;
-        case 2:
-            <p>Pagada</p>
-            break;
-        case 3:
-            <p>Cobrada</p>
-            break;
-    }
 </div>

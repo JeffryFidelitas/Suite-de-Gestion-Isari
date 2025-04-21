@@ -1,43 +1,49 @@
-﻿@model Suite_de_Gestion_Isari.Entidades.Puestos
+﻿
+        @model Suite_de_Gestion_Isari.Entidades.Puestos
 @{
     ViewData["Title"] = "Editar Puesto de Trabajo";
 }
 
-<div class="container mt-5">
-    <h1 class="display-4 text-center mb-4">Editar Puesto de Trabajo</h1>
-    @if (ViewBag.ErrorMessage != null)
-    {
-        <div class="d-flex justify-content-center">
-            <div class="alert alert-danger text-center w-50">
-                @ViewBag.ErrorMessage
+<div class="container-fluid mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="shadow rounded bg-light p-5">
+                <h1 class="display-5 text-center mb-4">Editar Puesto de Trabajo</h1>
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger text-center">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+
+                <form asp-action="ActualizarPuesto" asp-controller="Puesto">
+                    @Html.HiddenFor(model => model.ID_PUESTO)
+
+                    <div class="mb-4">
+                        <label asp-for="NOMBRE_POSICION" class="form-label fw-bold fs-5">Nombre del Puesto</label>
+                        <input asp-for="NOMBRE_POSICION" class="form-control form-control-lg" placeholder="Ingrese el nombre del puesto" required />
+                        <span asp-validation-for="NOMBRE_POSICION" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Descripcion" class="form-label fw-bold fs-5">Descripción</label>
+                        <input asp-for="Descripcion" class="form-control form-control-lg" placeholder="Ingrese la descripción del puesto" required />
+                        <span asp-validation-for="Descripcion" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Salario" class="form-label fw-bold fs-5">Salario</label>
+                        <input asp-for="Salario" class="form-control form-control-lg" placeholder="Ingrese el salario asignado al puesto" required />
+                        <span asp-validation-for="Salario" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a class="btn btn-secondary btn-lg px-4" role="button" asp-controller="Puesto" asp-action="Index">Volver</a>
+                        <button type="submit" class="btn btn-primary btn-lg px-4">Actualizar</button>
+                    </div>
+                </form>
             </div>
         </div>
-    }
-    <form asp-action="ActualizarPuesto" asp-controller="Puesto">
-
-        <input type="hidden" asp-for="ID_PUESTO" />
-
-        <div class="mb-3">
-            <label for="nombrePuesto" class="form-label">Nombre del Puesto</label>
-            <input type="text" asp-for="NOMBRE_POSICION" class="form-control" required>
-        </div>
-
-
-        <div class="mb-3">
-            <label for="nombrePuesto" class="form-label">Nombre del Puesto</label>
-            <input type="text" asp-for="Descripcion" class="form-control" required>
-        </div>
-
-
-        <div class="mb-3">
-            <label for="nombrePuesto" class="form-label">Nombre del Puesto</label>
-            <input type="text" asp-for="Salario" class="form-control" required>
-        </div>
-
-
-        <div class="d-flex justify-content-between">
-            <a class="btn btn-secondary" role="button" asp-controller="Puesto" asp-action="Index">Volver</a>
-            <input type="submit" class="btn btn-primary" value="Actualizar">
-        </div>
-    </form>
+    </div>
 </div>

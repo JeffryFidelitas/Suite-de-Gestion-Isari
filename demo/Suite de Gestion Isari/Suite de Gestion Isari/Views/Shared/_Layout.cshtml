@@ -12,7 +12,28 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <style>
-        
+
+
+  
+
+        /* Resaltar el botón principal del dropdown al pasar el mouse */
+        .nav-item .nav-link.dropdown-toggle:hover {
+            background-color: #adb5bd; /* Fondo ligeramente más oscuro */
+            color: #343a40; /* Cambia el color del texto */
+            border-radius: 5px; /* Opcional: Bordes redondeados */
+        }
+        /* Aumentar el tamaño de letra de las opciones del dropdown */
+        .dropdown-item {
+            font-size: 1.2rem; /* Ajusta el tamaño según tus necesidades */
+            padding: 10px 15px; /* Opcional: Añade más espacio */
+        }
+
+            /* Cambiar el color y fondo al pasar el mouse */
+            .dropdown-item:hover {
+                background-color: #28a745; /* Color de fondo verde (puedes elegir otro tono) */
+                color: #ffffff; /* Texto blanco para contraste */
+                border-radius: 5px; /* Opcional: Bordes redondeados para hover */
+            }
         body {
             background-color: #f8f9fa; 
             min-height: 100vh;
@@ -45,8 +66,8 @@
                                     Inventario
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownInventario">
-                                    <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Index">Lista Inventario</a>
-                                    <a class="nav-link" asp-area="" asp-controller="Inventario" asp-action="Agregar">Agregar Item</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Inventario" asp-action="Index">Lista Inventario</a>
+                                    <a class="dropdown-item" asp-area="" asp-controller="Inventario" asp-action="Agregar">Agregar Producto</a>
                                 </ul>
                             </li>
 
@@ -91,13 +112,17 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="Agregar_Empleado">Agregar Usuario</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ConsultarEmpleados">Lista Usuarios</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="RegistrarTardia">Registrar Tardia</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="RegistrarTardia">Registrar Horario</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="VerHorarios">Ver Horarios</a></li>                              
                                 </ul>
                             </li>
 
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="Reporteria" asp-action="Index">Reporteria</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Datos" asp-action="ConsultarDatos">DASHBOARD</a>
                             </li>
 
                         }
@@ -107,7 +132,7 @@
                                 Vacaciones
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="SolicitarVacaciones">Solicitar Vacaciones</a></li>
+                                
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="VerSolicitudesVacaciones">Solicitudes Realizadas</a></li>
                                 
                             </ul>
@@ -140,6 +165,8 @@
                                     <ul class="dropdown-menu" aria-labelledby="dropdownUsuario">
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="ActualizarPerfil">Actualizar Perfil</a></li>
                                         <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="CambioContraseña">Cambio de contraseña</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="SolicitarVacaciones">Solicitar Vacaciones</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Usuario" asp-action="VerSolicitudesVacacionesUsuario">Solicitudes Realizadas</a></li>
                                         <li><a class="dropdown-item" asp-controller="Login" asp-action="CerrarSesion">Cerrar Sesión</a></li>
 
                                     </ul>
@@ -161,9 +188,14 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+@*     <footer class="border-top footer text-muted">
         <div class="container">
-            
+            &copy; 2024 - Suite de Gestión Isari
+        </div>
+    </footer> *@
+
+    <footer class="border-top footer text-muted text-center mt-auto">
+        <div class="container">
             &copy; 2024 - Suite de Gestión Isari
         </div>
     </footer>
@@ -172,7 +204,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src=https://cdn.datatables.net/2.1.3/js/dataTables.js></script>
     <script src=https://cdn.datatables.net/2.1.3/js/dataTables.bootstrap4.js></script>
-
+    
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,0 +1,244 @@
+﻿<div class="row mb-4">
+    <h2 class="text-center w-100">Gráficos Importantes</h2>
+</div>
+
+
+
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card border border-dark">
+            <div class="card-header text-center">Ventas Mensuales</div>
+            <div class="card-body">
+                <canvas id="miGrafico" width="1000" height="500"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+   
+<div class="row mb-4">
+    <div class="col-lg-6 col-md-12">
+        <div class="card border border-dark">
+            <div class="card-header text-center">TOP 5 productos más vendidos</div>
+            <div class="card-body">
+                <canvas id="graficoVentasProductos" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12">
+        <div class="card border border-dark">
+            <div class="card-header text-center ">Ventas por categoría</div>
+            <div class="card-body">
+                <canvas id="VentasCategoria" style="max-height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+   <div class="row mb-4">
+
+    <div class="col-lg-6 col-md-12">
+        <div class="card border border-dark">
+            <div class="card-header text-center">Cuentas por Pagar</div>
+            <div class="card-body">
+                <canvas id="DATOSCuentasPorPagar" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-12">
+        <div class="card border border-dark">
+            <div class="card-header text-center">Cuentas por Cobrar</div>
+                <div class="card-body">
+                <canvas id="CuentasPorCobrar" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+
+   </div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Función para crear gráficos
+        function crearGrafico(idCanvas, labels, data, label, type = 'bar', backgroundColor = 'rgba(75, 192, 192, 0.2)', borderColor = 'rgba(75, 192, 192, 1)') {
+            const ctx = document.getElementById(idCanvas).getContext('2d');
+            new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: label,
+                        data: data,
+                        backgroundColor: backgroundColor,
+                        borderColor: borderColor,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+          // Fetch para Ventas por Producto
+    fetch('/Datos/ConsultarVentasPorProducto', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.Producto); // Nombre del producto
+            const ventas = data.map(item => item.TotalVentas); // Total vendido
+            const backgroundColors = [
+                'rgba(255, 0, 0, 0.8)',    // Rojo fuerte
+                'rgba(0, 123, 255, 0.8)',  // Azul fuerte
+                'rgba(255, 193, 7, 0.8)',  // Amarillo fuerte
+                'rgba(40, 167, 69, 0.8)',  // Verde fuerte
+                'rgba(102, 16, 242, 0.8)'  // Morado fuerte
+            ];
+            const borderColors = [
+                 'rgba(255, 0, 0, 0.8)',    // Rojo fuerte
+                'rgba(0, 123, 255, 0.8)',  // Azul fuerte
+                'rgba(255, 193, 7, 0.8)',  // Amarillo fuerte
+                'rgba(40, 167, 69, 0.8)',  // Verde fuerte
+                'rgba(102, 16, 242, 0.8)'
+            ];
+            crearGrafico('graficoVentasProductos', labels, ventas, 'Ventas por Producto', 'pie', backgroundColors, borderColors,borderWidth = 2);
+        })
+        .catch(error => console.error('Error en ventas por producto:', error));
+
+    // Fetch para Ventas Mensuales
+    fetch('/Datos/ConsultarDatosVentasMensuales', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.Mes); // Nombre del mes
+            const ventas = data.map(item => item.TotalMes); // Total vendido por mes
+            const backgroundColors = [
+                'rgba(220, 53, 69, 0.8)',  // Rojo intenso
+                'rgba(23, 162, 184, 0.8)', // Cian intenso
+                'rgba(255, 193, 7, 0.8)',  // Amarillo intenso
+                'rgba(40, 167, 69, 0.8)',  // Verde intenso
+                'rgba(102, 16, 242, 0.8)', // Púrpura intenso
+                'rgba(108, 117, 125, 0.8)' // Gris fuerte
+            ];
+            const borderColors = [
+                'rgba(220, 53, 69, 0.8)',
+                'rgba(23, 162, 184, 0.8)',
+                'rgba(255, 193, 7, 1)',
+                'rgba(40, 167, 69, 1)',
+                'rgba(102, 16, 242, 1)',
+                'rgba(108, 117, 125, 1)'
+            ]; 
+            crearGrafico('miGrafico', labels, ventas, 'Ventas Mensuales', 'bar', backgroundColors, borderColors);
+        })
+        .catch(error => console.error('Error en ventas mensuales:', error));
+
+    // Fetch para Ventas por Categoría
+    fetch('/Datos/ConsultarVentasPorCategoria', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(item => item.Categoria); // Nombre de la categoría
+            const ventas = data.map(item => item.TotalVentasCategoria); // Total vendido por categoría
+            const backgroundColors = [
+                'rgba(255, 87, 34, 0.8)',   // Naranja intenso
+                'rgba(63, 81, 181, 0.8)',   // Azul intenso
+                'rgba(233, 30, 99, 0.8)',   // Rosa fuerte
+                'rgba(76, 175, 80, 0.8)',   // Verde fuerte
+                'rgba(156, 39, 176, 0.8)'   // Morado fuerte
+            ];
+            const borderColors = [
+                'rgba(255, 87, 34, 0.8)',   // Naranja intenso
+                'rgba(63, 81, 181, 0.8)',   // Azul intenso
+                'rgba(233, 30, 99, 0.8)',   // Rosa fuerte
+                'rgba(76, 175, 80, 0.8)',   // Verde fuerte
+                'rgba(156, 39, 176, 0.8)'
+            ];
+            crearGrafico('VentasCategoria', labels, ventas, 'Ventas por Categoría', 'pie', backgroundColors, borderColors);
+        })
+        .catch(error => console.error('Error en ventas por categoría:', error));
+
+
+         // Fetch para Ventas por DATOSCuentasPorPagar
+    fetch('/Datos/DATOSCuentasPorPagar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Aquí `data` es un objeto con TotalPorPagar y TotalPagadas
+            const labels = ['Cuentas Por Pagar', 'Cuentas Pagadas']; // Etiquetas
+            const valores = [data.TotalPorPagar, data.TotalPagadas];  // Valores correspondientes
+
+            // Colores pastel específicos para este gráfico
+            const backgroundColors = [
+                'rgba(0, 123, 255, 0.8)', //colores intensos
+                'rgba(40, 167, 69, 0.8)'  
+            ];
+            const borderColors = [
+                'rgba(173, 216, 230, 1)',
+                'rgba(144, 238, 144, 1)'
+            ];
+
+            crearGrafico('DATOSCuentasPorPagar', labels, valores, 'Estado de Cuentas Por Pagar', 'bar', backgroundColors, borderColors);
+        })
+        .catch(error => console.error('Error al cargar el gráfico:', error));
+
+
+
+
+
+    // Fetch para Ventas por DATOSCuentasPorCobrar
+    fetch('/Datos/DATOSCuentasPorCobrar', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => response.json())
+        .then(data => {
+            // Aquí `data` es un objeto con TotalCobradas y TotalPorCobrar
+            const labels = ['Cuentas Cobradas', 'Cuentas Por Cobrar']; // Etiquetas
+            const valores = [data.TotalCobradas, data.TotalPorCobrar];  // Valores correspondientes
+
+            // Colores pastel específicos para este gráfico
+            const backgroundColors = [
+                'rgba(255, 0, 0, 0.8)',//colores intensos
+                'rgba(255, 193, 7, 0.8)' 
+            ];
+            const borderColors = [
+                'rgba(220, 53, 69, 1)',
+                'rgba(255, 193, 7, 1)'
+            ];
+
+            crearGrafico('CuentasPorCobrar', labels, valores, 'Estado de Cuentas Por Cobrar', 'bar', backgroundColors, borderColors);
+        })
+        .catch(error => console.error('Error al cargar el gráfico:', error));
+
+
+    });
+</script>
