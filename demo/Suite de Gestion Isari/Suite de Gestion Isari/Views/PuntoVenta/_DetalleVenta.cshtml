@@ -4,63 +4,63 @@
     @ViewBag.MensajeError
 </div>
 
-<div class="table-responsive">
-    @if (Model != null && Model.Any())
-    {
+<div id="detalleVenta" data-total="@ViewBag.MontoTotal">
+ 
+     @if (Model != null && Model.Any())
+       {
         <table class="table table-striped tabla-estilo">
-            <thead>
+        <thead>
+            <tr>
+                <th>Artículo</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Subtotal</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
                 <tr>
-                    <th>Artículo</th>
-                    <th>Descripción</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.NOMBRE</td>
-                        <td>@item.DESCRIPCION</td>
-                        <td>@item.cantidad</td>
-                        <td>¢ @item.Precio</td>
-                        <td>
-
-                            <button class="btn btn-danger eliminar-articulo"
-                                    data-url="@Url.Action("EliminarArticulo", "PuntoVenta", new { ID_VentaTemporal = item.ID_VentaTemporal })">
-                                <i class="bi bi-trash" style="font-size: 1.6em;"></i>
-                            </button>
-                        </td>
-                     
-                    </tr>
-                }
-                
-                <tr>
-                    <td colspan="1">
-                        <strong>Cantidad de Artículos:</strong> @ViewBag.MontoCantidadArticulos
-                    </td>
-                    <td colspan="2"></td> 
+                    <td>@item.NOMBRE</td>
+                    <td>@item.DESCRIPCION</td>
+                    <td>@item.cantidad</td>
+                    <td>@item.Precio</td>
+                    <td>@(item.Precio * item.cantidad)</td>
                     <td>
-                        <strong>Monto Total:</strong> @ViewBag.MontoTotal
+                        <button class="btn btn-danger eliminar-articulo"
+                                data-url="@Url.Action("EliminarArticulo", "PuntoVenta", new { ID_VentaTemporal = item.ID_VentaTemporal })">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
                     </td>
                 </tr>
-            </tbody>
-        </table>
+            }
+            <tr>
+                <td colspan="1">
+                    <strong>Cantidad de Artículos:</strong> @ViewBag.MontoCantidadArticulos
+                </td>
+                <td colspan="3"></td>
+                <td>
+                    <strong>Monto Total:</strong> @ViewBag.MontoTotal
+                </td>
+            </tr>
+        </tbody>
+    </table>
     }
     else
     {
-        <p>No hay productos en el carrito.</p> <!-- Mensaje si no hay productos en la lista -->
+    <p>No hay productos en el carrito.</p> <!-- Mensaje si no hay productos en la lista -->
     }
-
+   
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        $(document).on('click', '.eliminar-articulo', function (e) {
-            e.preventDefault(); // Prevenir la acción por defecto del botón
-            var url = $(this).data('url'); // Obtener la URL del enlace
 
-            // Mostrar el mensaje de confirmación
+<script>
+               $(document).on('click', '.eliminar-articulo', function (e) {
+            e.preventDefault();
+            var url = $(this).data('url');
+
             Swal.fire({
                 title: '¿Estás seguro?',
                 text: "No podrás deshacer esta acción",
@@ -72,13 +72,39 @@
                 cancelButtonText: 'Cancelar'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Redirigir a la URL si se confirma
-                    window.location.href = url;
+                    $.ajax({
+                        method: "GET",
+                        url: url,
+                        success: function (html) {
+                            $("#detalleVenta").html(html);
+
+                            // Recupera y actualiza el nuevo total
+                            const nuevoTotal = parseFloat($(html).find("#detalleVenta").data("total")) || 0;
+                            actualizarTotal(nuevoTotal);
+
+                            // Recalcula el cambio si aplica
+                            calcularCambio();
+                        },
+                        error: function () {
+                            Swal.fire("Error", "No se pudo eliminar el producto.", "error");
+                        }
+                    });
                 }
             });
         });
-    </script>
 
+        function actualizarTotal(nuevoTotal) {
+            // Actualiza el atributo data-total en el contenedor principal
+            const detalleVenta = document.getElementById("detalleVenta");
+            detalleVenta.dataset.total = nuevoTotal.toFixed(2);
+
+            // Si tienes un lugar donde muestras el total en pantalla, actualízalo también
+            const totalLabel = document.querySelector("#totalLabel"); // Cambia el selector si es necesario
+            if (totalLabel) {
+                totalLabel.textContent = nuevoTotal.toFixed(2);
+            }
+        }
+</script>
 
 </div>
 

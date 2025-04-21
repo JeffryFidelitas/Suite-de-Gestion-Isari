@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.4" />
     <PackageReference Include="MailKit" Version="2.5.1" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
   </ItemGroup>

@@ -156,19 +156,34 @@
         }
     }
 
-    // Calcular el cambio
-    function calcularCambio() {
+               function calcularCambio() {
+        // Recupera el monto recibido como un número
         const montoPago = parseFloat(document.getElementById("montoPago").value) || 0;
-        const totalVenta = parseFloat(document.getElementById("detalleVenta").dataset.total) || 0;
 
-        if (montoPago >= totalVenta) {
-            const cambio = montoPago - totalVenta;
-            document.getElementById("cambio").value = cambio.toFixed(2);
-        } else {
+        // Recupera el total desde el atributo data-total
+        const detalleVenta = document.getElementById("detalleVenta");
+        const totalVenta = parseFloat(detalleVenta.dataset.total) || 0;
+
+        // Validar si el monto recibido es menor al total
+        if (montoPago < totalVenta) {
             document.getElementById("cambio").value = "Monto insuficiente";
+        } else {
+            // Calcula el cambio
+            const cambio = montoPago - totalVenta;
+            document.getElementById("cambio").value = cambio.toFixed(2); // Mostrar con 2 decimales
         }
     }
 
+          function actualizarTotal(nuevoTotal) {
+        const detalleVenta = document.getElementById("detalleVenta");
+        detalleVenta.dataset.total = nuevoTotal;
+
+        // También actualiza cualquier elemento que muestre el total al usuario
+        const totalLabel = document.querySelector("#montoTotalLabel"); // Actualiza este selector según sea necesario
+        if (totalLabel) {
+            totalLabel.textContent = nuevoTotal.toFixed(2);
+        }
+    }
     // Procesar la venta
     function procesarVenta() {
         const metodoPago = document.getElementById("metodoPago").value;
