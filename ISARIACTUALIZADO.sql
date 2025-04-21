@@ -1,4 +1,4 @@
-﻿USE [SuiteGestionIsari]
+﻿﻿USE [SuiteGestionIsari]
 GO
 /****** Object:  Table [dbo].[CATEGORIA_PRODUCTOS]    Script Date: 13/4/2025 13:14:31 ******/
 SET ANSI_NULLS ON
@@ -8,6 +8,7 @@ GO
 CREATE TABLE [dbo].[CATEGORIA_PRODUCTOS](
 	[ID_CATEGORIA] [int] IDENTITY(1,1) NOT NULL,
 	[DESCRIPCION] [nvarchar](255) NOT NULL,
+    [ACTIVO] [int] NOT NULL,
  CONSTRAINT [PK__CATEGORI__4BD51FA56F205036] PRIMARY KEY CLUSTERED 
 (
 	[ID_CATEGORIA] ASC
@@ -192,6 +193,7 @@ CREATE TABLE [dbo].[T_PRODUCTOS](
 	[CANTIDAD_DISPONIBLE] [int] NOT NULL,
 	[ID_CATEGORIA] [int] NOT NULL,
 	[CODIGO_PRODUCTO] [nvarchar](50) NULL,
+    [ACTIVO] [int] NOT NULL,
  CONSTRAINT [PK__PRODUCTO__88BD03576E55F2C6] PRIMARY KEY CLUSTERED 
 (
 	[ID_PRODUCTO] ASC
@@ -334,19 +336,47 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS 
-                   WHERE DESCRIPCION = @DESCRIPCION 
-                   AND ID_CATEGORIA != @ID_CATEGORIA)
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM CATEGORIA_PRODUCTOS 
+        WHERE DESCRIPCION = @DESCRIPCION 
+        AND ID_CATEGORIA != @ID_CATEGORIA
+        AND ACTIVO = 1
+    )
     BEGIN
-        BEGIN TRANSACTION;
-        UPDATE CATEGORIA_PRODUCTOS
-        SET DESCRIPCION = @DESCRIPCION
-        WHERE ID_CATEGORIA = @ID_CATEGORIA;
-        COMMIT;
-        RETURN 1;
+        IF EXISTS (
+            SELECT 1
+            FROM CATEGORIA_PRODUCTOS
+            WHERE DESCRIPCION = @DESCRIPCION
+            AND ID_CATEGORIA != @ID_CATEGORIA
+            AND ACTIVO = 0
+        )
+        BEGIN
+            BEGIN TRANSACTION;
+            UPDATE CATEGORIA_PRODUCTOS
+            SET DESCRIPCION = @DESCRIPCION,
+                ACTIVO = 1
+            WHERE ID_CATEGORIA = @ID_CATEGORIA;
+            COMMIT;
+            RETURN 1; -- Se actualizó y reactivó
+        END
+        ELSE
+        BEGIN
+            BEGIN TRANSACTION;
+            UPDATE CATEGORIA_PRODUCTOS
+            SET DESCRIPCION = @DESCRIPCION
+            WHERE ID_CATEGORIA = @ID_CATEGORIA;
+            COMMIT;
+            RETURN 1; -- Se actualizó normalmente
+        END
+    END
+    ELSE
+    BEGIN
+        RETURN 0;
     END
 END;
 GO
+
 /****** Object:  StoredProcedure [dbo].[ActualizarContrasenna]    Script Date: 13/4/2025 13:14:31 ******/
 SET ANSI_NULLS ON
 GO
@@ -416,6 +446,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE PROCEDURE [dbo].[ActualizarProducto]
     @ID_PRODUCTO INT,
     @NOMBRE NVARCHAR(255),
@@ -428,25 +459,59 @@ AS
 BEGIN
     SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT 1 FROM T_PRODUCTOS 
-                   WHERE NOMBRE = @NOMBRE
-                   AND ID_PRODUCTO != @ID_PRODUCTO)
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM T_PRODUCTOS 
+        WHERE NOMBRE = @NOMBRE 
+        AND ID_PRODUCTO != @ID_PRODUCTO
+        AND ACTIVO = 1
+    )
     BEGIN
-        BEGIN TRANSACTION;
-        UPDATE T_PRODUCTOS
-        SET 
-            NOMBRE = @NOMBRE,
-            DESCRIPCION = @DESCRIPCION,
-            PROVEEDOR = @PROVEEDOR,
-            PRECIO = @PRECIO,
-            CANTIDAD_DISPONIBLE = @CANTIDAD_DISPONIBLE,
-            ID_CATEGORIA = @ID_CATEGORIA
-        WHERE ID_PRODUCTO = @ID_PRODUCTO;
-        COMMIT;
-        RETURN 1;
+        IF EXISTS (
+            SELECT 1 
+            FROM T_PRODUCTOS 
+            WHERE NOMBRE = @NOMBRE 
+            AND ID_PRODUCTO != @ID_PRODUCTO
+            AND ACTIVO = 0
+        )
+        BEGIN
+            BEGIN TRANSACTION;
+            UPDATE T_PRODUCTOS
+            SET 
+                NOMBRE = @NOMBRE,
+                DESCRIPCION = @DESCRIPCION,
+                PROVEEDOR = @PROVEEDOR,
+                PRECIO = @PRECIO,
+                CANTIDAD_DISPONIBLE = @CANTIDAD_DISPONIBLE,
+                ID_CATEGORIA = @ID_CATEGORIA,
+                ACTIVO = 1
+            WHERE ID_PRODUCTO = @ID_PRODUCTO;
+            COMMIT;
+            RETURN 1; -- Reactivado
+        END
+        ELSE
+        BEGIN
+            BEGIN TRANSACTION;
+            UPDATE T_PRODUCTOS
+            SET 
+                NOMBRE = @NOMBRE,
+                DESCRIPCION = @DESCRIPCION,
+                PROVEEDOR = @PROVEEDOR,
+                PRECIO = @PRECIO,
+                CANTIDAD_DISPONIBLE = @CANTIDAD_DISPONIBLE,
+                ID_CATEGORIA = @ID_CATEGORIA
+            WHERE ID_PRODUCTO = @ID_PRODUCTO;
+            COMMIT;
+            RETURN 1; -- Actualizado normalmente
+        END
+    END
+    ELSE
+    BEGIN
+        RETURN 0; -- Ya existe un producto activo con ese nombre
     END
 END;
 GO
+
 /****** Object:  StoredProcedure [dbo].[ActualizarPuesto]    Script Date: 13/4/2025 13:14:31 ******/
 SET ANSI_NULLS ON
 GO
@@ -531,14 +596,40 @@ AS
 BEGIN   
     SET NOCOUNT ON;
 
-    IF NOT EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS WHERE DESCRIPCION = @DESCRIPCION)
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM CATEGORIA_PRODUCTOS 
+        WHERE DESCRIPCION = @DESCRIPCION AND ACTIVO = 1
+    )
     BEGIN
-        BEGIN TRANSACTION;
-        INSERT INTO CATEGORIA_PRODUCTOS (DESCRIPCION)
-        VALUES (@DESCRIPCION);
-        COMMIT;
-        RETURN 1;
-    END 
+        IF EXISTS (
+            SELECT 1 
+            FROM CATEGORIA_PRODUCTOS 
+            WHERE DESCRIPCION = @DESCRIPCION AND ACTIVO = 0
+        )
+        BEGIN
+            -- Si existe pero está inactiva, actualiza a activa
+            BEGIN TRANSACTION;
+            UPDATE CATEGORIA_PRODUCTOS
+            SET ACTIVO = 1
+            WHERE DESCRIPCION = @DESCRIPCION AND ACTIVO = 0;
+            COMMIT;
+            RETURN 1;
+        END
+        ELSE
+        BEGIN
+            -- Si no existe en absoluto, inserta una nueva
+            BEGIN TRANSACTION;
+            INSERT INTO CATEGORIA_PRODUCTOS (DESCRIPCION, ACTIVO)
+            VALUES (@DESCRIPCION, 1);
+            COMMIT;
+            RETURN 1;
+        END
+    END
+    ELSE
+    BEGIN
+        RETURN 0;
+    END
 END;
 GO
 /****** Object:  StoredProcedure [dbo].[AgregarCuenta]    Script Date: 13/4/2025 13:14:31 ******/
@@ -595,6 +686,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE PROCEDURE [dbo].[AgregarProducto]
     @CODIGO_PRODUCTO NVARCHAR(255),
     @NOMBRE NVARCHAR(255),
@@ -606,21 +698,53 @@ CREATE PROCEDURE [dbo].[AgregarProducto]
 AS
 BEGIN   
     SET NOCOUNT ON;
-
-    -- Verificar si ya existe un producto con el mismo nombre o código
-    IF NOT EXISTS (SELECT 1 FROM T_PRODUCTOS WHERE NOMBRE = @NOMBRE OR CODIGO_PRODUCTO = @CODIGO_PRODUCTO)
+    IF NOT EXISTS (
+        SELECT 1 
+        FROM T_PRODUCTOS 
+        WHERE (NOMBRE = @NOMBRE OR CODIGO_PRODUCTO = @CODIGO_PRODUCTO) 
+        AND ACTIVO = 1
+    )
     BEGIN
-        BEGIN TRANSACTION;
-        -- Insertar nuevo producto
-        INSERT INTO T_PRODUCTOS (CODIGO_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA)
-        VALUES (@CODIGO_PRODUCTO, @NOMBRE, @DESCRIPCION, @PROVEEDOR, @PRECIO, @CANTIDAD_DISPONIBLE, @ID_CATEGORIA);
-        COMMIT;
-        RETURN 1;
+        IF EXISTS (
+            SELECT 1 
+            FROM T_PRODUCTOS 
+            WHERE (NOMBRE = @NOMBRE OR CODIGO_PRODUCTO = @CODIGO_PRODUCTO) 
+            AND ACTIVO = 0
+        )
+        BEGIN
+            BEGIN TRANSACTION;
+            UPDATE T_PRODUCTOS
+            SET 
+                NOMBRE = @NOMBRE,
+                DESCRIPCION = @DESCRIPCION,
+                PROVEEDOR = @PROVEEDOR,
+                PRECIO = @PRECIO,
+                CANTIDAD_DISPONIBLE = @CANTIDAD_DISPONIBLE,
+                ID_CATEGORIA = @ID_CATEGORIA,
+                ACTIVO = 1
+            WHERE (NOMBRE = @NOMBRE OR CODIGO_PRODUCTO = @CODIGO_PRODUCTO)
+              AND ACTIVO = 0;
+            COMMIT;
+            RETURN 1; -- Producto reactivado
+        END
+        ELSE
+        BEGIN
+            BEGIN TRANSACTION;
+            INSERT INTO T_PRODUCTOS (
+                CODIGO_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, 
+                PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA, ACTIVO
+            )
+            VALUES (
+                @CODIGO_PRODUCTO, @NOMBRE, @DESCRIPCION, @PROVEEDOR, 
+                @PRECIO, @CANTIDAD_DISPONIBLE, @ID_CATEGORIA, 1
+            );
+            COMMIT;
+            RETURN 1; -- Producto nuevo insertado
+        END
     END
     ELSE
     BEGIN
-        -- Si el nombre o el código ya existen, retornar 0
-        RETURN 0;
+        RETURN 0; -- Producto ya existe y está activo
     END
 END;
 GO
@@ -751,7 +875,7 @@ CREATE PROCEDURE [dbo].[ConsultaCategoria]
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT ID_CATEGORIA, DESCRIPCION
+    SELECT ID_CATEGORIA, DESCRIPCION, ACTIVO
     FROM CATEGORIA_PRODUCTOS
     WHERE ID_CATEGORIA = @ID_CATEGORIA;
 END;
@@ -784,7 +908,7 @@ CREATE PROCEDURE [dbo].[ConsultaProducto]
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA
+    SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA, ACTIVO
     FROM T_PRODUCTOS
     WHERE ID_PRODUCTO = @ID_PRODUCTO;
 END;
@@ -1060,43 +1184,60 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
- CREATE PROCEDURE [dbo].[EliminarCategoria]
-     @ID_CATEGORIA INT
- AS
- BEGIN
-     SET NOCOUNT ON;
- 
-     IF EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA)
-     BEGIN
-     	BEGIN TRANSACTION;
-         DELETE FROM T_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA;
-         DELETE FROM CATEGORIA_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA;
-         COMMIT;
-         RETURN 1;
-     END
- END;
+
+CREATE PROCEDURE [dbo].[EliminarCategoria]
+    @ID_CATEGORIA INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM CATEGORIA_PRODUCTOS WHERE ID_CATEGORIA = @ID_CATEGORIA)
+    BEGIN
+        BEGIN TRANSACTION;
+        UPDATE CATEGORIA_PRODUCTOS
+        SET ACTIVO = 0
+        WHERE ID_CATEGORIA = @ID_CATEGORIA;
+
+        COMMIT;
+        RETURN 1; -- Eliminación
+    END
+    ELSE
+    BEGIN
+        RETURN 0; -- No se encontró la categoría
+    END
+END;
 GO
+
 /****** Object:  StoredProcedure [dbo].[EliminarProducto]    Script Date: 13/4/2025 13:14:31 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- -------------------------- Eliminar Producto -------------------------
- CREATE PROCEDURE [dbo].[EliminarProducto]
-     @ID_PRODUCTO INT
- AS
- BEGIN
-     SET NOCOUNT ON;
- 
-     IF EXISTS (SELECT 1 FROM T_PRODUCTOS WHERE ID_PRODUCTO = @ID_PRODUCTO)
-     BEGIN
-         BEGIN TRANSACTION;
-         DELETE FROM T_PRODUCTOS WHERE ID_PRODUCTO = @ID_PRODUCTO;
-         COMMIT;
-         RETURN 1;
-     END
- END;
+
+-- -------------------------- Eliminar Producto (lógica) -------------------------
+CREATE PROCEDURE [dbo].[EliminarProducto]
+    @ID_PRODUCTO INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM T_PRODUCTOS WHERE ID_PRODUCTO = @ID_PRODUCTO)
+    BEGIN
+        BEGIN TRANSACTION;
+        UPDATE T_PRODUCTOS
+        SET ACTIVO = 0
+        WHERE ID_PRODUCTO = @ID_PRODUCTO;
+
+        COMMIT;
+        RETURN 1; -- Disque Eliminado
+    END
+    ELSE
+    BEGIN
+        RETURN 0; -- No se encontró el producto
+    END
+END;
 GO
+
 /****** Object:  StoredProcedure [dbo].[IniciarSesion]    Script Date: 13/4/2025 13:14:31 ******/
 SET ANSI_NULLS ON
 GO
@@ -1139,8 +1280,8 @@ CREATE PROCEDURE [dbo].[ObtenerCategorias]
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT ID_CATEGORIA, DESCRIPCION
-    FROM CATEGORIA_PRODUCTOS;
+    SELECT ID_CATEGORIA, DESCRIPCION, ACTIVO
+    FROM CATEGORIA_PRODUCTOS WHERE ACTIVO = 1;
 END;
 GO
 /****** Object:  StoredProcedure [dbo].[ObtenerCuentas]    Script Date: 13/4/2025 13:14:31 ******/
@@ -1254,8 +1395,8 @@ CREATE PROCEDURE [dbo].[ObtenerProductos]
 AS
 BEGIN
     SET NOCOUNT ON;
-    SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA,CODIGO_PRODUCTO
-    FROM T_PRODUCTOS;
+    SELECT ID_PRODUCTO, NOMBRE, DESCRIPCION, PROVEEDOR, PRECIO, CANTIDAD_DISPONIBLE, ID_CATEGORIA, CODIGO_PRODUCTO, ACTIVO
+    FROM T_PRODUCTOS WHERE ACTIVO = 1;
 END;
 GO
 /****** Object:  StoredProcedure [dbo].[ObtenerPuestos]    Script Date: 13/4/2025 13:14:31 ******/
