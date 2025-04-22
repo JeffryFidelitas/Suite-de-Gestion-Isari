@@ -6,15 +6,17 @@
 <div class="container mt-5">
     <div class="d-sm-inline-flex flex-row align-items-center container-fluid">
         <h1 class="display-4 flex-grow-1 text-center mb-4">Cuentas</h1>
-        <a class="btn btn-primary" role="button" asp-controller="Contabilidad" asp-action="RegistroCuenta">Agregar</a>
+        <a class="btn btn-primary" role="button" asp-controller="Contabilidad" asp-action="RegistroCuenta">Agregar cuenta</a>
     </div>
-    <table id="TablaCuentas" class="table table-striped">
+    <table id="TablaCuentas" class="table table-striped tabla-estilo">
         <thead>
+            
             <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Individuo</th>
-                <th scope="col">Dinero</th>
+                <th scope="col">Número de cuenta </th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Cantidad</th>
                 <th scope="col">Vencimiento</th>
+                <th scope="col"> Ver cuenta</th>
                 <th scope="col">Estado</th>
             </tr>
         </thead>
@@ -24,10 +26,12 @@
                 foreach (var cuenta in Model)
                 {
                     <tr>
-                        <td><a asp-action="ConsultarCuenta" asp-route-id="@cuenta.ID_CUENTA">@cuenta.ID_CUENTA</a></td>
+                        <th>  @cuenta.ID_CUENTA</th>
+                        
                         <td>@cuenta.INDIVIDUO</td>
                         <td>₡ @cuenta.DINERO</td>
                         <td>@cuenta.VENCIMIENTO.ToString("dd/MM/yyyy")</td>
+                        <td><a asp-action="ConsultarCuenta" asp-route-id="@cuenta.ID_CUENTA"> <i class="bi bi-eye" style="font-size: 1.6em;"></i> </a></td>
                         <td>
                             <form asp-action="CambiarEstadoCuenta" method="post">
                                 <input type="hidden" name="ID_CUENTA" id="ID_CUENTA" value="@cuenta.ID_CUENTA"/>

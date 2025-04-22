@@ -1,0 +1,71 @@
+
+@model List<Suite_de_Gestion_Isari.Entidades.Horario>
+
+@{
+    ViewData["Title"] = "Horarios de Empleados";
+}
+
+<div class="container mt-5">
+    <h1 class="display-4 text-center mb-4">Horarios de los Empleados</h1>
+
+    @if (TempData["SuccessMessage"] != null)
+
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (ViewBag.ErrorMessage != null)
+
+    {
+        <div class="alert alert-danger">
+            @ViewBag.ErrorMessage
+        </div>
+    }
+
+
+    <table id="TablaHorarios" class="table table-striped tabla-estilo">
+        <thead>
+            <tr>
+                <th>Empleado</th>
+                <th>Día Semana</th>
+                <th>Fecha Entrada</th>
+                <th>Hora Entrada</th>
+                <th>Hora Salida</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var horario in Model)
+            {
+                <tr>
+                    <td>@horario.NombreEmpleado</td>
+                    <td>@horario.DIA_SEMANA</td>
+                    <td>@horario.FECHA_ENTRADA.ToString("dd/MM/yyyy")</td>
+                    <td>@horario.HORA_ENTRADA.ToString(@"hh\:mm")</td>
+                    <td>@horario.HORA_SALIDA.ToString(@"hh\:mm")</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Scripts de DataTables -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#TablaHorarios").DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/2.0.2/i18n/es-ES.json'
+            },
+            columnDefs: [
+                { targets: [0, 1,2,3], type: "string" }
+            ]
+        });
+    });
+</script>

@@ -185,28 +185,6 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-        //[HttpPost]
-        //public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-        //    var respuesta = _usuario.AgregarSolicitudVacaciones(model);
-
-        //    if (respuesta.Codigo == 0)
-        //    {
-        //        TempData["SuccessMessage"] = respuesta.Mensaje;
-        //        return RedirectToAction("VerSolicitudesVacaciones");
-        //    }
-        //    else
-        //    {
-        //        ViewBag.ErrorMessage = respuesta.Mensaje;
-        //        return View(model);
-        //    }
-        //}
-
 
         public IActionResult SolicitarVacaciones(SolicitudVacaciones model)
         {
@@ -382,8 +360,14 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View(horarios);
         }
 
+        [HttpGet]
+        public IActionResult VerHorariosUsuario()
+        {
+            var horarios = _usuario.ObtenerHorarios();
+            return View(horarios);
+        }
 
-
+        
 
         private void CargarDatosCompartidos()
         {

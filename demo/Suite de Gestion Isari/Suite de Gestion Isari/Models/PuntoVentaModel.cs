@@ -120,8 +120,32 @@ public class PuntoVentaModel
             }
         }
 
-        // Consultar detalle de factura
-        public Respuesta ConsultarDetalleFactura(long Consecutivo)
+    
+        // Consultar facturas
+        public Respuesta ConsultarFacturasHistorico()
+    {
+        using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
+        {
+            var respuesta = new Respuesta();
+            var result = context.Query<Venta>("ConsultarFacturasHistorico", new { }, commandType: CommandType.StoredProcedure).ToList();
+
+            if (result.Any())
+            {
+                respuesta.Codigo = 0;
+                respuesta.Contenido = result;
+            }
+            else
+            {
+                respuesta.Codigo = -1;
+                respuesta.Mensaje = "No hay facturas en este momento";
+            }
+
+            return respuesta;
+        }
+    }
+
+    // Consultar detalle de factura
+    public Respuesta ConsultarDetalleFactura(long Consecutivo)
         {
             using (var context = new SqlConnection(_conf.GetSection("ConnectionStrings:DefaultConnection").Value))
             {

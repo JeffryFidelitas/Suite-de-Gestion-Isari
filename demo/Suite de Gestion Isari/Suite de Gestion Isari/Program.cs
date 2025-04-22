@@ -9,6 +9,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
 builder.Services.AddScoped<LoginModel>();
 
+
+
+builder.Services.AddTransient<ProductoModel>();
+builder.Services.AddTransient<UsuarioModel>();
+builder.Services.AddTransient<PuntoVentaModel>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

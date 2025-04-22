@@ -1,5 +1,8 @@
-﻿@{
-    ViewData["Title"] = "Reportes";
+﻿
+
+
+@{
+    ViewData["Title"] = "Reporteria";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -8,21 +11,36 @@
     <thead>
         <tr>
             <th>Reporte</th>
-            <th></th>
+            <th>Opciones</th>
         </tr>
     </thead>
     <tbody>
+
         <tr>
             <td>Reporte de Inventario</td>
             <td>
-                <a asp-action="Inventario" class="btn btn-primary">Imprimir</a>
+                <a href="/Reporteria/DescargarInventario?formato=excel" class="btn btn-success">Excel</a>
+                <a asp-action="Inventario" class="btn btn-primary">PDF</a>
+
+            </td>
+            <td>
+                
             </td>
         </tr>
         <tr>
             <td>Reporte de Empleados</td>
             <td>
-                <a asp-action="Empleados" class="btn btn-primary">Imprimir</a>
+                <a href="/Reporteria/DescargarEmpleados?formato=excel" class="btn btn-success">Excel</a>
+                <a asp-action="Empleados" class="btn btn-primary">PDF</a>
             </td>
         </tr>
+        <tr>
+            <td>Reporte de Ingresos</td>
+            <td>
+                <a href="/Reporteria/DescargarIngresos?formato=excel" class="btn btn-success">Excel</a>
+                
+            </td>
+        </tr>
+
     </tbody>
 </table>

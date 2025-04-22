@@ -46,3 +46,14 @@ body {
     .navbar-brand:hover {
         color: #218838;
     }
+
+
+
+.tabla-estilo {
+    font-size: 1.2em; /* Ajusta el tamaño general del texto de las tablas donde se muestran los datos */
+}
+
+.tabla-estilo td {
+    padding: 12px; /* Ajusta el espacio dentro de las celdas de las tablas donde se muestran los datos */
+}
+
