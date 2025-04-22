@@ -1,31 +1,4 @@
-﻿@* @{
-    ViewData["Title"] = "Reportes";
-}
-
-<h1>@ViewData["Title"]</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Reporte</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Reporte de Inventario</td>
-            <td>
-                <a asp-action="Inventario" class="btn btn-primary">Imprimir</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Reporte de Empleados</td>
-            <td>
-                <a asp-action="Empleados" class="btn btn-primary">Imprimir</a>
-            </td>
-        </tr>
-    </tbody>
-</table> *@
+﻿
 
 
 @{
@@ -65,7 +38,7 @@
             <td>Reporte de Ingresos</td>
             <td>
                 <a href="/Reporteria/DescargarIngresos?formato=excel" class="btn btn-success">Excel</a>
-                <a href="/Reporteria/DescargarIngresos?formato=pdf" class="btn btn-danger">PDF</a>
+                
             </td>
         </tr>
 
