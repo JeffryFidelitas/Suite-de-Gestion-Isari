@@ -5,7 +5,7 @@ namespace Suite_de_Gestion_Isari.Entidades
     public class Productos
     {
 
-        
+
 
         public int ID_PRODUCTO { get; set; }
         [Display(Name = "Nombre")]
@@ -26,6 +26,7 @@ namespace Suite_de_Gestion_Isari.Entidades
 
         [Display(Name = "CODIGO PRODUCTO")]
         public string CODIGO_PRODUCTO { get; set; } = string.Empty;
+        public int ACTIVO = 1;
         
 
     }

@@ -8,5 +8,6 @@ namespace Suite_de_Gestion_Isari.Entidades
         public int ID_CATEGORIA { get; set; }
         [Display(Name = "Nombre")]
         public string DESCRIPCION { get; set; } = string.Empty;
+        public int ACTIVO = 1;
     }
 }
