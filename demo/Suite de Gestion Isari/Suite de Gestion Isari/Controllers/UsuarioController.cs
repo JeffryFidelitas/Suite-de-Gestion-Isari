@@ -27,7 +27,6 @@ namespace Suite_de_Gestion_Isari.Controllers
         }
 
 
-
         [HttpPost]
         public IActionResult Agregar_Empleado(Empleado model)
         {
@@ -47,11 +46,13 @@ namespace Suite_de_Gestion_Isari.Controllers
             }
             else
             {
-
+                CargarDatosCompartidos();
                 ViewBag.ErrorMessage = respuesta.Mensaje;
                 return View(model);
             }
         }
+
+        
 
         [HttpGet]
         public IActionResult ConsultarEmpleados()
