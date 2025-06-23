@@ -26,13 +26,11 @@ namespace Suite_de_Gestion_Isari.Controllers
             return View();
         }
 
-
         [HttpPost]
         public IActionResult Agregar_Empleado(Empleado model)
         {
             if (!ModelState.IsValid)
             {
-
                 return View(model);
             }
 
@@ -40,7 +38,6 @@ namespace Suite_de_Gestion_Isari.Controllers
 
             if (respuesta.Codigo == 0)
             {
-
                 TempData["SuccessMessage"] = respuesta.Mensaje;
                 return RedirectToAction("ConsultarEmpleados");
             }
@@ -50,7 +47,7 @@ namespace Suite_de_Gestion_Isari.Controllers
                 ViewBag.ErrorMessage = respuesta.Mensaje;
                 return View(model);
             }
-        }
+	  }
 
         
 

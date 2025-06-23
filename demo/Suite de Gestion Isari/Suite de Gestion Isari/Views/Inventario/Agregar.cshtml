@@ -17,8 +17,8 @@
 
                 <form asp-action="Agregar" method="post">
                     <div class="mb-4">
-                        <label asp-for="CODIGO_PRODUCTO" class="form-label fw-bold fs-5">C骴igo del Producto</label>
-                        <input asp-for="CODIGO_PRODUCTO" class="form-control form-control-lg" placeholder="Ingrese el c骴igo del producto" required />
+                        <label asp-for="CODIGO_PRODUCTO" class="form-label fw-bold fs-5">C贸digo del Producto</label>
+                        <input asp-for="CODIGO_PRODUCTO" class="form-control form-control-lg" placeholder="Ingrese el c贸digo del producto" required />
                         <span asp-validation-for="CODIGO_PRODUCTO" class="text-danger"></span>
                     </div>
 
@@ -29,8 +29,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="DESCRIPCION" class="form-label fw-bold fs-5">Descripci髇</label>
-                        <textarea asp-for="DESCRIPCION" class="form-control form-control-lg" placeholder="Ingrese una descripci髇 del producto" rows="3" required></textarea>
+                        <label asp-for="DESCRIPCION" class="form-label fw-bold fs-5">Descripci贸n</label>
+                        <textarea asp-for="DESCRIPCION" class="form-control form-control-lg" placeholder="Ingrese una descripci贸n del producto" rows="3" required></textarea>
                         <span asp-validation-for="DESCRIPCION" class="text-danger"></span>
                     </div>
 
@@ -50,9 +50,9 @@
 
                     <div class="row mb-4">
                         <div class="col-lg-6">
-                            <label asp-for="ID_CATEGORIA" class="form-label fw-bold fs-5">Categor韆</label>
+                            <label asp-for="ID_CATEGORIA" class="form-label fw-bold fs-5">Categor铆a</label>
                             <select asp-for="ID_CATEGORIA" class="form-select form-control-lg" required>
-                                <option value="">Seleccione una categor韆</option>
+                                <option value="">Seleccione una categor铆a</option>
                                 @if (categorias != null && categorias.Count > 0)
                                 {
                                     @foreach (var categoria in categorias)

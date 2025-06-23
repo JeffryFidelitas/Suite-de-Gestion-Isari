@@ -73,7 +73,7 @@
 
         $.ajax({
             method: "POST",
-            url: "/PuntoVenta/RegistrarVenta", // Aseg�rate de que este sea el nombre correcto del controlador y acci�n.
+            url: "/PuntoVenta/RegistrarVenta", // Asegúrate de que este sea el nombre correcto del controlador y acción.
             dataType: "json",
            // contentType: "application/json",
             data: {
@@ -82,13 +82,13 @@
             },
             success: function (data) {
                 if (data == 0) {
-                    MostrarMensajeOk("El producto se actualiz� correctamente en su carrito");
+                    MostrarMensajeOk("El producto se actualizó correctamente en su carrito");
                 } else {
                     MostrarMensaje("El producto no fue actualizado en su carrito");
                 }
             },
             error: function () {
-                MostrarMensaje("Ocurri� un error al procesar la solicitud.");
+                MostrarMensaje("Ocurrió un error al procesar la solicitud.");
             }
         });
     }
@@ -97,7 +97,7 @@
     function MostrarMensajeOk(texto)
     {
           Swal.fire({
-            title: "Informaci�n",
+            title: "Información",
             confirmButtonText: "Aceptar",
             text: texto,
             icon: "success"
@@ -112,7 +112,7 @@
     function MostrarMensaje(texto)
     {
         Swal.fire({
-          title: "Informaci�n",
+          title: "Información",
           text: texto,
           icon: "info"
         });
