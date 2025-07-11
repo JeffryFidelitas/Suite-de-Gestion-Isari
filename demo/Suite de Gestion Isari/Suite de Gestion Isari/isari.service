@@ -1,0 +1,17 @@
+# /etc/systemd/system/isari.service
+[Unit]
+Description=Run Isari
+After=network.target
+
+[Service]
+WorkingDirectory=/var/www/publish
+ExecStart=/usr/bin/dotnet "Suite de Gestion Isari.dll"
+Restart=always
+RestartSec=10
+SyslogIdentifier=isari
+User=root
+Environment=ASPNETCORE_URLS=http://0.0.0.0:5000
+Environment=ASPNETCORE_ENVIRONMENT=Development
+
+[Install]
+WantedBy=multi-user.target
